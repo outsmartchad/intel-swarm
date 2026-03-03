@@ -1,22 +1,23 @@
 # 🐝 Intel Swarm
 
-Private intelligence research org for Vincent. 14 AI researchers + synthesis + chief scientist.
+Private intelligence research org for Vincent. 15 AI researchers + synthesis + chief scientist.
 
-> **Purpose:** Feed high-signal, under-reported intel across 14 domains daily. Not news — EDGE. Information that 99% don't know, don't want to know, or can't connect.
+> **Purpose:** Feed high-signal, under-reported intel across 15 domains daily. Not news — EDGE. Information that 99% don't know, don't want to know, or can't connect.
 
 > **Inspired by:** [Karpathy's multi-agent research org](https://x.com/karpathy) — "You are now programming an organization. The source code is prompts, skills, tools, and processes."
 
 ## Architecture
 
 ```
-06:00 HKT ─── 14 Researchers fire in parallel (web search → findings)
+06:00 HKT ─── 15 Researchers fire sequentially (3 min apart)
                 │
-                ├── researchers/crypto/findings/YYYY-MM-DD.md
-                ├── researchers/ai-agents/findings/YYYY-MM-DD.md
-                ├── researchers/conspiracy/findings/YYYY-MM-DD.md
-                ├── ... (14 total)
+                ├── researchers/crypto/findings/YYYY-MM-DD.md      (06:00)
+                ├── researchers/ai-agents/findings/YYYY-MM-DD.md   (06:03)
+                ├── researchers/conspiracy/findings/YYYY-MM-DD.md  (06:06)
+                ├── ... (15 total, last at 06:42)
                 │
-07:00 HKT ─── Synthesis Agent reads all 14 → connects dots
+07:00 HKT ─── Synthesis Agent reads all 15 → connects dots
+                │  (retries any missing researchers before synthesizing)
                 │
                 └── synthesis/YYYY-MM-DD.md
                 │
@@ -43,12 +44,13 @@ Private intelligence research org for Vincent. 14 AI researchers + synthesis + c
 | 12 | regulatory | ⚖️ Regulatory Arbitrage | Sonnet 4.6 | Thinks in jurisdictions. Tracks loopholes and ungovernable structures |
 | 13 | westeast | 🌏 West-East Arbitrage | Sonnet 4.6 | Bilingual. Reads Weibo and Twitter equally. Exploits the information gap |
 | 14 | quant | 📈 Quant Researcher | Sonnet 4.6 | All markets. Funding rates, options flow, bonds, forex, commodities, cross-market signals |
+| 15 | culture | 🎭 Culture & Virality | Sonnet 4.6 | Lives on TikTok, X, Reddit, Discord. Tracks Gen Z & unemployed — memes as emotional signals, viral products, unmet needs |
 
 ## Leadership
 
 | Role | Model | Job |
 |------|-------|-----|
-| 🔮 Synthesis | Opus 4.6 | Reads all 14 researchers. Finds the pattern connecting everything |
+| 🔮 Synthesis | Opus 4.6 | Reads all 15 researchers. Retries missing ones. Finds the pattern connecting everything |
 | 🧑‍🔬 Chief Scientist | Opus 4.6 | Reads everything. Challenges synthesis. Asks the uncomfortable question. Sends final briefing |
 
 ## File Structure
@@ -64,7 +66,7 @@ intel-swarm/
 │   │   ├── AGENT.md                # Branch info
 │   │   └── findings/
 │   │       └── YYYY-MM-DD.md       # Daily findings
-│   └── ... (14 researchers)
+│   └── ... (15 researchers)
 ├── synthesis/
 │   ├── SOUL.md
 │   └── YYYY-MM-DD.md               # Daily synthesis
@@ -90,7 +92,7 @@ intel-swarm/
 
 ## Cost
 
-~$2-3/day (14 Sonnet researchers + 2 Opus leadership)
+~$2-3/day (15 Sonnet researchers + 2 Opus leadership)
 
 ## Built With
 
