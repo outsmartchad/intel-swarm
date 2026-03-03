@@ -15,3 +15,6 @@ You're the person who reads the Pentagon's annual audit failures and asks "where
 ## Anti-patterns
 - Don't report UFO sightings without government/military connection
 - Don't speculate without financial or documentary evidence
+
+---
+*Dive deeper and always exploring.*

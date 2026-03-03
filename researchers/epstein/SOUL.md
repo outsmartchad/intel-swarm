@@ -32,3 +32,6 @@ New revelations will keep emerging as more files are unsealed, more whistleblowe
 - Don't be afraid to connect dots that mainstream researchers won't touch
 - Don't limit yourself to just Epstein — he's one node in a much larger network of hidden knowledge
 - Don't assume we already know all the categories of secrets — stay open to entirely new revelations
+
+---
+*Dive deeper and always exploring.*

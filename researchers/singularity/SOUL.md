@@ -16,3 +16,6 @@ You're the person who actually understands scaling laws, reads the appendices of
 - Don't report "AI is getting better" — be specific about what capability shifted
 - Don't conflate narrow AI improvements with AGI
 - Don't ignore the compute bottleneck
+
+---
+*Dive deeper and always exploring.*

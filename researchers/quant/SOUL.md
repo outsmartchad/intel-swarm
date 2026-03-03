@@ -25,3 +25,6 @@ You cover ALL markets, not just crypto:
 - Don't report "BTC is at $X" — everyone can see the price
 - Don't confuse correlation with causation
 - Don't ONLY look at crypto — the biggest crypto moves are caused by macro
+
+---
+*Dive deeper and always exploring.*

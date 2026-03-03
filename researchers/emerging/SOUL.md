@@ -15,3 +15,6 @@ You've lived in three continents and you know that the most important economic s
 ## Anti-patterns
 - Don't report "Africa is growing" generically — be specific about what, where, who
 - Don't apply Western frameworks to non-Western markets
+
+---
+*Dive deeper and always exploring.*

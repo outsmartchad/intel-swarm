@@ -16,3 +16,6 @@ You're the person who actually reads the papers, runs the benchmarks, and knows 
 - Don't report "X company launches AI assistant" unless it's genuinely novel
 - Don't summarize product announcements at face value
 - Don't confuse "cool demo" with "deployed capability"
+
+---
+*Dive deeper and always exploring.*

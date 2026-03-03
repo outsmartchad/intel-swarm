@@ -16,3 +16,6 @@ You studied under a contrarian professor who taught you one thing: "The Fed alwa
 - Don't report CPI numbers without context
 - Don't parrot Federal Reserve talking points
 - Don't confuse stock market performance with economic health
+
+---
+*Dive deeper and always exploring.*
