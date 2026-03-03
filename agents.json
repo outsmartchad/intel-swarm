@@ -1,0 +1,171 @@
+[
+  {
+    "id": "crypto",
+    "emoji": "🪙",
+    "name": "Crypto Researcher",
+    "focus": "Crypto markets, DeFi, Solana ecosystem, on-chain signals, new protocols, VC funding rounds, regulatory actions against crypto, exchange news, whale movements",
+    "queries": [
+      "Solana DeFi new protocol 2026",
+      "crypto regulation news today",
+      "Bitcoin on-chain whale movement",
+      "AI crypto agents new project",
+      "stablecoin news USDC USDT"
+    ]
+  },
+  {
+    "id": "ai-agents",
+    "emoji": "🤖",
+    "name": "AI Agents Researcher",
+    "focus": "AI agent frameworks, autonomous AI capabilities, what labs aren't saying publicly, compute wars, new model releases, agentic products, AI replacing jobs",
+    "queries": [
+      "AI agent autonomous new framework 2026",
+      "OpenAI Anthropic Google unreleased model news",
+      "AI replacing jobs latest statistics",
+      "AGI timeline prediction researchers",
+      "agentic AI product launch"
+    ]
+  },
+  {
+    "id": "conspiracy",
+    "emoji": "🕳️",
+    "name": "Conspiracy Researcher",
+    "focus": "Emerging conspiracy theories gaining mainstream traction, government cover-ups, suppressed information, viral narratives, what 99% don't know",
+    "queries": [
+      "conspiracy theory trending viral 2026",
+      "government cover up exposed",
+      "suppressed technology news",
+      "deep state news latest",
+      "whistleblower leak 2026"
+    ]
+  },
+  {
+    "id": "epstein",
+    "emoji": "📁",
+    "name": "Epstein & Deep State Researcher",
+    "focus": "Epstein files new releases, FOIA documents, court filings, elite connections, pedophile networks, blackmail operations, intelligence community scandals",
+    "queries": [
+      "Epstein files new release 2026",
+      "Jeffrey Epstein court documents unsealed",
+      "FOIA government documents released",
+      "elite scandal exposed 2026",
+      "intelligence agency scandal news"
+    ]
+  },
+  {
+    "id": "war",
+    "emoji": "⚔️",
+    "name": "War Researcher",
+    "focus": "Active military conflicts, geopolitical flashpoints, weapons deals, troop movements, diplomatic breakdowns, proxy wars, Taiwan, Ukraine, Middle East",
+    "queries": [
+      "military conflict update today",
+      "Taiwan China tensions news",
+      "Ukraine Russia war latest",
+      "Middle East conflict escalation",
+      "NATO military news"
+    ]
+  },
+  {
+    "id": "macro",
+    "emoji": "📊",
+    "name": "Macro Economist",
+    "focus": "Federal Reserve moves, dollar hegemony, BRICS, capital flows, inflation, debt crisis, currency wars, central bank digital currencies, wealth inequality acceleration",
+    "queries": [
+      "Federal Reserve interest rate decision 2026",
+      "dollar hegemony decline BRICS",
+      "global debt crisis warning",
+      "central bank digital currency CBDC news",
+      "capital flight emerging markets"
+    ]
+  },
+  {
+    "id": "power",
+    "emoji": "🕴️",
+    "name": "Power Structures Researcher",
+    "focus": "WEF, Bilderberg, CFR, Trilateral Commission, revolving doors between government and corporations, who actually controls global policy, elite networking events",
+    "queries": [
+      "WEF World Economic Forum agenda 2026",
+      "Bilderberg meeting news",
+      "revolving door government corporation",
+      "BlackRock Vanguard control influence",
+      "global elite policy agenda"
+    ]
+  },
+  {
+    "id": "singularity",
+    "emoji": "🧠",
+    "name": "Tech Singularity Researcher",
+    "focus": "AGI timelines, compute wars, what AI labs aren't saying publicly, superintelligence research, brain-computer interfaces, transhumanism, existential risk",
+    "queries": [
+      "AGI artificial general intelligence timeline 2026",
+      "AI compute war Nvidia GPU shortage",
+      "OpenAI Anthropic secret research leak",
+      "Neuralink brain computer interface news",
+      "AI existential risk researchers warning"
+    ]
+  },
+  {
+    "id": "psyops",
+    "emoji": "📡",
+    "name": "Psyops & Propaganda Researcher",
+    "focus": "Narrative manufacturing, media ownership and control, information warfare, astroturfing campaigns, who controls what story and why, memetic warfare",
+    "queries": [
+      "media narrative manipulation exposed",
+      "propaganda campaign exposed 2026",
+      "astroturfing social media campaign",
+      "information warfare news",
+      "media ownership concentration news"
+    ]
+  },
+  {
+    "id": "blackbudget",
+    "emoji": "🖤",
+    "name": "Black Budget Researcher",
+    "focus": "DARPA programs, CIA black ops, unaccounted government spending, secret military programs, UAP/UFO disclosure, off-books operations, shadow programs",
+    "queries": [
+      "DARPA secret program revealed",
+      "CIA black budget program exposed",
+      "UAP UFO government disclosure 2026",
+      "Pentagon unaccounted spending audit",
+      "secret military technology revealed"
+    ]
+  },
+  {
+    "id": "emerging",
+    "emoji": "🌍",
+    "name": "Emerging Markets Researcher",
+    "focus": "SEA, Africa, LatAm opportunities and crises the West ignores, crypto adoption in developing nations, new economic powers rising, demographic shifts",
+    "queries": [
+      "Southeast Asia crypto adoption 2026",
+      "Africa economic growth technology",
+      "Latin America financial system crypto",
+      "emerging market opportunity ignored west",
+      "ASEAN economic news"
+    ]
+  },
+  {
+    "id": "regulatory",
+    "emoji": "⚖️",
+    "name": "Regulatory Arbitrage Researcher",
+    "focus": "Crypto-friendly jurisdictions, new regulatory frameworks, how to structure projects to be ungovernable, tax havens, offshore structures, legal loopholes",
+    "queries": [
+      "crypto friendly jurisdiction 2026",
+      "DeFi regulatory framework new",
+      "offshore crypto structure legal",
+      "DAO legal structure news",
+      "crypto regulation loophole"
+    ]
+  },
+  {
+    "id": "westeast",
+    "emoji": "🌏",
+    "name": "West-East Arbitrage Researcher",
+    "focus": "What's common knowledge in China/HK/Asia that the West doesn't see coming, Chinese tech moves, BRICS currency plans, Asian market signals, East vs West information gap",
+    "queries": [
+      "China technology development West unaware",
+      "Hong Kong crypto finance news",
+      "BRICS currency digital yuan news",
+      "Chinese AI development latest",
+      "Asia Pacific market signal ignored west"
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+// PURPOSE: Private intel research team for Vincent — feeding him banger ideas to build next-gen products
+// NOT for: trading, onchain automation, or code research
+// INSPIRED BY: Karpathy's "programming an organization" concept
+// TODO: Add chief scientist agent
+{
+  "crypto": "a14863e8-ddf9-4031-8164-8c388c199a5a",
+  "ai-agents": "fa9ec505-c252-4bab-b32f-806683f35419",
+  "conspiracy": "530d4681-3a65-48f0-a386-0874d62e0ecf",
+  "epstein": "d4cfddcc-8be2-4c3b-8229-92b2486eba43",
+  "war": "fa139712-9e2b-402f-86f4-26156f9066da",
+  "macro": "e6db258f-2cbe-468e-b60d-2412d7ed7f66",
+  "power": "26148b6f-09e9-4627-85cf-b10d47cbdc98",
+  "singularity": "578ef468-be1f-467e-8086-04ba394ef080",
+  "psyops": "1dba6af1-6da7-4861-942f-df6ba1141fa7",
+  "blackbudget": "3418dbd4-87b4-429f-8bba-15c975ce8bd1",
+  "emerging": "add41e35-af34-49a2-8ce0-a998ef2ff184",
+  "regulatory": "a9a59d01-5175-4a83-a75c-e873089c4e37",
+  "westeast": "06e2927a-7ad1-440b-b7d7-4a99f4cab1d1",
+  "synthesis": "df513df7-86d6-4af9-a020-a57f3cba202f",
+  "onchain": "9d1a9a6e-e094-4fc2-a0a8-d9bcd0b5a463",
+  "quant": "e1e6d977-e10e-415f-9307-a99ed2c57caa"
+}
