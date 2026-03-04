@@ -59,7 +59,7 @@
       <div class="side-section" style="margin-top:32px;">
         <div class="side-label">Other Domains</div>
         <div style="display:flex;flex-direction:column;gap:2px;">
-          {% for r_id, r_emoji, r_name in researchers %}
+          {% for r_id, r_emoji, r_name, r_zh_name in researchers %}
           {% if r_id != rid %}
           <a href="/domain/{{ r_id }}"
             style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:5px;
@@ -67,7 +67,7 @@
             onmouseover="this.style.background='var(--surface)';this.style.color='var(--text)'"
             onmouseout="this.style.background='';this.style.color='var(--muted)'">
             <span style="font-size:13px;">{{ r_emoji }}</span>
-            <span>{{ r_name }}</span>
+            <span>{% if (lang|default('en')) == 'zh' %}{{ r_zh_name }}{% else %}{{ r_name }}{% endif %}</span>
           </a>
           {% endif %}
           {% endfor %}
