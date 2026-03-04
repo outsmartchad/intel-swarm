@@ -5,6 +5,11 @@
 
 ---
 
+> *The real edge isn't in what everyone is reading.*
+> *It's in what 99% of people don't know, don't want to know, and can't connect.*
+
+---
+
 ## Why We Built This
 
 The news is noise.
