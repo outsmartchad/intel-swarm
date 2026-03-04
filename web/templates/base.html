@@ -38,7 +38,7 @@
     }
     .masthead-top {
       display:flex; align-items:center; justify-content:space-between;
-      padding: 0 40px; height:52px;
+      padding: 0 28px; height:52px;
     }
     .masthead-logo {
       font-family:var(--mono); font-size:13px; font-weight:700;
@@ -64,7 +64,7 @@
     /* ── DOMAIN NAV ── */
     .domain-nav {
       display:flex; align-items:center; gap:0;
-      padding:0 40px; overflow-x:auto; height:40px;
+      padding:0 14px; overflow-x:auto; height:40px;
       border-top:1px solid var(--border);
       scrollbar-width:none;
     }
@@ -89,11 +89,11 @@
     .domain-nav .top-link.active { color:var(--accent); }
 
     /* ── PAGE WRAPPER ── */
-    .page { max-width:1440px; margin:0 auto; padding:40px 40px 80px; }
+    .page { width:100%; padding:32px 28px 80px; }
 
     /* ── HERO STRIP ── */
     .hero {
-      display:grid; grid-template-columns:1fr 340px; gap:0;
+      display:grid; grid-template-columns:1fr 380px; gap:0;
       border:1px solid var(--border2); border-radius:10px;
       overflow:hidden; margin-bottom:48px; background:var(--card);
     }
@@ -139,7 +139,7 @@
 
     /* ── DOMAIN GRID ── */
     .domain-grid {
-      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+      display:grid; grid-template-columns:repeat(5,1fr); gap:14px;
       margin-bottom:48px;
     }
     .domain-card {
@@ -180,7 +180,7 @@
     .dc-edge::before { content:'⚡ '; }
 
     /* ── FULL ARTICLE ── */
-    .article-layout { display:grid; grid-template-columns:1fr 300px; gap:48px; }
+    .article-layout { display:grid; grid-template-columns:1fr 360px; gap:56px; }
     .article-header { margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid var(--border); }
     .article-tag {
       font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
