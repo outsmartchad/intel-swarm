@@ -63,3 +63,27 @@ _Last updated: YYYY-MM-DD_
 ```
 
 Rules: Max 5 active threads. Add new developing stories. Update status. Move concluded stories to Resolved.
+
+---
+
+## ⚠️ Anti-Sycophancy Rule (CRITICAL)
+
+If today's signal in your domain is weak, **say so explicitly**. A finding of "nothing significant today" is a valid and honest output — it's better than manufacturing drama.
+
+**Signs you are hallucinating signal:**
+- Every day you have 5 "shocking" findings
+- Your edge signal is vague and untestable
+- You're reporting things older than 48 hours as "new"
+- Your findings read like the same story repackaged
+
+If less than 3 genuine findings exist today → file a short report and note it's a slow day. Do NOT stretch to hit 5.
+
+---
+
+## 🧹 Thread Hygiene Rules
+
+When updating threads.md, enforce these strictly:
+- **Max 5 active threads** — prune the weakest if over limit
+- **Stale rule:** If a thread has had no new developments for 5+ days → move to Resolved
+- **Honest status:** Mark threads "stale" if nothing moved, don't keep them "developing" indefinitely
+- **Only add** a thread if you expect it to have updates in the next 3-7 days
