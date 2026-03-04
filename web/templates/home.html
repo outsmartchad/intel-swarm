@@ -11,31 +11,29 @@
 .editorial {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: 10px; /* fine-grained row control */
-  gap: 8px;
+  gap: 4px;
   margin-bottom: 48px;
 }
 
 /* Base card */
 .ecard {
-  position: relative; overflow: hidden; border-radius: 10px;
+  position: relative; overflow: hidden; border-radius: 6px;
   background: #111418;
-  border: 1px solid rgba(255,255,255,0.07);
   text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
-  transition: border-color .2s, box-shadow .2s, transform .2s;
+  transition: box-shadow .2s, transform .2s;
 }
 .ecard:hover {
-  border-color: rgba(200,169,110,.35);
-  box-shadow: 0 8px 40px rgba(0,0,0,.6);
+  box-shadow: 0 0 0 2px rgba(200,169,110,.5), 0 8px 40px rgba(0,0,0,.6);
   transform: translateY(-2px);
+  z-index: 2;
 }
 
-/* Layout slots */
-.ecard-hero     { grid-column: span 7; grid-row: span 30; }
-.ecard-featured { grid-column: span 5; grid-row: span 30; }
-.ecard-medium   { grid-column: span 4; grid-row: span 20; }
-.ecard-small    { grid-column: span 3; grid-row: span 14; }
+/* Layout slots — explicit heights so rows align perfectly */
+.ecard-hero     { grid-column: span 7; height: 380px; }
+.ecard-featured { grid-column: span 5; height: 380px; }
+.ecard-medium   { grid-column: span 4; height: 240px; }
+.ecard-small    { grid-column: span 4; height: 160px; } /* span 4 → 3 per row = 12 ✓ */
 
 /* Full-bleed image bg */
 .ecard-bg {
@@ -127,15 +125,14 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .ecard-hero     { grid-column: span 12; grid-row: span 24; }
-  .ecard-featured { grid-column: span 12; grid-row: span 20; }
-  .ecard-medium   { grid-column: span 6;  grid-row: span 18; }
-  .ecard-small    { grid-column: span 6;  grid-row: span 14; }
+  .ecard-hero     { grid-column: span 12; height: 300px; }
+  .ecard-featured { grid-column: span 12; height: 260px; }
+  .ecard-medium   { grid-column: span 6;  height: 200px; }
+  .ecard-small    { grid-column: span 6;  height: 150px; }
 }
 @media (max-width: 600px) {
-  .ecard-hero, .ecard-featured, .ecard-medium, .ecard-small {
-    grid-column: span 12; grid-row: span 18;
-  }
+  .ecard-hero, .ecard-featured { grid-column: span 12; height: 240px; }
+  .ecard-medium, .ecard-small  { grid-column: span 12; height: 160px; }
 }
 </style>
 
