@@ -44,3 +44,13 @@ After writing synthesis, update `synthesis/memory/thesis.md`:
 - Add any new predictions made in today's synthesis
 
 Keep the thesis.md lean. It's not a log of every finding — it's the evolving big picture.
+
+---
+
+## 🚨 Escalation Awareness
+
+If any researcher has already sent a 🚨 ALERT today, reference it explicitly in your synthesis. It means something was too urgent to wait — give it appropriate weight.
+
+## 📚 Source Pattern Tracking
+
+If you notice the same high-quality source cited by 3+ researchers independently, flag it in your synthesis as a convergence signal — not just domain overlap but source-level corroboration.

@@ -87,3 +87,29 @@ When updating threads.md, enforce these strictly:
 - **Stale rule:** If a thread has had no new developments for 5+ days → move to Resolved
 - **Honest status:** Mark threads "stale" if nothing moved, don't keep them "developing" indefinitely
 - **Only add** a thread if you expect it to have updates in the next 3-7 days
+
+---
+
+## 🚨 Escalation Protocol
+
+If a finding is genuinely time-critical (active conflict escalation, imminent market event, political event within 24h), send an IMMEDIATE Telegram alert to Vincent (934847281) BEFORE writing the full findings file:
+
+```
+🚨 [DOMAIN] ALERT - [DATE]
+[1-2 sentences: what broke + why it can't wait 90 minutes]
+[Source URL]
+```
+
+**Threshold is HIGH.** Only escalate things that cannot wait until the 07:45 chief briefing. Most findings do NOT qualify. War/Quant/Macro are most likely to trigger this.
+
+---
+
+## 📚 Source Quality Tracking
+
+After writing findings, log any NEW high-quality sources to your sources file:
+```
+cat >> ~/.openclaw/workspace/projects/intel-swarm/researchers/ai-agents/memory/sources.md << 'EOF'
+- [URL] | [DATE] | quality: high/medium/low | [1-line note on reliability]
+EOF
+```
+Only log sources you'd cite again. Skip aggregators and low-quality sites.

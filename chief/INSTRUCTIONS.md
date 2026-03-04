@@ -55,3 +55,13 @@ After writing review, update both memory files:
 - Update status of active risks (escalating/resolving/confirmed)
 - Add new risks identified today
 - Update the contrarian position log if it shifted
+
+---
+
+## 🚨 Escalation Check
+
+Before writing your review, check if any 🚨 ALERTS were sent today (search Telegram history or check if researchers noted it in their findings). If yes — did synthesis address it properly? If not, that's your first point.
+
+## ⏱️ Timeout Awareness
+
+You have 600 seconds. Prioritise: memory read → synthesis read → key researcher files → write review → update memory → send Telegram. Don't spend >120s reading before writing.

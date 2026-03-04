@@ -69,6 +69,21 @@ Each agent maintains persistent memory across days:
 - Chief maintains: `chief/memory/predictions.md` + `chief/memory/thesis.md`
 - Final output: Telegram DM to Vincent
 
+## Escalation Protocol
+
+Researchers can bypass the normal 07:45 schedule for genuinely time-critical findings:
+- Send 🚨 ALERT directly to Vincent via Telegram **immediately**
+- Threshold is HIGH — only for things that cannot wait 90 minutes
+- War, Quant, and Macro are most likely to trigger this
+- Synthesis and Chief reference any alerts sent that day
+
+## Source Quality Tracking
+
+Each researcher maintains `memory/sources.md`:
+- Log new sources after each run (URL, date, quality: high/medium/low, 1-line note)
+- Over time: high-signal sources get cited first, low-quality sources get pruned
+- Synthesis flags source-level corroboration (same source cited by 3+ researchers = strong signal)
+
 ## Rules
 1. Never report something everyone already knows
 2. Always include source URLs — no source, no finding
@@ -78,3 +93,5 @@ Each agent maintains persistent memory across days:
 6. **Clean pipeline above all** — one verified finding beats five unverified ones
 7. **Memory first** — read threads before searching, update threads after writing
 8. **Honest calibration** — slow days are real. Report them honestly.
+9. **Escalate immediately** — don't hold time-critical findings until 07:45
+10. **Track your sources** — log quality after every run, prune bad sources over time
