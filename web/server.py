@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Intel Swarm — Intelligence Dashboard Server"""
 
-import os, glob, re, json, random, hashlib
+import os, glob, re, json
 from flask import Flask, render_template, abort, request
 import markdown as md_lib
 
@@ -234,21 +234,19 @@ def assign_layout(domains, date):
     Rows 2+: remaining domains packed by _pack_cols()
              higher-scoring domains get span-4 (wider), lower get span-3
 
-    Hero/featured rotate daily via date-seeded RNG weighted to top scorers.
+    Most significant domain (highest score) always gets hero slot.
     Domains are reordered: hero → featured → rest (score-descending).
     """
     N = len(domains)
     if N == 0:
         return domains
 
-    seed   = int(hashlib.md5(date.encode()).hexdigest()[:8], 16)
-    rng    = random.Random(seed)
     by_score = sorted(range(N), key=lambda i: domains[i]["score"], reverse=True)
 
-    hero_i = rng.choice(by_score[:min(3, N)])
-    rest1  = [i for i in by_score if i != hero_i]
-    feat_i = rng.choice(rest1[:min(3, len(rest1))])
-    rest   = [i for i in rest1 if i != feat_i]   # score-sorted, wide→narrow
+    # Hero = #1 scorer, featured = #2 scorer — deterministic, score-driven
+    hero_i = by_score[0]
+    feat_i = by_score[1] if N > 1 else by_score[0]
+    rest   = by_score[2:]  # already score-sorted, wide → narrow
 
     col_map = {hero_i: 7, feat_i: 5}
     for domain_i, cols in zip(rest, _pack_cols(len(rest))):
