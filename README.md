@@ -1,6 +1,6 @@
 # 🐝 Intel Swarm
 
-Private intelligence research org for Vincent. 15 AI researchers + synthesis + chief scientist.
+Private intelligence research org for Vincent. 15 AI researchers + synthesis + chief scientist — with persistent memory.
 
 > **Purpose:** Feed high-signal, under-reported intel across 15 domains daily. Not news — EDGE. Information that 99% don't know, don't want to know, or can't connect.
 
@@ -11,19 +11,32 @@ Private intelligence research org for Vincent. 15 AI researchers + synthesis + c
 ```
 06:00 HKT ─── 15 Researchers fire sequentially (3 min apart)
                 │
+                │  Each researcher BEFORE searching:
+                │  ├── reads findings/yesterday.md (avoids repeating)
+                │  └── reads memory/threads.md (tracks ongoing stories)
+                │
                 ├── researchers/crypto/findings/YYYY-MM-DD.md      (06:00)
                 ├── researchers/ai-agents/findings/YYYY-MM-DD.md   (06:03)
                 ├── researchers/conspiracy/findings/YYYY-MM-DD.md  (06:06)
                 ├── ... (15 total, last at 06:42)
                 │
-07:00 HKT ─── Synthesis Agent reads all 15 → connects dots
-                │  (retries any missing researchers before synthesizing)
+                │  Each researcher AFTER writing:
+                │  └── updates memory/threads.md (ongoing story threads)
                 │
-                └── synthesis/YYYY-MM-DD.md
+07:15 HKT ─── Synthesis Agent reads all 15 → connects dots
+                │  reads synthesis/findings/yesterday.md
+                │  reads synthesis/memory/thesis.md (evolving meta-thesis)
                 │
-07:30 HKT ─── Chief Scientist reads ALL raw findings + synthesis → challenges everything
+                └── synthesis/findings/YYYY-MM-DD.md
+                │  updates synthesis/memory/thesis.md
                 │
-                └── chief/YYYY-MM-DD.md → Telegram briefing to Vincent
+07:45 HKT ─── Chief Scientist reads ALL raw findings + synthesis → challenges everything
+                │  reads chief/findings/yesterday.md
+                │  reads chief/memory/predictions.md (prediction scoreboard)
+                │  reads chief/memory/thesis.md (risk register)
+                │
+                └── chief/findings/YYYY-MM-DD.md → Telegram briefing to Vincent
+                   updates chief/memory/predictions.md + thesis.md
 ```
 
 ## Researchers
@@ -50,8 +63,27 @@ Private intelligence research org for Vincent. 15 AI researchers + synthesis + c
 
 | Role | Model | Job |
 |------|-------|-----|
-| 🔮 Synthesis | Opus 4.6 | Reads all 15 researchers. Retries missing ones. Finds the pattern connecting everything |
-| 🧑‍🔬 Chief Scientist | Opus 4.6 | Reads everything. Challenges synthesis. Asks the uncomfortable question. Sends final briefing |
+| 🔮 Synthesis | Opus 4.6 | Reads all 15 researchers. Retries missing ones. Finds the pattern connecting everything. Tracks evolving meta-thesis. |
+| 🧑‍🔬 Chief Scientist | Opus 4.6 | Reads everything. Challenges synthesis. Asks the uncomfortable question. Tracks predictions. Sends final briefing. |
+
+## Memory System
+
+Each agent maintains persistent memory across days:
+
+**Researchers** — `memory/threads.md`
+- Active story threads (max 5) tracking developing stories across days
+- Stale rule: no movement in 5+ days → move to Resolved
+- Read before searching. Updated after writing findings.
+
+**Synthesis** — `synthesis/memory/thesis.md`
+- Evolving meta-thesis (how the big picture is changing)
+- Active predictions made + status tracking
+- Read before synthesizing. Updated after writing.
+
+**Chief Scientist** — `chief/memory/predictions.md` + `chief/memory/thesis.md`
+- Prediction scoreboard (confirmed / wrong / pending)
+- Critical risk register + contrarian positions
+- Read before reviewing. Updated after writing.
 
 ## File Structure
 
@@ -62,32 +94,40 @@ intel-swarm/
 ├── researchers/
 │   ├── <agent-id>/
 │   │   ├── SOUL.md                 # Identity — who they are, how they think
-│   │   ├── INSTRUCTIONS.md         # Methodology — what to search, what counts
-│   │   ├── AGENT.md                # Branch info
-│   │   └── findings/
-│   │       └── YYYY-MM-DD.md       # Daily findings
+│   │   ├── INSTRUCTIONS.md         # Methodology + memory protocol
+│   │   ├── findings/
+│   │   │   └── YYYY-MM-DD.md       # Daily findings
+│   │   └── memory/
+│   │       └── threads.md          # Ongoing story threads (persistent)
 │   └── ... (15 researchers)
 ├── synthesis/
 │   ├── SOUL.md
-│   └── YYYY-MM-DD.md               # Daily synthesis
+│   ├── INSTRUCTIONS.md
+│   ├── findings/
+│   │   └── YYYY-MM-DD.md           # Daily synthesis
+│   └── memory/
+│       └── thesis.md               # Evolving meta-thesis + predictions
 ├── chief/
 │   ├── SOUL.md
-│   └── YYYY-MM-DD.md               # Daily chief scientist review
+│   ├── INSTRUCTIONS.md
+│   ├── findings/
+│   │   └── YYYY-MM-DD.md           # Daily chief scientist review
+│   └── memory/
+│       ├── predictions.md          # Prediction scoreboard
+│       └── thesis.md               # Risk register + contrarian positions
 ├── agents.json                     # Agent config definitions
 ├── cron-ids.json                   # OpenClaw cron job IDs
 └── create-crons.py                 # Script that created the cron jobs
 ```
 
-## Each Researcher Has
+## Anti-Sycophancy Rule
 
-- **SOUL.md** — Identity, personality, lens, anti-patterns
-- **INSTRUCTIONS.md** — Search strategy, what counts as a finding, what doesn't
-- **findings/** — Daily output, one file per day
+Researchers are explicitly allowed to file "nothing significant today" — a slow day is a valid and honest output. Manufacturing drama to hit 5 findings is worse than filing 2 real ones. This is enforced in every researcher's INSTRUCTIONS.md.
 
 ## Delivery
 
-- Synthesis → Telegram DM to Vincent
-- Chief Scientist → Telegram DM to Vincent
+- Synthesis → Telegram DM to Vincent (07:15 HKT)
+- Chief Scientist → Telegram DM to Vincent (07:45 HKT)
 - Raw findings → stay in git (queryable, reviewable, diffable)
 
 ## Cost
