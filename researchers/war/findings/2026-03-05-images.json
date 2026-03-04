@@ -1,0 +1,28 @@
+[
+  {
+    "finding_idx": 0,
+    "source_url": "https://www.nytimes.com/2026/03/03/world/middleeast/iran-strikes-us-military-communication-infrastructure-in-mideast.html",
+    "image_path": "/static/images/2026-03-05/war/5081e6280604.jpg"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "https://www.reuters.com/world/us/majority-us-senate-votes-block-bid-rein-trump-iran-war-powers-voting-continues-2026-03-04/",
+    "image_path": "/static/images/2026-03-05/war/ac49d6477950.jpg"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://www.foxnews.com/politics/number-iranian-ballistic-missiles-fired-plunges-since-start-operation-epic-fury",
+    "image_path": "/static/images/2026-03-05/war/1bc79e0d356d.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://understandingwar.org/research/china-taiwan/china-taiwan-update-march-1-2026/",
+    "image_path": "/static/images/2026-03-05/war/c6c44f57ace3.webp"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://ukrainetoday.org/zelensky-trades-drone-know-how-for-ceasefire-help/",
+    "image_path": "/static/images/2026-03-05/war/8be4831365b1.png",
+    "via": "retry"
+  }
+]
