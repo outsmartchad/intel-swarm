@@ -1,0 +1,28 @@
+[
+  {
+    "finding_idx": 0,
+    "source_url": "https://www.marktechpost.com/2026/03/02/meet-nullclaw-the-678-kb-zig-ai-agent-framework-running-on-1-mb-ram-and-booting-in-two-milliseconds/",
+    "image_path": "/static/images/2026-03-05/ai-agents/acb487d5eda7.png",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "https://techcrunch.com/2026/03/03/claude-code-rolls-out-a-voice-mode-capability/",
+    "image_path": "/static/images/2026-03-05/ai-agents/de01df80c84b.jpeg"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://www.digitimes.com/news/a20260304VL205/agi-snapdragon-qualcomm-on-device-ai-mwc-2026.html",
+    "image_path": "/static/images/2026-03-05/ai-agents/5e20a83bf76b.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://www.coindesk.com/tech/2026/03/03/okx-jumps-into-ai-agent-race-with-new-onchainos-toolkit",
+    "image_path": "/static/images/2026-03-05/ai-agents/e76f11678667.jpg"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://www.cbsnews.com/news/ai-layoffs-2026-artificial-intelligence-amazon-pinterest/",
+    "image_path": "/static/images/2026-03-05/ai-agents/78ed9750ae75.jpg"
+  }
+]
