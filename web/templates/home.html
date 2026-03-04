@@ -1,64 +1,42 @@
 {% extends "base.html" %}
-{% block title %} · Daily Brief{% endblock %}
-{% block nav_home %}active{% endblock %}
+{% block title %} · Today{% endblock %}
+{% block nav_home %}data-active="true"{% endblock %}
 
 {% block body %}
-<div class="page">
+<div class="wrap">
 
-  <!-- HERO -->
-  {% if synthesis_raw %}
-  <div class="hero">
-    <div class="hero-main">
-      <div class="hero-tag">🔮 Synthesis &nbsp;·&nbsp; Opus 4.6 &nbsp;·&nbsp; {{ date }}</div>
-      <div class="hero-headline">{{ syn_headline or "Intelligence Synthesis" }}</div>
-      {% if synthesis_raw %}
-      {% set intro = synthesis_raw | truncate(320, True, '...') %}
-      <div class="hero-body">{{ intro }}</div>
-      {% endif %}
-      <a href="/brief?lang={{ lang|default('en') }}" class="hero-link">Read full brief &nbsp;→</a>
-    </div>
-    <div class="hero-side">
-      <div class="hero-side-label">🧑‍🔬 Chief Scientist's Call</div>
-      {% if chief_action %}
-      <div class="chief-call">{{ chief_action[:400] }}</div>
-      {% else %}
-      <div class="empty">pending...</div>
-      {% endif %}
-      <div style="margin-top:auto">
-        <a href="/brief?lang={{ lang|default('en') }}" style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;">
-          Full chief review →
-        </a>
-      </div>
-    </div>
+  {% if synthesis_html %}
+  <div class="syn-strip">
+    <div class="syn-strip-label">🔮 SYNTHESIS · {{ date }}</div>
+    <div class="syn-strip-headline">{{ syn_headline or "Intelligence Synthesis" }}</div>
+    {% if chief_action %}
+    <div class="syn-strip-body">🧑‍🔬 Chief's call: {{ chief_action[:300] }}</div>
+    {% endif %}
   </div>
   {% endif %}
 
-  <!-- DOMAIN GRID -->
-  <div class="section-label"><h2>All 15 Domains &nbsp;·&nbsp; {{ date }}</h2></div>
-
-  <div class="domain-grid">
+  <div class="feed">
     {% for d in domains %}
-    <a href="/domain/{{ d.id }}?lang={{ lang|default('en') }}" class="domain-card">
-      <div class="dc-header">
-        <span class="dc-emoji">{{ d.emoji }}</span>
-        <span class="dc-name">{{ d.name }}</span>
+    <a href="/domain/{{ d.id }}?lang={{ lang|default('en') }}" class="feed-row">
+      <div class="feed-left">
+        <div class="feed-emoji">{{ d.emoji }}</div>
+        <div class="feed-name">{{ d.name }}</div>
         {% if d.filed %}
-        <span class="dc-status filed">✓ filed</span>
+        <div class="feed-status filed">✓ filed</div>
         {% else %}
-        <span class="dc-status pending">pending</span>
+        <div class="feed-status pending">pending</div>
         {% endif %}
       </div>
-      {% if d.headline %}
-      <div class="dc-headline">{{ d.headline }}</div>
-      {% elif not d.filed %}
-      <div class="dc-headline" style="color:var(--dim)">No findings yet</div>
-      {% endif %}
-      {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
-      <div class="dc-body">{{ d.findings[0].body }}</div>
-      {% endif %}
-      {% if d.edge %}
-      <div class="dc-edge">{{ d.edge[:180] }}</div>
-      {% endif %}
+      <div class="feed-right">
+        {% if d.headline %}
+        <div class="feed-headline">{{ d.headline }}</div>
+        {% else %}
+        <div class="feed-headline" style="color:var(--dim)">No findings today</div>
+        {% endif %}
+        {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
+        <div class="feed-preview">{{ d.findings[0].body[:200] }}</div>
+        {% endif %}
+      </div>
     </a>
     {% endfor %}
   </div>
