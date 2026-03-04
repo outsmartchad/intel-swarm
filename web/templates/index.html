@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block nav_daily %}active{% endblock %}
+
+{% block sidebar %}
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Archive</div>
+    <select class="date-select" onchange="window.location='/date/'+this.value">
+      {% for d in dates %}
+      <option value="{{ d }}" {% if d == date %}selected{% endif %}>{{ d }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Today</div>
+    <a href="#synthesis" class="sidebar-link">
+      <span class="emoji">🔮</span>
+      <span class="label">Synthesis</span>
+      {% if synthesis %}<span class="dot"></span>{% else %}<span class="dot empty"></span>{% endif %}
+    </a>
+    <a href="#chief" class="sidebar-link">
+      <span class="emoji">🧑‍🔬</span>
+      <span class="label">Chief Scientist</span>
+      {% if chief %}<span class="dot"></span>{% else %}<span class="dot empty"></span>{% endif %}
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Researchers</div>
+    {% for r in researchers %}
+    <a href="#{{ r.id }}" class="sidebar-link">
+      <span class="emoji">{{ r.emoji }}</span>
+      <span class="label">{{ r.name }}</span>
+      {% if r.has_content %}<span class="dot"></span>{% else %}<span class="dot empty"></span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</aside>
+{% endblock %}
+
+{% block main %}
+<main class="main">
+  <div class="date-badge">{{ date }}</div>
+
+  {% if synthesis %}
+  <div class="content-block" id="synthesis">
+    <div class="block-label">🔮 Synthesis · Opus 4.6</div>
+    <div class="prose">{{ synthesis | safe }}</div>
+  </div>
+  {% endif %}
+
+  {% if chief %}
+  <div class="content-block" id="chief">
+    <div class="block-label">🧑‍🔬 Chief Scientist · Opus 4.6</div>
+    <div class="prose">{{ chief | safe }}</div>
+  </div>
+  {% endif %}
+
+  <div class="content-block" id="researchers">
+    <div class="block-label">Researcher Findings</div>
+    <div class="researcher-grid">
+      {% for r in researchers %}
+      <a href="#{{ r.id }}-detail" class="researcher-card">
+        <div class="rc-header">
+          <span class="rc-emoji">{{ r.emoji }}</span>
+          <span class="rc-name">{{ r.name }}</span>
+          {% if r.has_content %}
+          <span class="rc-status">✓ filed</span>
+          {% else %}
+          <span class="rc-status empty">pending</span>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% for r in researchers %}
+  {% if r.content %}
+  <div class="content-block" id="{{ r.id }}-detail">
+    <div class="block-label">{{ r.emoji }} {{ r.name }}</div>
+    <div class="prose">{{ r.content | safe }}</div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+</main>
+{% endblock %}
+
+{% block panel %}
+<aside class="right-panel">
+  {% if thesis %}
+  <div class="panel-section">
+    <div class="panel-label">Meta Thesis</div>
+    <div class="panel-prose prose">{{ thesis | safe }}</div>
+  </div>
+  {% endif %}
+
+  {% if predictions %}
+  <div class="panel-section">
+    <div class="panel-label">Predictions on Record</div>
+    <div class="panel-prose prose">{{ predictions | safe }}</div>
+  </div>
+  {% endif %}
+</aside>
+{% endblock %}
