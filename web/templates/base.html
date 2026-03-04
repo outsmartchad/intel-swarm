@@ -327,9 +327,9 @@
     {% if (lang|default('en')) == 'zh' %}今日{% else %}Today{% endif %}
   </a>
   <div class="nav-sep"></div>
-  {% for rid, emoji, name, zh_name, colors in researchers %}
-  <a href="/domain/{{ rid }}?lang={{ lang|default('en') }}" data-rid="{{ rid }}">
-    {{ emoji }} {% if (lang|default('en')) == 'zh' %}{{ zh_name }}{% else %}{{ name }}{% endif %}
+  {% for r in researchers %}
+  <a href="/domain/{{ r.id }}?lang={{ lang|default('en') }}" data-rid="{{ r.id }}">
+    {{ r.emoji }} {% if (lang|default('en')) == 'zh' %}{{ r.zh }}{% else %}{{ r.name }}{% endif %}
   </a>
   {% endfor %}
 </nav>
