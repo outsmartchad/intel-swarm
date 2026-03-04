@@ -22,7 +22,7 @@ RESEARCHERS = [
     ("psyops",      "📡", "Psyops",       "心理戰"),
     ("blackbudget", "🖤", "Black Budget", "黑色預算"),
     ("conspiracy",  "🕳️", "Conspiracy",  "陰謀"),
-    ("epstein",     "📁", "Epstein",      "愛潑斯坦"),
+    # ("epstein",  "📁", "Epstein",      "愛潑斯坦"),  # hidden for now
 ]
 
 app = Flask(__name__)
@@ -36,7 +36,9 @@ def no_cache(response):
 
 def render_md(text):
     if not text: return ""
-    return md_lib.markdown(text, extensions=["extra", "nl2br", "sane_lists"])
+    # Convert bare [https://...] patterns to proper markdown links
+    text = re.sub(r'\[(?!.*\]\()(https?://[^\]]+)\]', r'[\1](\1)', text)
+    return md_lib.markdown(text, extensions=["extra", "nl2br", "sane_lists", "toc"])
 
 def read_file(path, lang="en"):
     # Try Chinese version first if lang=zh
@@ -54,7 +56,13 @@ def get_lang():
 
 def get_dates():
     files = glob.glob(f"{BASE}/synthesis/findings/2026-*.md")
-    return sorted(set(os.path.basename(f).replace(".md","") for f in files), reverse=True)
+    # Exclude .zh.md translated files — only want base date files
+    dates = set()
+    for f in files:
+        name = os.path.basename(f)
+        if name.endswith(".zh.md"): continue
+        dates.add(name.replace(".md", ""))
+    return sorted(dates, reverse=True)
 
 def get_latest_date():
     d = get_dates(); return d[0] if d else "2026-03-04"
@@ -110,11 +118,11 @@ def home(date):
     synthesis_raw = read_file(f"{BASE}/synthesis/findings/{date}.md", lang)
     chief_raw = read_file(f"{BASE}/chief/findings/{date}.md", lang)
 
-    # Parse synthesis headline
+    # Parse synthesis headline (try zh version too)
     syn_headline = None
     if synthesis_raw:
-        m = re.search(r'##\s*The Connective Thread:\s*(.+)', synthesis_raw)
-        syn_headline = m.group(1).strip() if m else "Intelligence Synthesis"
+        m = re.search(r'##\s*(?:The Connective Thread:|連接線索：?|主線：?)\s*(.+)', synthesis_raw)
+        syn_headline = m.group(1).strip() if m else ("情報綜合" if lang == "zh" else "Intelligence Synthesis")
 
     # Build domain cards
     domains = []
@@ -162,6 +170,7 @@ def domain_date(rid, date):
     all_dates = sorted(set(
         os.path.basename(f).replace(".md","")
         for f in glob.glob(f"{BASE}/researchers/{rid}/findings/2026-*.md")
+        if not f.endswith(".zh.md")
     ), reverse=True)
 
     display_name = zh_name if lang == "zh" else name
