@@ -15,7 +15,7 @@
       {% set intro = synthesis_raw | truncate(320, True, '...') %}
       <div class="hero-body">{{ intro }}</div>
       {% endif %}
-      <a href="/brief" class="hero-link">Read full brief &nbsp;→</a>
+      <a href="/brief?lang={{ lang|default('en') }}" class="hero-link">Read full brief &nbsp;→</a>
     </div>
     <div class="hero-side">
       <div class="hero-side-label">🧑‍🔬 Chief Scientist's Call</div>
@@ -25,7 +25,7 @@
       <div class="empty">pending...</div>
       {% endif %}
       <div style="margin-top:auto">
-        <a href="/brief" style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;">
+        <a href="/brief?lang={{ lang|default('en') }}" style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;">
           Full chief review →
         </a>
       </div>
@@ -38,7 +38,7 @@
 
   <div class="domain-grid">
     {% for d in domains %}
-    <a href="/domain/{{ d.id }}" class="domain-card">
+    <a href="/domain/{{ d.id }}?lang={{ lang|default('en') }}" class="domain-card">
       <div class="dc-header">
         <span class="dc-emoji">{{ d.emoji }}</span>
         <span class="dc-name">{{ d.name }}</span>
