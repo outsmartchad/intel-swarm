@@ -1,5 +1,5 @@
 # Threads — emerging Researcher
-_Last updated: 2026-03-04_
+_Last updated: 2026-03-05_
 
 ## Active Threads
 
@@ -18,14 +18,20 @@ _Last updated: 2026-03-04_
 ### ASEAN World Bank Blockchain Rails (Zetrix AI — $40M IFC)
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** IFC bet $40M on Malaysia's Zetrix AI to deploy blockchain digital IDs, customs clearance, RWA tokenization, stablecoins across ASEAN under Malaysia's 13th Plan 2026-2030. Institutional-grade rails being built.
-- **Watch for:** Zetrix deployment milestones, other IFC blockchain investments in ASEAN, Malaysian CBDC/stablecoin timeline
+- **Summary:** IFC bet $40M on Malaysia's Zetrix AI to deploy blockchain digital IDs, customs clearance, RWA tokenization, stablecoins across ASEAN under Malaysia's 13th Plan 2026-2030. APAC fintech now exiting pilot phase per Money20/20 report — 61.2% of firms have adopted AI/ML.
+- **Watch for:** Zetrix deployment milestones, Singapore/HK/Japan stablecoin regulatory updates, Money20/20 Asia Bangkok April 21-23
 
-### APAC Crypto Gender Parity (Indonesia Signal)
-- **First seen:** 2026-03-04
+### South Africa Stablecoin Regulatory Capture
+- **First seen:** 2026-03-05
 - **Status:** developing
-- **Summary:** APAC CAGR 34.7%, Indonesia showing 46% female crypto users — near gender parity, unusual globally. Signals mass-market adoption beyond speculative male-dominated use cases.
-- **Watch for:** Indonesia regulatory updates, whether other ASEAN markets follow adoption patterns
+- **Summary:** Finance Minister Godongwana announced crypto formally incorporated under 1961 Currency and Exchanges Act. 17.2% of SA mobile transactions already in stablecoins — regulation chasing adoption, not leading it. Rand-pegged vs foreign-currency stablecoin policy now being drafted.
+- **Watch for:** SARB stablecoin policy release, whether rand-pegged stablecoins get special treatment vs USD stablecoins, Luno/MoneyBadger cross-border reporting framework adoption
+
+### India BRICS CBDC Bridge + DPI Blockchain Layer
+- **First seen:** 2026-03-05
+- **Status:** developing
+- **Summary:** India's BRICS 2026 chairmanship formally proposing interconnected CBDC framework for the bloc. Simultaneously, MeitY launching national blockchain challenge to layer tamper-proof records onto DPI stack (Aadhaar/UPI) serving 1.4B people.
+- **Watch for:** India's 18th BRICS summit date/agenda (expected 2026), MeitY Blockchain Challenge winners, whether BRICS CBDC bridge proposal advances to pilot
 
 ## Resolved Threads
 _(none yet)_
