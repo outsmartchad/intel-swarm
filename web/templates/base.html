@@ -292,13 +292,13 @@
     </div>
   </div>
   <nav class="domain-nav">
-    <a href="/" class="top-link {% block nav_home %}{% endblock %}">Today</a>
-    <a href="/brief" class="top-link {% block nav_brief %}{% endblock %}">Full Brief</a>
-    <a href="/memory" class="top-link {% block nav_memory %}{% endblock %}">Memory</a>
+    <a href="/?lang={{ lang|default('en') }}" class="top-link {% block nav_home %}{% endblock %}">
+      {% if (lang|default('en')) == 'zh' %}今日{% else %}Today{% endif %}
+    </a>
     <div class="sep"></div>
-    {% for rid, emoji, name in researchers %}
-    <a href="/domain/{{ rid }}" class="{% block nav_domain %}{% endblock %}" data-domain="{{ rid }}">
-      {{ emoji }} {{ name }}
+    {% for rid, emoji, name, zh_name in researchers %}
+    <a href="/domain/{{ rid }}?lang={{ lang|default('en') }}" class="{% block nav_domain %}{% endblock %}" data-domain="{{ rid }}">
+      {{ emoji }} {% if (lang|default('en')) == 'zh' %}{{ zh_name }}{% else %}{{ name }}{% endif %}
     </a>
     {% endfor %}
   </nav>

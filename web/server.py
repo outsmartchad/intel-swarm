@@ -8,21 +8,21 @@ import markdown as md_lib
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RESEARCHERS = [
-    ("crypto",      "🪙", "Crypto"),
-    ("war",         "⚔️", "War"),
-    ("macro",       "📊", "Macro"),
-    ("ai-agents",   "🤖", "AI Agents"),
-    ("singularity", "🧠", "Singularity"),
-    ("quant",       "📈", "Quant"),
-    ("westeast",    "🌏", "West-East"),
-    ("regulatory",  "⚖️", "Regulatory"),
-    ("power",       "🕴️", "Power"),
-    ("psyops",      "📡", "Psyops"),
-    ("blackbudget", "🖤", "Black Budget"),
-    ("conspiracy",  "🕳️", "Conspiracy"),
-    ("epstein",     "📁", "Epstein"),
-    ("emerging",    "🌍", "Emerging"),
-    ("culture",     "🎭", "Culture"),
+    ("crypto",      "🪙", "Crypto",       "加密貨幣"),
+    ("war",         "⚔️", "War",          "戰爭"),
+    ("macro",       "📊", "Macro",        "宏觀"),
+    ("ai-agents",   "🤖", "AI Agents",    "AI 代理"),
+    ("singularity", "🧠", "Singularity",  "奇點"),
+    ("quant",       "📈", "Quant",        "量化"),
+    ("westeast",    "🌏", "West-East",    "東西方"),
+    ("regulatory",  "⚖️", "Regulatory",  "監管"),
+    ("power",       "🕴️", "Power",       "權力"),
+    ("psyops",      "📡", "Psyops",       "心理戰"),
+    ("blackbudget", "🖤", "Black Budget", "黑色預算"),
+    ("conspiracy",  "🕳️", "Conspiracy",  "陰謀"),
+    ("epstein",     "📁", "Epstein",      "愛潑斯坦"),
+    ("emerging",    "🌍", "Emerging",     "新興市場"),
+    ("culture",     "🎭", "Culture",      "文化"),
 ]
 
 app = Flask(__name__)
@@ -79,7 +79,7 @@ def extract_edge(raw):
 
 def get_researcher_data(rid, date, lang="en"):
     raw = read_file(f"{BASE}/researchers/{rid}/findings/{date}.md", lang)
-    threads = read_file(f"{BASE}/researchers/{rid}/memory/threads.md")
+    threads = read_file(f"{BASE}/researchers/{rid}/memory/threads.md", lang)
     sources = read_file(f"{BASE}/researchers/{rid}/memory/sources.md")
     return {
         "raw": raw,
@@ -111,10 +111,11 @@ def home(date):
 
     # Build domain cards
     domains = []
-    for rid, emoji, name in RESEARCHERS:
+    for rid, emoji, name, zh_name in RESEARCHERS:
         data = get_researcher_data(rid, date, lang)
+        display_name = zh_name if lang == "zh" else name
         domains.append({
-            "id": rid, "emoji": emoji, "name": name,
+            "id": rid, "emoji": emoji, "name": display_name,
             **data
         })
 
@@ -146,7 +147,7 @@ def domain_date(rid, date):
     lang = get_lang()
     lookup = {r[0]: r for r in RESEARCHERS}
     if rid not in lookup: abort(404)
-    _, emoji, name = lookup[rid]
+    _, emoji, name, zh_name = lookup[rid]
 
     data = get_researcher_data(rid, date, lang)
 
@@ -156,8 +157,9 @@ def domain_date(rid, date):
         for f in glob.glob(f"{BASE}/researchers/{rid}/findings/2026-*.md")
     ), reverse=True)
 
+    display_name = zh_name if lang == "zh" else name
     return render_template("domain.html",
-        rid=rid, emoji=emoji, name=name,
+        rid=rid, emoji=emoji, name=display_name,
         date=date, dates=dates, lang=lang,
         all_dates=all_dates,
         researchers=RESEARCHERS,
@@ -194,7 +196,7 @@ def memory():
     chief_thesis = read_file(f"{BASE}/chief/memory/thesis.md")
 
     threads_data = []
-    for rid, emoji, name in RESEARCHERS:
+    for rid, emoji, name, zh_name in RESEARCHERS:
         t = read_file(f"{BASE}/researchers/{rid}/memory/threads.md")
         threads_data.append({"id": rid, "emoji": emoji, "name": name, "threads": render_md(t)})
 

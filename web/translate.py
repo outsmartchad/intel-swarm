@@ -38,7 +38,7 @@ def translate_file(filepath):
 
     result = subprocess.run(
         ["claude", "--model", "claude-haiku-4-5", "-p", prompt],
-        capture_output=True, text=True, timeout=120
+        capture_output=True, text=True, timeout=300
     )
 
     if result.returncode != 0:
