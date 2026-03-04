@@ -53,9 +53,11 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 
 @app.after_request
 def no_cache(response):
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
+    # Only disable caching in local dev — Vercel handles its own cache headers
+    if not os.environ.get("VERCEL"):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
     return response
 
 # ── FILE I/O ──────────────────────────────────────────────────────────────────

@@ -1,0 +1,5 @@
+web/scrape-images.py
+web/scrape-images-retry.py
+web/translate.py
+web/translate-all.sh
+web/scrape-all-images.sh
