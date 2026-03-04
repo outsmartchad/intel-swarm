@@ -1,39 +1,43 @@
 # Sports Intel — Active Threads
-[Updated: 2026-03-04]
+[Updated: 2026-03-05]
 
 ## 🏈 Football Threads
 
 **Thread 1: Maxx Crosby Trade** (opened 2026-03-04)
-- Raiders forcibly shut him down to tank for #1 pick; Crosby stormed out
-- Trade expected "days or weeks" per The Athletic (March 4)
-- Watch: which team absorbs $35.7M 2026 cap hit; Kubiak inherits hollowed locker room
-- Next check: any trade announcement before free agency opens (March 12)
+- Raiders asking "a couple first-round picks and a player" (Micah Parsons-level return)
+- Bears now odds-on favorites; Tom Brady ownership angle surfacing
+- Trading period opens March 11 at 4PM ET — trade could happen "this week or early next week"
+- Correction from 3/4: Crosby traded mid-season to Cowboys per reports — watch Bears, not AFC teams
+- Next check: trade announcement before March 11 free agency open
 
 **Thread 2: 2026 Franchise Tag Holdouts** (opened 2026-03-04)
-- George Pickens (Steelers), Kyle Pitts (Falcons), Braelon Hall (Jets) all tagged
-- Daniel Jones on transition tag — Colts QB situation unresolved
-- Watch: who refuses to sign tag tender and creates contract standoff by training camp
+- Correction 3/5: George Pickens tagged by Cowboys (not Steelers — was traded mid-season)
+- Kyle Pitts (Falcons), Breece Hall (Jets) confirmed; Daniel Jones on transition tag with Colts
+- Cowboys' Pickens tag = live contract standoff threat heading to training camp
+- Watch: any player who refuses to sign tender and creates public holdout
 
 ## 🥊 UFC Threads
 
 **Thread 1: Cirkunovs v. Zuffa Antitrust / Spoliation Ruling** (opened 2026-03-04)
-- Dana White testified Feb 4-5 under oath; claims no longer involved in fighter negotiations
-- Judge Boulware deliberating on evidence destruction ruling (missing phone data)
-- If spoliation confirmed → nuclear for fighter pay litigation
-- Watch: judge's ruling on spoliation; downstream impact on fighter contract enforceability
+- Dana White testified Feb 4-5; judge still deliberating on evidence destruction
+- Parallel: TKO's EBITDA margins expanding 33.5% → 40% while fighter pay flatlines
+- Fighter revolt growing publicly: Strickland, Michael Page calling out Benn's $15M signing
+- Watch: spoliation ruling; whether public fighter revolt accelerates union/collective action
 
-**Thread 2: UFC Paramount+ Era Matchmaking Dysfunction** (opened 2026-03-04)
-- UFC booked Tucker vs. Choi despite Tucker being retired; had to immediately retract
-- First major UFC Fight Night under Paramount+ deal (UFC 324, 325 plus APEX events) showing operational cracks
-- Watch: further booking errors or fighter complaints about the transition
+**Thread 2: UFC Fighter Pay Revolt under Paramount Era** (opened 2026-03-05)
+- UFC signed $7.7B Paramount deal but fighters see only tokenistic bonus increases
+- TKO president Shapiro defended at Morgan Stanley TMT Conference with margin math
+- Two fighters cut after Mexico City card (Bunes, Medina) same week pay revolt accelerated
+- Watch: any fighter organizing collective action; whether Zuffa Boxing vs UFC pay disparity amplifies
 
 ## 🏀 Basketball Threads
 
 **Thread 1: Giannis Bucks Summer Trade** (opened 2026-03-04)
-- Stayed through Feb 5 deadline per Jake Fischer (named source)
-- Bucks unlock 3 tradeable first-round picks on draft night (2026, 2031, 2033)
-- Western conf exec: "Everything they do is in service of Antetokounmpo"
-- Watch: which suitors emerge; whether calf injury recovery affects his leverage
+- Giannis returned from 15-game calf injury absence March 2 (career-high missed games)
+- Bucks GM Horst publicly stated "openness to trading" before Feb deadline
+- Bucks 26-34, closer to lottery than play-in; supermax eligibility October 1 ($275M)
+- Shams reported summer prior: Giannis expressed interest in Knicks
+- Watch: whether Bucks sink into lottery, accelerating trade timeline and pick value
 
 ## Resolved
 - None yet
