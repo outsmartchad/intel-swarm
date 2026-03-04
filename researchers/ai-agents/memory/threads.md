@@ -1,31 +1,31 @@
 # Threads — ai-agents Researcher
-_Last updated: 2026-03-04_
+_Last updated: 2026-03-05_
 
 ## Active Threads
 
 ### Pentagon/Anthropic Military AI Split
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** Trump dropped Anthropic's $200M contract (Huawei-level designation) for refusing autonomous weapons use. OpenAI signed the same terms within 2 hours. DoD reportedly used Claude anyway in Iran strikes post-ban. Every AI lab now forced to choose military-aligned vs civilian-aligned identity.
-- **Watch for:** Other labs choosing sides, Anthropic's next move, whether DoD actually purges Claude from systems
+- **Summary:** Trump dropped Anthropic's $200M contract for refusing autonomous weapons use. OpenAI + xAI both signed equivalent terms within days. DoD reportedly used Claude in Iran strikes post-ban. xAI confirmed as second company after Anthropic to get DoD approval (per NPR, Feb 27).
+- **Watch for:** Anthropic's counter-move, whether other labs publicly choose civilian-aligned identity, congressional hearings on autonomous weapons + AI
+
+### Speculative AI Layoffs — White Collar
+- **First seen:** 2026-03-04
+- **Status:** escalating
+- **Summary:** HBR confirms speculative firing (companies firing based on expected AI capability, not current replacement). Challenger, Gray & Christmas: 55,000 AI-attributed layoffs in 2025, 12x increase vs 2 years prior. Amazon 31K gone. FlexJobs survey: AI fear + layoff anxiety now driving mass career-change intent.
+- **Watch for:** Monthly jobs data, sector-specific breakdowns (customer service vs programming vs legal), legislative responses
+
+### On-Device Agent Layer — App Store Disruption
+- **First seen:** 2026-03-05
+- **Status:** developing
+- **Summary:** AGI Inc + Qualcomm Snapdragon demoed private, on-device agents that can operate ANY app autonomously (no cloud, no app-specific integration). NullClaw shows the same pattern at the microcontroller level (678KB, 1MB RAM, $5 hardware). The app UX layer is being bypassed, not replaced.
+- **Watch for:** Apple/Google response, developer adoption of on-device agent SDKs, any app store policy changes targeting agent access
 
 ### Chinese Industrial-Scale Model Distillation
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** 3+ Chinese firms systematically querying US frontier APIs to train cheaper clones. OpenAI and Anthropic both submitted warnings to US legislators. Legal capability extraction at scale — hard to detect, hard to stop.
+- **Summary:** 3+ Chinese firms systematically querying US frontier APIs to train cheaper clones. OpenAI and Anthropic both submitted warnings to US legislators. Legal capability extraction at scale.
 - **Watch for:** US legislative response, API access restrictions, new detection methods from labs
-
-### Speculative AI Layoffs — White Collar
-- **First seen:** 2026-03-04
-- **Status:** developing
-- **Summary:** HBR confirms companies firing entry-level/programming workers based on *expected* AI capability, not current replacement. Amazon 31K jobs gone (Oct 2025 + Jan 2026). CEOs from Ford/Amazon/Salesforce/JPM all signaling white-collar elimination.
-- **Watch for:** Monthly jobs data, sector-specific layoff announcements, legislative responses to AI displacement
-
-### NVIDIA Compute as Geopolitical Resource
-- **First seen:** 2026-03-04
-- **Status:** developing
-- **Summary:** Data center $62.3B vs gaming $3.7B per quarter. Manufacturing capacity entirely redirected to AI chips. GPU shortage through end of 2026. Compute is now strategic infrastructure, not consumer product.
-- **Watch for:** Export control updates, NVIDIA earnings guidance, India/ASEAN sovereign compute buildouts
 
 ## Resolved Threads
 _(none yet)_
