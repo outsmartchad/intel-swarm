@@ -209,36 +209,56 @@ def attach_images(findings, rid, date):
         finding["image"] = image_map.get(i)  # None if no image for this finding
 
 # ── LAYOUT ENGINE ─────────────────────────────────────────────────────────────
+def _pack_cols(n):
+    """
+    Return list of column widths (3 or 4) for n domains that fill
+    12-column rows with zero remainder. Wider slots go first (higher scores).
+    Solves: a×3 + b×4 = n  where rows-of-3 use span-4, rows-of-4 use span-3.
+    """
+    for a in range(n // 3 + 1):
+        rem = n - a * 3
+        if rem >= 0 and rem % 4 == 0:
+            return [4] * (a * 3) + [3] * rem
+    # Fallback: widen last card to consume leftover columns
+    cols = [4] * n
+    leftover = sum(cols) % 12
+    if leftover:
+        cols[-1] += 12 - leftover
+    return cols
+
 def assign_layout(domains, date):
     """
-    Assign editorial card sizes for the home page.
-    Hero rotates daily (date-seeded) but is always a high-scoring domain.
+    Assign editorial card sizes. All rows sum to exactly 12 cols — no gaps.
 
-    Slot sizes (12-col grid):
-      hero     → 7 cols  (one per page)
-      featured → 5 cols  (one per page)
-      medium   → 4 cols  (3 per row)
-      small    → 4 cols  (3 per row, remaining domains)
+    Row 1 : hero (7) + featured (5) = 12
+    Rows 2+: remaining domains packed by _pack_cols()
+             higher-scoring domains get span-4 (wider), lower get span-3
+
+    Hero/featured rotate daily via date-seeded RNG weighted to top scorers.
+    Domains are reordered: hero → featured → rest (score-descending).
     """
-    seed = int(hashlib.md5(date.encode()).hexdigest()[:8], 16)
-    rng  = random.Random(seed)
+    N = len(domains)
+    if N == 0:
+        return domains
 
-    by_score = sorted(range(len(domains)), key=lambda i: domains[i]["score"], reverse=True)
+    seed   = int(hashlib.md5(date.encode()).hexdigest()[:8], 16)
+    rng    = random.Random(seed)
+    by_score = sorted(range(N), key=lambda i: domains[i]["score"], reverse=True)
 
-    hero_i = rng.choice(by_score[:min(3, len(by_score))])
+    hero_i = rng.choice(by_score[:min(3, N)])
     rest1  = [i for i in by_score if i != hero_i]
     feat_i = rng.choice(rest1[:min(3, len(rest1))])
-    rest2  = [i for i in rest1 if i != feat_i]
+    rest   = [i for i in rest1 if i != feat_i]   # score-sorted, wide→narrow
 
-    roles = {}
-    roles[hero_i] = "hero"
-    roles[feat_i] = "featured"
-    for i in rest2[:3]:  roles[i] = "medium"
-    for i in rest2[3:]:  roles[i] = "small"
+    col_map = {hero_i: 7, feat_i: 5}
+    for domain_i, cols in zip(rest, _pack_cols(len(rest))):
+        col_map[domain_i] = cols
 
-    for i, d in enumerate(domains):
-        d["layout"] = roles.get(i, "small")
+    for rank, domain_i in enumerate([hero_i, feat_i] + rest):
+        domains[domain_i]["cols"]       = col_map[domain_i]
+        domains[domain_i]["sort_order"] = rank
 
+    domains.sort(key=lambda d: d.get("sort_order", 99))
     return domains
 
 # ── RESEARCHER DATA ───────────────────────────────────────────────────────────

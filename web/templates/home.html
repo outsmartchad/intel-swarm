@@ -5,134 +5,147 @@
 {% block body %}
 <style>
 /* ── SYNTHESIS STRIP ── */
-.syn-hero { margin-bottom: 24px; }
+.syn-hero { margin-bottom: 20px; }
 
 /* ── EDITORIAL GRID ── */
 .editorial {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 4px;
+  gap: 0;
   margin-bottom: 48px;
+  border: 1px solid rgba(255,255,255,.06);
 }
 
 /* Base card */
 .ecard {
-  position: relative; overflow: hidden; border-radius: 6px;
-  background: #111418;
+  position: relative; overflow: hidden;
+  background: #0d1117;
   text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
-  transition: box-shadow .2s, transform .2s;
+  border-right: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: z-index 0s;
 }
 .ecard:hover {
-  box-shadow: 0 0 0 2px rgba(200,169,110,.5), 0 8px 40px rgba(0,0,0,.6);
-  transform: translateY(-2px);
-  z-index: 2;
+  z-index: 10;
+  box-shadow: 0 0 0 2px rgba(200,169,110,.6), 0 8px 48px rgba(0,0,0,.8);
+  transform: scale(1.01);
+  transition: box-shadow .15s, transform .2s;
 }
 
-/* Layout slots — explicit heights so rows align perfectly */
-.ecard-hero     { grid-column: span 7; height: 380px; }
-.ecard-featured { grid-column: span 5; height: 380px; }
-.ecard-medium   { grid-column: span 4; height: 240px; }
-.ecard-small    { grid-column: span 4; height: 160px; } /* span 4 → 3 per row = 12 ✓ */
+/* Column spans — set server-side via d.cols */
+.span-7  { grid-column: span 7; }
+.span-6  { grid-column: span 6; }
+.span-5  { grid-column: span 5; }
+.span-4  { grid-column: span 4; }
+.span-3  { grid-column: span 3; }
 
-/* Full-bleed image bg */
+/* Row heights tied to column width */
+.span-7, .span-5 { height: 400px; }
+.span-6          { height: 400px; }
+.span-4          { height: 240px; }
+.span-3          { height: 190px; }
+
+/* Background image */
 .ecard-bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
-  transition: transform .5s ease;
+  transition: transform .6s ease;
 }
-.ecard:hover .ecard-bg { transform: scale(1.04); }
-.ecard-gradient-bg {
-  position: absolute; inset: 0;
-}
+.ecard:hover .ecard-bg { transform: scale(1.06); }
+
+/* Gradient fallback */
+.ecard-grad { position: absolute; inset: 0; }
+
 /* Overlay */
 .ecard-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(
     to top,
-    rgba(5,7,10,.97) 0%,
-    rgba(5,7,10,.65) 45%,
-    rgba(5,7,10,.15) 100%
+    rgba(5,7,10,.98) 0%,
+    rgba(5,7,10,.55) 50%,
+    transparent 100%
   );
 }
-.ecard-hero .ecard-overlay, .ecard-featured .ecard-overlay {
+.span-7 .ecard-overlay, .span-5 .ecard-overlay {
   background: linear-gradient(
     to top,
     rgba(5,7,10,1) 0%,
     rgba(5,7,10,.7) 40%,
-    rgba(5,7,10,.1) 100%
+    rgba(5,7,10,.05) 100%
   );
 }
 
-/* Content sits above overlay */
-.ecard-content {
+/* Content */
+.ecard-inner {
   position: relative; z-index: 2;
-  padding: 16px 18px;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  height: 100%;
-  gap: 6px;
+  height: 100%; padding: 14px 16px;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-/* Domain badge */
-.ecard-badge {
-  display: inline-flex; align-items: center; gap: 6px;
+/* Top: category badge */
+.ecard-cat {
+  display: flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: 10px; font-weight: 700;
-  letter-spacing: .08em; padding: 3px 9px 3px 6px;
-  border-radius: 99px;
-  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
-  border: 1px solid rgba(255,255,255,.1);
+  letter-spacing: .1em; text-transform: uppercase;
   width: fit-content;
-  align-self: flex-start;
-  margin-bottom: auto; /* push badge to top, text to bottom */
+}
+.ecard-cat-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
 }
 
-/* Score pips */
-.ecard-pips { display: flex; gap: 3px; align-items: center; }
-.epip { width: 5px; height: 5px; border-radius: 1px; }
-.epip.on { opacity: 1; }
-.epip.off { background: rgba(255,255,255,.15) !important; }
+/* Bottom: text stack */
+.ecard-body-wrap { display: flex; flex-direction: column; gap: 6px; }
 
 .ecard-headline {
-  font-weight: 700; line-height: 1.3; color: #fff;
-  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  font-weight: 700; color: #fff; line-height: 1.3;
+  text-shadow: 0 1px 6px rgba(0,0,0,.9);
+  display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
 }
-.ecard-hero     .ecard-headline { font-size: 20px; }
-.ecard-featured .ecard-headline { font-size: 17px; }
-.ecard-medium   .ecard-headline { font-size: 14px; }
-.ecard-small    .ecard-headline { font-size: 12px; }
+.span-7 .ecard-headline { font-size: 20px; -webkit-line-clamp: 3; }
+.span-5 .ecard-headline { font-size: 17px; -webkit-line-clamp: 3; }
+.span-4 .ecard-headline { font-size: 14px; -webkit-line-clamp: 2; }
+.span-3 .ecard-headline { font-size: 12px; -webkit-line-clamp: 2; }
 
 .ecard-preview {
-  font-size: 12px; color: rgba(255,255,255,.65); line-height: 1.5;
+  font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.55;
   display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
-  text-shadow: 0 1px 3px rgba(0,0,0,.8);
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
 }
-.ecard-hero     .ecard-preview { -webkit-line-clamp: 3; }
-.ecard-featured .ecard-preview { -webkit-line-clamp: 2; }
-.ecard-medium   .ecard-preview { -webkit-line-clamp: 2; }
-.ecard-small    .ecard-preview { display: none; }
+.span-7 .ecard-preview { -webkit-line-clamp: 2; }
+.span-5 .ecard-preview { -webkit-line-clamp: 1; }
+.span-4 .ecard-preview { -webkit-line-clamp: 1; }
+.span-3 .ecard-preview { display: none; }
 
-.ecard-footer {
+/* Score + meta row */
+.ecard-foot {
   display: flex; align-items: center; justify-content: space-between;
-  font-family: var(--mono); font-size: 10px;
-  color: rgba(255,255,255,.4);
+  font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,.3);
 }
-.ecard-filed   { color: #4ade80; }
-.ecard-pending { color: rgba(255,255,255,.2); }
+.ecard-pips { display: flex; gap: 2px; }
+.epip { width: 4px; height: 4px; border-radius: 1px; }
+.epip.on  { opacity: 1; }
+.epip.off { background: rgba(255,255,255,.12) !important; }
+.ecard-filed { color: #4ade80; }
 
-/* Stagger animations */
-.ecard { animation: fadeUp .4s ease both; }
-{% for i in range(1,15) %}.ecard:nth-child({{ i }}){animation-delay:{{ "%.2f"|format(i*0.05) }}s}{% endfor %}
+/* Entrance animation */
+.ecard { animation: fadeUp .35s ease both; }
+{% for i in range(1, 16) %}
+.ecard:nth-child({{ i }}) { animation-delay: {{ "%.2f"|format(i * 0.04) }}s; }
+{% endfor %}
 
 /* Responsive */
 @media (max-width: 900px) {
-  .ecard-hero     { grid-column: span 12; height: 300px; }
-  .ecard-featured { grid-column: span 12; height: 260px; }
-  .ecard-medium   { grid-column: span 6;  height: 200px; }
-  .ecard-small    { grid-column: span 6;  height: 150px; }
+  .editorial { gap: 2px; border: none; }
+  .ecard { border-radius: 4px; border: none; }
+  .span-7, .span-5 { grid-column: span 12; height: 300px; }
+  .span-4 { grid-column: span 6; height: 200px; }
+  .span-3 { grid-column: span 6; height: 160px; }
 }
 @media (max-width: 600px) {
-  .ecard-hero, .ecard-featured { grid-column: span 12; height: 240px; }
-  .ecard-medium, .ecard-small  { grid-column: span 12; height: 160px; }
+  .span-7, .span-5, .span-4, .span-3 { grid-column: span 12; height: 180px; }
 }
 </style>
 
@@ -150,57 +163,56 @@
 
   <div class="editorial">
     {% for d in domains %}
-    {% set layout = d.layout|default('small') %}
     {% set col1 = d.colors.split(',')[0] %}
     {% set col2 = d.colors.split(',')[1] %}
+    {% set cols = d.cols | default(4) %}
 
-    <a href="/domain/{{ d.id }}?lang={{ lang|default('en') }}" class="ecard ecard-{{ layout }}">
+    <a href="/domain/{{ d.id }}?lang={{ lang|default('en') }}" class="ecard span-{{ cols }}">
 
-      {# Background: real image or gradient #}
+      {# Background #}
       {% if d.cover_image %}
       <div class="ecard-bg" style="background-image:url('{{ d.cover_image }}')"></div>
       {% else %}
-      <div class="ecard-gradient-bg" style="background: linear-gradient(135deg, {{ col1 }} 0%, {{ col2 }} 100%)"></div>
+      <div class="ecard-grad" style="background:linear-gradient(135deg,{{ col1 }} 0%,{{ col2 }} 100%)"></div>
       {% endif %}
       <div class="ecard-overlay"></div>
 
-      <div class="ecard-content">
+      <div class="ecard-inner">
 
-        {# Top: domain badge #}
-        <div class="ecard-badge" style="color:{{ col2 }}; border-color:{{ col2 }}33">
+        {# Category label — top #}
+        <div class="ecard-cat" style="color:{{ col2 }}">
+          <div class="ecard-cat-dot" style="background:{{ col2 }}"></div>
           {{ d.emoji }} {{ d.name }}
         </div>
 
-        {# Bottom: headline + meta #}
-        <div>
-          <div class="ecard-pips" style="margin-bottom:6px">
-            {% set score = d.score|default(3) %}
-            {% for i in range(1,6) %}
-            <div class="epip {% if i <= score %}on{% else %}off{% endif %}"
-                 style="{% if i <= score %}background:{{ col2 }}{% endif %}"></div>
-            {% endfor %}
-          </div>
-
+        {# Text + meta — bottom #}
+        <div class="ecard-body-wrap">
           <div class="ecard-headline">
             {% if d.headline %}{{ d.headline }}
-            {% else %}<span style="opacity:.4">No findings today</span>{% endif %}
+            {% else %}<span style="opacity:.35">No findings today</span>{% endif %}
           </div>
 
           {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
-          <div class="ecard-preview" style="margin-top:6px">{{ d.findings[0].body[:240] }}</div>
+          <div class="ecard-preview">{{ d.findings[0].body[:180] }}</div>
           {% endif %}
 
-          <div class="ecard-footer" style="margin-top:10px">
-            <span>{{ date }}</span>
+          <div class="ecard-foot">
+            <div class="ecard-pips">
+              {% set score = d.score | default(3) %}
+              {% for i in range(1, 6) %}
+              <div class="epip {% if i <= score %}on{% else %}off{% endif %}"
+                   style="{% if i <= score %}background:{{ col2 }}{% endif %}"></div>
+              {% endfor %}
+            </div>
             {% if d.filed %}
-            <span class="ecard-filed">✓ filed</span>
+            <span class="ecard-filed">✓</span>
             {% else %}
-            <span class="ecard-pending">pending</span>
+            <span style="opacity:.3">—</span>
             {% endif %}
           </div>
         </div>
-      </div>
 
+      </div>
     </a>
     {% endfor %}
   </div>
