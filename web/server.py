@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Intel Swarm — Intelligence News Dashboard"""
 
-import os, glob, re
+import os, glob, re, json, random, hashlib
 from flask import Flask, render_template, abort, request, make_response
 import markdown as md_lib
-import json
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -171,6 +170,28 @@ def extract_tail_sections(raw):
     )
     return m.group(1).strip() if m else ""
 
+def assign_layout(domains, date):
+    """Assign BBC/CNBC-style card sizes — hero rotates daily by date seed + score."""
+    seed = int(hashlib.md5(date.encode()).hexdigest()[:8], 16)
+    rng = random.Random(seed)
+
+    scored = sorted(range(len(domains)), key=lambda i: domains[i].get("score", 3), reverse=True)
+    # Hero: pick from top-3 scorers (date-seeded)
+    hero_pool = scored[:min(3, len(scored))]
+    hero_i = rng.choice(hero_pool)
+    remaining = [i for i in scored if i != hero_i]
+    # Featured: pick from next top-3
+    feat_pool = remaining[:min(3, len(remaining))]
+    feat_i = rng.choice(feat_pool)
+    rest = [i for i in remaining if i != feat_i]
+
+    for i, d in enumerate(domains):
+        if i == hero_i:     d["layout"] = "hero"
+        elif i == feat_i:   d["layout"] = "featured"
+        elif i in rest[:3]: d["layout"] = "medium"
+        else:               d["layout"] = "small"
+    return domains
+
 def render_findings_cards(findings):
     """Render findings as image cards for the domain article view."""
     if not findings: return ""
@@ -268,6 +289,8 @@ def home(date):
         m = re.search(r'##.*?Today.*?\n(.+?)(?=\n##|\Z)', chief_raw, re.DOTALL|re.IGNORECASE)
         if m:
             chief_action = re.sub(r'\s+', ' ', m.group(1).strip())[:400]
+
+    domains = assign_layout(domains, date)
 
     return render_template("home.html",
         date=date, dates=dates, lang=lang,
