@@ -8,21 +8,21 @@ import markdown as md_lib
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RESEARCHERS = [
-    ("culture",     "🎭", "Culture",      "文化"),
-    ("emerging",    "🌍", "Emerging",     "新興市場"),
-    ("ai-agents",   "🤖", "AI Agents",    "AI 代理"),
-    ("crypto",      "🪙", "Crypto",       "加密貨幣"),
-    ("war",         "⚔️", "War",          "戰爭"),
-    ("macro",       "📊", "Macro",        "宏觀"),
-    ("singularity", "🧠", "Singularity",  "奇點"),
-    ("quant",       "📈", "Quant",        "量化"),
-    ("westeast",    "🌏", "West-East",    "東西方"),
-    ("regulatory",  "⚖️", "Regulatory",  "監管"),
-    ("power",       "🕴️", "Power",       "權力"),
-    ("psyops",      "📡", "Psyops",       "心理戰"),
-    ("blackbudget", "🖤", "Black Budget", "黑色預算"),
-    ("conspiracy",  "🕳️", "Conspiracy",  "陰謀"),
-    # ("epstein",  "📁", "Epstein",      "愛潑斯坦"),  # hidden for now
+    ("culture",     "🎭", "Culture",      "文化",     "#7c3aed,#a855f7"),
+    ("emerging",    "🌍", "Emerging",     "新興市場", "#065f46,#10b981"),
+    ("ai-agents",   "🤖", "AI Agents",    "AI 代理",  "#1e40af,#3b82f6"),
+    ("crypto",      "🪙", "Crypto",       "加密貨幣", "#92400e,#f59e0b"),
+    ("war",         "⚔️", "War",          "戰爭",     "#7f1d1d,#ef4444"),
+    ("macro",       "📊", "Macro",        "宏觀",     "#164e63,#06b6d4"),
+    ("singularity", "🧠", "Singularity",  "奇點",     "#4c1d95,#8b5cf6"),
+    ("quant",       "📈", "Quant",        "量化",     "#713f12,#eab308"),
+    ("westeast",    "🌏", "West-East",    "東西方",   "#134e4a,#14b8a6"),
+    ("regulatory",  "⚖️", "Regulatory",  "監管",     "#1e3a5f,#64748b"),
+    ("power",       "🕴️", "Power",       "權力",     "#450a0a,#dc2626"),
+    ("psyops",      "📡", "Psyops",       "心理戰",   "#500724,#ec4899"),
+    ("blackbudget", "🖤", "Black Budget", "黑色預算", "#0c0a09,#44403c"),
+    ("conspiracy",  "🕳️", "Conspiracy",  "陰謀",     "#14532d,#4ade80"),
+    # ("epstein",  "📁", "Epstein",      "愛潑斯坦","#1c1917,#78716c"),
 ]
 
 app = Flask(__name__)
@@ -111,17 +111,31 @@ def get_latest_date():
     d = get_dates(); return d[0] if d else "2026-03-04"
 
 def extract_findings(raw):
-    """Parse researcher markdown → list of {title, body} dicts"""
+    """Parse researcher markdown → list of {title, body, score} dicts"""
     if not raw: return []
     findings = []
-    # Match bold **title** — body pattern in bullet lists
     pattern = re.finditer(r'\*\*(.+?)\*\*[:\s—–-]*(.+?)(?=\n[-*]|\n\n|\Z)', raw, re.DOTALL)
     for m in pattern:
         title = m.group(1).strip()
-        body = re.sub(r'\s+', ' ', m.group(2).strip())[:240]
+        body_raw = m.group(2).strip()
+        # Extract inline score tag [SCORE:N] or [★★★★☆] if present
+        score = 3  # default
+        score_m = re.search(r'\[SCORE[:\s]*([1-5])\]', body_raw, re.IGNORECASE)
+        if score_m:
+            score = int(score_m.group(1))
+            body_raw = body_raw[:score_m.start()].strip()
+        # Boost score for keywords
+        elif any(k in title.lower() for k in ['breaking','critical','urgent','war','attack','collapse','ban','crash']):
+            score = 4
+        body = re.sub(r'\s+', ' ', body_raw)[:240]
         if len(title) > 10 and len(title) < 200:
-            findings.append({"title": title, "body": body})
+            findings.append({"title": title, "body": body, "score": score})
     return findings[:5]
+
+def top_score(findings):
+    """Get highest significance score from findings list"""
+    if not findings: return 3
+    return max(f.get("score", 3) for f in findings)
 
 def extract_headline(raw):
     """Get first strong finding title — prefers Chinese text if available"""
@@ -181,11 +195,13 @@ def home(date):
 
     # Build domain cards
     domains = []
-    for rid, emoji, name, zh_name in RESEARCHERS:
+    for rid, emoji, name, zh_name, colors in RESEARCHERS:
         data = get_researcher_data(rid, date, lang)
         display_name = zh_name if lang == "zh" else name
+        findings = data.get("findings", [])
         domains.append({
             "id": rid, "emoji": emoji, "name": display_name,
+            "colors": colors, "score": top_score(findings),
             **data
         })
 
@@ -217,7 +233,7 @@ def domain_date(rid, date):
     lang = get_lang()
     lookup = {r[0]: r for r in RESEARCHERS}
     if rid not in lookup: abort(404)
-    _, emoji, name, zh_name = lookup[rid]
+    _, emoji, name, zh_name, colors = lookup[rid]
 
     data = get_researcher_data(rid, date, lang)
 
@@ -230,7 +246,7 @@ def domain_date(rid, date):
 
     display_name = zh_name if lang == "zh" else name
     return render_template("domain.html",
-        rid=rid, emoji=emoji, name=display_name,
+        rid=rid, emoji=emoji, name=display_name, colors=colors,
         date=date, dates=dates, lang=lang,
         all_dates=all_dates,
         researchers=RESEARCHERS,
@@ -267,7 +283,7 @@ def memory():
     chief_thesis = read_file(f"{BASE}/chief/memory/thesis.md")
 
     threads_data = []
-    for rid, emoji, name, zh_name in RESEARCHERS:
+    for rid, emoji, name, zh_name, colors in RESEARCHERS:
         t = read_file(f"{BASE}/researchers/{rid}/memory/threads.md")
         threads_data.append({"id": rid, "emoji": emoji, "name": name, "threads": render_md(t)})
 
