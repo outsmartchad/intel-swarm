@@ -4,6 +4,7 @@
 import os, glob, re
 from flask import Flask, render_template, abort, request, make_response
 import markdown as md_lib
+import json
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +26,7 @@ RESEARCHERS = [
     # ("epstein",  "📁", "Epstein",      "愛潑斯坦","#1c1917,#78716c"),
 ]
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 @app.after_request
 def no_cache(response):
@@ -161,19 +162,36 @@ def extract_edge(raw):
     if m: return re.sub(r'\s+', ' ', m.group(1).strip())[:300]
     return None
 
+def load_images(rid, date):
+    """Load scraped OG images for a researcher's findings."""
+    path = f"{BASE}/researchers/{rid}/findings/{date}-images.json"
+    try:
+        with open(path) as f:
+            items = json.load(f)
+        # Return as dict: finding_idx → image_path
+        return {str(item["finding_idx"]): item["image_path"] for item in items}
+    except:
+        return {}
+
 def get_researcher_data(rid, date, lang="en"):
     raw = read_file(f"{BASE}/researchers/{rid}/findings/{date}.md", lang)
     threads = read_file(f"{BASE}/researchers/{rid}/memory/threads.md", lang)
     sources = read_file(f"{BASE}/researchers/{rid}/memory/sources.md")
+    findings = extract_findings(raw)
+    images = load_images(rid, date)
+    # Attach image to each finding by index
+    for i, f in enumerate(findings):
+        f["image"] = images.get(str(i)) or images.get(str(i+1))
     return {
         "raw": raw,
         "html": render_md(raw),
-        "findings": extract_findings(raw),
+        "findings": findings,
         "headline": extract_headline(raw),
         "edge": extract_edge(raw),
         "threads": render_md(threads),
         "sources": render_md(sources),
         "filed": raw is not None,
+        "cover_image": findings[0].get("image") if findings else None,
     }
 
 @app.route("/")
