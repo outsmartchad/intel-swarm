@@ -24,6 +24,7 @@ RESEARCHERS = [
     {"id": "psyops",      "emoji": "📡", "name": "Psyops",       "zh": "心理戰",   "colors": "#500724,#ec4899"},
     {"id": "blackbudget", "emoji": "🖤", "name": "Black Budget", "zh": "黑色預算", "colors": "#0c0a09,#44403c"},
     {"id": "conspiracy",  "emoji": "🕳️", "name": "Conspiracy",  "zh": "陰謀",     "colors": "#14532d,#4ade80"},
+    {"id": "sports",      "emoji": "🏆", "name": "Sports",       "zh": "體育",     "colors": "#1a3a1a,#22c55e"},
     # {"id": "epstein",   "emoji": "📁", "name": "Epstein",      "zh": "愛潑斯坦", "colors": "#1c1917,#78716c"},
 ]
 

@@ -13,5 +13,17 @@
     "finding_idx": 2,
     "source_url": "https://goldbroker.com/news/2026-the-year-true-capital-rotation-3650",
     "image_path": "/static/images/2026-03-04/quant/9b8ec00b8772.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://jalookout.com/2026/02/28/bitcoin-price-drop-iran-strikes-geopolitical-risk-weekend-selloff/",
+    "image_path": "/static/images/2026-03-04/quant/83b5bdd57a2e.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://web3.gate.com/crypto-wiki/article/how-do-futures-open-interest-funding-rates-and-liquidation-data-predict-crypto-derivatives-market-signals-in-2026-20260111",
+    "image_path": "/static/images/2026-03-04/quant/757594aa43a9.png",
+    "via": "retry"
   }
 ]
