@@ -1,19 +1,25 @@
 # Threads — power Researcher
-_Last updated: 2026-03-04_
+_Last updated: 2026-03-05_
 
 ## Active Threads
 
-### AI Industry Capture of US Executive Branch
+### BlackRock/Vanguard Being Legally Stripped of ESG Influence
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** Revolving Door Project documents AI insiders placed in critical executive roles via "seemingly illegal gifts, cronyism, revolving door." Time named AI architects Person of the Year as their people took government posts. Beyond lobbying — direct capture.
-- **Watch for:** Specific personnel moves, ethics investigations, congressional pushback on AI revolving door
+- **Summary:** Vanguard settled for $29.5M with 11 Republican state AGs, agreeing not to join climate-focused investment/stewardship organizations — a binding corporate exit from ESG coordination, contractually locked until June 2032. AG Paxton now explicitly targeting BlackRock next; Larry Fink personally named. State Street still fighting the suit.
+- **Watch for:** BlackRock settlement or escalating AG investigation; State Street litigation outcome; Congressional legislation on asset manager voting rights; copycat lawsuits in other states
 
-### BlackRock/Vanguard Going Dark on Influence
+### Flynn/Government Election Takeover Pipeline
+- **First seen:** 2026-03-05
+- **Status:** escalating
+- **Summary:** DHS election integrity chief Heather Honey and White House lawyer Kurt Olsen attended a Flynn-convened private summit calling for Trump to declare national emergency to control November midterms. ProPublica obtained videos and recordings. Courts have blocked Trump's election executive order; this is Plan B via emergency powers.
+- **Watch for:** Congressional response; DOJ/ethics investigations into Honey/Olsen; Trump signals on emergency powers; any executive order drafts; November midterm election integrity actions
+
+### AI Industry Capture of US Executive Branch
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** Big Three (BlackRock $11T, Vanguard $9.3T, State Street $4.3T) own 25% of US corporate votes. Now quietly scaling back executive meetings on climate/policy under political pressure. Influence shifting underground before Congress caps their voting rights.
-- **Watch for:** Congressional legislation on asset manager voting rights, BlackRock/Vanguard ESG policy reversals, proxy voting changes
+- **Summary:** Revolving Door Project documents AI insiders placed in critical executive roles via "seemingly illegal gifts, cronyism, revolving door." Time named AI architects Person of the Year as their people took government posts. Beyond lobbying — direct capture.
+- **Watch for:** Specific personnel moves, ethics investigations, congressional pushback on AI revolving door
 
 ### WEF Dalian June 2026 — Elite Hedging China
 - **First seen:** 2026-03-04
