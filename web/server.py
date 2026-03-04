@@ -162,6 +162,43 @@ def extract_edge(raw):
     if m: return re.sub(r'\s+', ' ', m.group(1).strip())[:300]
     return None
 
+def extract_tail_sections(raw):
+    """Extract sections after the main findings (Edge Signal, Connects To, etc.)"""
+    if not raw: return ""
+    m = re.search(
+        r'(##\s*(?:Edge Signal|邊緣信號|Connects To|連接到|連結至|相關連結|Edge|Signal).+)',
+        raw, re.DOTALL | re.IGNORECASE
+    )
+    return m.group(1).strip() if m else ""
+
+def render_findings_cards(findings):
+    """Render findings as image cards for the domain article view."""
+    if not findings: return ""
+    parts = []
+    for f in findings:
+        img_html = ""
+        if f.get("image"):
+            img_html = f'<div class="fc-img-wrap"><img src="{f["image"]}" class="fc-img" alt="" loading="lazy"></div>'
+        title = f.get("title", "")
+        body  = f.get("body", "")
+        # Render any source links in body
+        body_rendered = render_md(body) if body else ""
+        score = f.get("score", 3)
+        pips = "".join(
+            f'<span class="fc-pip {"filled" if i <= score else "empty"}"></span>'
+            for i in range(1, 6)
+        )
+        parts.append(f'''
+<div class="finding-card">
+  {img_html}
+  <div class="fc-content">
+    <div class="fc-score">{pips}</div>
+    <div class="fc-title">{title}</div>
+    <div class="fc-body">{body_rendered}</div>
+  </div>
+</div>''')
+    return "\n".join(parts)
+
 def load_images(rid, date):
     """Load scraped OG images for a researcher's findings."""
     path = f"{BASE}/researchers/{rid}/findings/{date}-images.json"
@@ -186,6 +223,8 @@ def get_researcher_data(rid, date, lang="en"):
         "raw": raw,
         "html": render_md(raw),
         "findings": findings,
+        "findings_cards": render_findings_cards(findings),
+        "tail_html": render_md(extract_tail_sections(raw)),
         "headline": extract_headline(raw),
         "edge": extract_edge(raw),
         "threads": render_md(threads),
