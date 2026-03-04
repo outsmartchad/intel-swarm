@@ -3,14 +3,14 @@
 {% block nav_home %}data-active="true"{% endblock %}
 
 {% block body %}
-<div class="wrap">
+<div class="wrap fade-in">
 
   {% if synthesis_html %}
-  <div class="syn-strip">
-    <div class="syn-strip-label">🔮 SYNTHESIS · {{ date }}</div>
-    <div class="syn-strip-headline">{{ syn_headline or "Intelligence Synthesis" }}</div>
+  <div class="syn-hero">
+    <div class="syn-tag">🔮 SYNTHESIS &nbsp; {{ date }}</div>
+    <div class="syn-headline">{{ syn_headline or "Intelligence Synthesis" }}</div>
     {% if chief_action %}
-    <div class="syn-strip-body">🧑‍🔬 Chief's call: {{ chief_action[:300] }}</div>
+    <div class="chief-call">🧑‍🔬 <strong>Chief:</strong> {{ chief_action[:350] }}</div>
     {% endif %}
   </div>
   {% endif %}
@@ -22,19 +22,18 @@
         <div class="feed-emoji">{{ d.emoji }}</div>
         <div class="feed-name">{{ d.name }}</div>
         {% if d.filed %}
-        <div class="feed-status filed">✓ filed</div>
+        <div class="feed-badge filed">✓ filed</div>
         {% else %}
-        <div class="feed-status pending">pending</div>
+        <div class="feed-badge pending">pending</div>
         {% endif %}
       </div>
       <div class="feed-right">
-        {% if d.headline %}
-        <div class="feed-headline">{{ d.headline }}</div>
-        {% else %}
-        <div class="feed-headline" style="color:var(--dim)">No findings today</div>
-        {% endif %}
+        <div class="feed-headline">
+          {% if d.headline %}{{ d.headline }}
+          {% else %}<span style="color:var(--dim)">No findings today</span>{% endif %}
+        </div>
         {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
-        <div class="feed-preview">{{ d.findings[0].body[:200] }}</div>
+        <div class="feed-preview">{{ d.findings[0].body[:220] }}</div>
         {% endif %}
       </div>
     </a>
