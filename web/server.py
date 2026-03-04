@@ -2,16 +2,18 @@
 """Intel Swarm — Intelligence News Dashboard"""
 
 import os, glob, re
-from flask import Flask, render_template, abort, request
+from flask import Flask, render_template, abort, request, make_response
 import markdown as md_lib
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RESEARCHERS = [
+    ("culture",     "🎭", "Culture",      "文化"),
+    ("emerging",    "🌍", "Emerging",     "新興市場"),
+    ("ai-agents",   "🤖", "AI Agents",    "AI 代理"),
     ("crypto",      "🪙", "Crypto",       "加密貨幣"),
     ("war",         "⚔️", "War",          "戰爭"),
     ("macro",       "📊", "Macro",        "宏觀"),
-    ("ai-agents",   "🤖", "AI Agents",    "AI 代理"),
     ("singularity", "🧠", "Singularity",  "奇點"),
     ("quant",       "📈", "Quant",        "量化"),
     ("westeast",    "🌏", "West-East",    "東西方"),
@@ -21,11 +23,16 @@ RESEARCHERS = [
     ("blackbudget", "🖤", "Black Budget", "黑色預算"),
     ("conspiracy",  "🕳️", "Conspiracy",  "陰謀"),
     ("epstein",     "📁", "Epstein",      "愛潑斯坦"),
-    ("emerging",    "🌍", "Emerging",     "新興市場"),
-    ("culture",     "🎭", "Culture",      "文化"),
 ]
 
 app = Flask(__name__)
+
+@app.after_request
+def no_cache(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 def render_md(text):
     if not text: return ""
