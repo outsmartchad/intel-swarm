@@ -1,25 +1,31 @@
 # Threads — westeast Researcher
-_Last updated: 2026-03-04_
+_Last updated: 2026-03-05_
 
 ## Active Threads
 
-### Hong Kong Stablecoin Licenses — Dropping This Month
+### Hong Kong Stablecoin Licenses — Window Now Open
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** HK Financial Secretary confirmed licenses drop in March 2026. Crypto dealer + custodian legislation to follow. Wholesale CBDC platform for 24/7 tokenized settlement also in development. HK is already licensing while West still debating stablecoin bills.
-- **Watch for:** License issuance announcements, who gets licensed, HK tokenized asset settlement details
+- **Summary:** HKMA confirmed licenses drop in March, but "very few" issuers approved initially. No issuance announced as of March 5 morning. Window is live now. Crypto dealer + custodian legislation to follow. Wholesale CBDC for tokenized settlement also in development.
+- **Watch for:** First license issuance announcement, which entities get licensed, HK tokenized asset settlement timeline
 
-### DeepSeek V4 + MiniMax M2.5 — China's AI Lap on the West
+### DeepSeek V4 — Overdue, Politically Timed
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** MiniMax M2.5 already preferred by OpenRouter developers over DeepSeek V3.2 and US models at 1/10th price. DeepSeek V4 (trillion-param multimodal) expected this week, trained on Blackwell GPUs possibly violating export controls. West barely knows MiniMax exists.
-- **Watch for:** DeepSeek V4 release + benchmarks, MiniMax adoption growth on Western developer platforms, UBS coverage updates
+- **Summary:** V4 (trillion-param multimodal) expected first week of March, now overdue vs. community consensus of ~March 3. FT reported Feb 28 it was coming "next week." Release appears timed to China's Two Sessions (两会, started March 4). Still imminent.
+- **Watch for:** Actual release date + benchmarks, whether it ships before or after Two Sessions conclude (ends ~March 12), performance vs. US frontier models
+
+### China Cheap AI Dependency Strategy — New Strategic Frame
+- **First seen:** 2026-03-05
+- **Status:** developing
+- **Summary:** China is NOT racing for frontier benchmarks — it's running the tobacco playbook: flood global market with ultra-cheap models, create dependency, extract training data (confirmed: 3 Chinese labs distilled Claude via fake accounts). Reuters flagged "flurry" of low-cost models incoming.
+- **Watch for:** New low-cost model releases, API pricing moves, data of Chinese AI platform market share in non-US markets (SEA, MENA, Africa), any regulatory response from US/EU
 
 ### CIPS $110.7B Daily Volume — Parallel Financial System Live
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** CIPS (China's SWIFT rival) hit $110.7B daily volume in Jan 2026, up 24% YoY. mBridge now has consumer-facing app for Yuan/Rupee/Real settlements without dollar or SWIFT. The parallel financial plumbing is operational, not theoretical.
-- **Watch for:** Monthly CIPS volume data, mBridge user growth, countries joining mBridge, SWIFT volume comparison
+- **Summary:** CIPS hit $110.7B daily volume in Jan 2026, up 24% YoY. mBridge has consumer-facing app for Yuan/Rupee/Real settlements without dollar or SWIFT. Now spans 185 countries. Infrastructure is operational.
+- **Watch for:** Feb/March CIPS volume data, mBridge user growth, new countries joining, SWIFT volume comparison
 
 ### Asian Equities Crushing US — Capital Rotation Real
 - **First seen:** 2026-03-04
