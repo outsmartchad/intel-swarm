@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %} · {{ name }}{% endblock %}
+
+{% block body %}
+<div class="page">
+  <div class="article-layout">
+
+    <!-- MAIN -->
+    <div>
+      <div class="article-header">
+        <div class="article-tag">{{ emoji }} {{ name }} &nbsp;·&nbsp; Research Domain</div>
+        {% if headline %}
+        <div class="article-title">{{ headline }}</div>
+        {% else %}
+        <div class="article-title" style="color:var(--muted)">No findings for {{ date }}</div>
+        {% endif %}
+        <div class="article-date">{{ date }}</div>
+      </div>
+
+      {% if html %}
+      <div class="prose">{{ html | safe }}</div>
+      {% else %}
+      <div class="empty">// no findings filed for this date</div>
+      {% endif %}
+
+      <!-- Date history -->
+      {% if all_dates | length > 1 %}
+      <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;">
+          Archive
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          {% for d in all_dates %}
+          <a href="/domain/{{ rid }}/{{ d }}"
+            style="font-family:var(--mono);font-size:11px;color:{% if d == date %}var(--accent){% else %}var(--muted){% endif %};
+            background:var(--surface);border:1px solid var(--border2);padding:4px 10px;border-radius:4px;">
+            {{ d }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="side-panel">
+
+      <!-- Active Threads -->
+      <div class="side-section">
+        <div class="side-label">Active Threads</div>
+        {% if threads %}
+        <div class="side-prose prose">{{ threads | safe }}</div>
+        {% else %}
+        <div class="empty">// no threads yet</div>
+        {% endif %}
+      </div>
+
+      <!-- Other domains -->
+      <div class="side-section" style="margin-top:32px;">
+        <div class="side-label">Other Domains</div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          {% for r_id, r_emoji, r_name in researchers %}
+          {% if r_id != rid %}
+          <a href="/domain/{{ r_id }}"
+            style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:5px;
+            font-size:12px;color:var(--muted);transition:all .1s;"
+            onmouseover="this.style.background='var(--surface)';this.style.color='var(--text)'"
+            onmouseout="this.style.background='';this.style.color='var(--muted)'">
+            <span style="font-size:13px;">{{ r_emoji }}</span>
+            <span>{{ r_name }}</span>
+          </a>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+{% endblock %}

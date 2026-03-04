@@ -1,91 +1,73 @@
 {% extends "base.html" %}
+{% block title %} · Memory{% endblock %}
 {% block nav_memory %}active{% endblock %}
 
-{% block sidebar %}
-<aside class="sidebar">
-  <div class="sidebar-section">
-    <div class="sidebar-label">Memory</div>
-    <a href="#thesis" class="sidebar-link"><span class="emoji">🔮</span><span class="label">Meta Thesis</span></a>
-    <a href="#predictions" class="sidebar-link"><span class="emoji">🎯</span><span class="label">Predictions</span></a>
-    <a href="#risks" class="sidebar-link"><span class="emoji">⚠️</span><span class="label">Risk Register</span></a>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">Threads by Researcher</div>
-    {% for r in threads_data %}
-    <a href="#thread-{{ r.id }}" class="sidebar-link">
-      <span class="emoji">{{ r.emoji }}</span>
-      <span class="label">{{ r.name }}</span>
-    </a>
-    {% endfor %}
-  </div>
-</aside>
-{% endblock %}
-
-{% block main %}
-<main class="main">
-  <div class="date-badge">Memory Layer · Persistent State</div>
-
-  <div class="content-block" id="thesis">
-    <div class="block-label">🔮 Synthesis — Evolving Meta Thesis</div>
-    {% if thesis %}
-    <div class="prose">{{ thesis | safe }}</div>
-    {% else %}
-    <div class="empty-state">// no thesis recorded yet</div>
-    {% endif %}
-  </div>
-
-  <div class="content-block" id="predictions">
-    <div class="block-label">🧑‍🔬 Chief — Prediction Scoreboard</div>
-    {% if predictions %}
-    <div class="prose">{{ predictions | safe }}</div>
-    {% else %}
-    <div class="empty-state">// no predictions recorded yet</div>
-    {% endif %}
-  </div>
-
-  <div class="content-block" id="risks">
-    <div class="block-label">⚠️ Chief — Risk Register + Contrarian Positions</div>
-    {% if chief_thesis %}
-    <div class="prose">{{ chief_thesis | safe }}</div>
-    {% else %}
-    <div class="empty-state">// no risk register yet</div>
-    {% endif %}
-  </div>
-
-  <div class="content-block" id="researcher-threads">
-    <div class="block-label">Active Story Threads</div>
-    {% for r in threads_data %}
-    <div id="thread-{{ r.id }}" style="margin-bottom:36px">
-      <div style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:12px;">
-        {{ r.emoji }} {{ r.name | upper }}
+{% block body %}
+<div class="page">
+  <div class="article-layout">
+    <div>
+      <div class="article-header">
+        <div class="article-tag">🧠 Memory Layer &nbsp;·&nbsp; Persistent State</div>
+        <div class="article-title">Running Memory</div>
+        <div class="article-date" style="font-style:italic;color:var(--muted);">
+          The real edge isn't in what everyone is reading.
+          It's in what 99% don't know, don't want to know, and can't connect.
+        </div>
       </div>
-      {% if r.threads %}
-      <div class="prose">{{ r.threads | safe }}</div>
-      {% else %}
-      <div class="empty-state">// no threads yet</div>
-      {% endif %}
-    </div>
-    {% endfor %}
-  </div>
-</main>
-{% endblock %}
 
-{% block panel %}
-<aside class="right-panel">
-  <div class="panel-section">
-    <div class="panel-label">About Memory</div>
-    <div style="font-size:12px;color:var(--muted);line-height:1.8;">
-      <p style="margin-bottom:10px">Each researcher maintains persistent story threads. Synthesis tracks the evolving meta-thesis. The chief tracks predictions.</p>
-      <p style="margin-bottom:10px">Max 5 active threads per researcher. Stale after 5 days with no movement.</p>
-      <p style="color:var(--dim)">Memory compounds daily. After 30 days, pattern detection begins.</p>
+      <!-- Meta thesis -->
+      {% if thesis %}
+      <div style="margin-bottom:48px;">
+        <div class="section-label"><h2>🔮 Synthesis — Evolving Meta Thesis</h2></div>
+        <div class="prose">{{ thesis | safe }}</div>
+      </div>
+      {% endif %}
+
+      <!-- Predictions -->
+      {% if predictions %}
+      <div style="margin-bottom:48px;">
+        <div class="section-label"><h2>🎯 Prediction Scoreboard</h2></div>
+        <div class="prose">{{ predictions | safe }}</div>
+      </div>
+      {% endif %}
+
+      <!-- Risk register -->
+      {% if chief_thesis %}
+      <div style="margin-bottom:48px;">
+        <div class="section-label"><h2>⚠️ Risk Register + Contrarian Positions</h2></div>
+        <div class="prose">{{ chief_thesis | safe }}</div>
+      </div>
+      {% endif %}
+
+      <!-- Researcher threads -->
+      <div class="section-label"><h2>Active Story Threads — All Researchers</h2></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        {% for r in threads_data %}
+        <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:20px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+            color:var(--muted);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+            {{ r.emoji }} {{ r.name }}
+          </div>
+          {% if r.threads %}
+          <div class="side-prose prose">{{ r.threads | safe }}</div>
+          {% else %}
+          <div class="empty">// no threads yet</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
     </div>
+
+    <aside class="side-panel">
+      <div class="side-section">
+        <div class="side-label">Memory Explained</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+          <p style="margin-bottom:10px;">Each researcher maintains persistent story threads — ongoing signals tracked across days.</p>
+          <p style="margin-bottom:10px;">Synthesis tracks the evolving meta-thesis. The chief tracks every prediction made to outcome.</p>
+          <p style="color:var(--dim);">After 30 days, pattern detection begins. After 90, the org anticipates — not just reports.</p>
+        </div>
+      </div>
+    </aside>
   </div>
-  <div class="panel-section" style="margin-top:32px">
-    <div class="panel-label">The Quote</div>
-    <div style="font-size:12px;color:var(--dim);line-height:1.9;font-style:italic;border-left:2px solid var(--border2);padding-left:14px;">
-      The real edge isn't in what everyone is reading.<br>
-      It's in what 99% of people don't know, don't want to know, and can't connect.
-    </div>
-  </div>
-</aside>
+</div>
 {% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} · Full Brief{% endblock %}
+{% block nav_brief %}active{% endblock %}
+
+{% block body %}
+<div class="page">
+  <div class="article-layout">
+    <div>
+      <div class="article-header">
+        <div class="article-tag">🔮 Synthesis &nbsp;·&nbsp; Opus 4.6</div>
+        <div class="article-title">Intelligence Synthesis</div>
+        <div class="article-date">{{ date }}</div>
+      </div>
+      {% if synthesis_html %}
+      <div class="prose">{{ synthesis_html | safe }}</div>
+      {% else %}
+      <div class="empty">// synthesis not yet filed for {{ date }}</div>
+      {% endif %}
+
+      <div style="margin-top:56px;padding-top:32px;border-top:2px solid var(--border2);">
+        <div class="article-tag" style="margin-bottom:8px;">🧑‍🔬 Chief Scientist &nbsp;·&nbsp; Opus 4.6</div>
+      </div>
+      {% if chief_html %}
+      <div class="prose">{{ chief_html | safe }}</div>
+      {% else %}
+      <div class="empty">// chief review not yet filed for {{ date }}</div>
+      {% endif %}
+    </div>
+
+    <aside class="side-panel">
+      <div class="side-section">
+        <div class="side-label">Meta Thesis</div>
+        {% if thesis_html %}
+        <div class="side-prose prose">{{ thesis_html | safe }}</div>
+        {% else %}
+        <div class="empty">// no thesis yet</div>
+        {% endif %}
+      </div>
+      <div class="side-section" style="margin-top:28px;">
+        <div class="side-label">Predictions on Record</div>
+        {% if predictions_html %}
+        <div class="side-prose prose">{{ predictions_html | safe }}</div>
+        {% else %}
+        <div class="empty">// no predictions yet</div>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}
