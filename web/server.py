@@ -2,7 +2,7 @@
 """Intel Swarm — Intelligence News Dashboard"""
 
 import os, glob, re
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, request
 import markdown as md_lib
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,10 +31,19 @@ def render_md(text):
     if not text: return ""
     return md_lib.markdown(text, extensions=["extra", "nl2br", "sane_lists"])
 
-def read_file(path):
+def read_file(path, lang="en"):
+    # Try Chinese version first if lang=zh
+    if lang == "zh":
+        zh_path = path.replace(".md", ".zh.md")
+        try:
+            with open(zh_path) as f: return f.read()
+        except: pass
     try:
         with open(path) as f: return f.read()
     except: return None
+
+def get_lang():
+    return request.args.get("lang", "en")
 
 def get_dates():
     files = glob.glob(f"{BASE}/synthesis/findings/2026-*.md")
@@ -68,8 +77,8 @@ def extract_edge(raw):
     if m: return re.sub(r'\s+', ' ', m.group(1).strip())[:300]
     return None
 
-def get_researcher_data(rid, date):
-    raw = read_file(f"{BASE}/researchers/{rid}/findings/{date}.md")
+def get_researcher_data(rid, date, lang="en"):
+    raw = read_file(f"{BASE}/researchers/{rid}/findings/{date}.md", lang)
     threads = read_file(f"{BASE}/researchers/{rid}/memory/threads.md")
     sources = read_file(f"{BASE}/researchers/{rid}/memory/sources.md")
     return {
@@ -90,8 +99,9 @@ def index():
 @app.route("/date/<date>")
 def home(date):
     dates = get_dates()
-    synthesis_raw = read_file(f"{BASE}/synthesis/findings/{date}.md")
-    chief_raw = read_file(f"{BASE}/chief/findings/{date}.md")
+    lang = get_lang()
+    synthesis_raw = read_file(f"{BASE}/synthesis/findings/{date}.md", lang)
+    chief_raw = read_file(f"{BASE}/chief/findings/{date}.md", lang)
 
     # Parse synthesis headline
     syn_headline = None
@@ -102,7 +112,7 @@ def home(date):
     # Build domain cards
     domains = []
     for rid, emoji, name in RESEARCHERS:
-        data = get_researcher_data(rid, date)
+        data = get_researcher_data(rid, date, lang)
         domains.append({
             "id": rid, "emoji": emoji, "name": name,
             **data
@@ -116,7 +126,7 @@ def home(date):
             chief_action = re.sub(r'\s+', ' ', m.group(1).strip())[:400]
 
     return render_template("home.html",
-        date=date, dates=dates,
+        date=date, dates=dates, lang=lang,
         synthesis_raw=synthesis_raw,
         synthesis_html=render_md(synthesis_raw),
         chief_html=render_md(chief_raw),
@@ -133,11 +143,12 @@ def domain(rid):
 @app.route("/domain/<rid>/<date>")
 def domain_date(rid, date):
     dates = get_dates()
+    lang = get_lang()
     lookup = {r[0]: r for r in RESEARCHERS}
     if rid not in lookup: abort(404)
     _, emoji, name = lookup[rid]
 
-    data = get_researcher_data(rid, date)
+    data = get_researcher_data(rid, date, lang)
 
     # All dates for this researcher
     all_dates = sorted(set(
@@ -147,7 +158,7 @@ def domain_date(rid, date):
 
     return render_template("domain.html",
         rid=rid, emoji=emoji, name=name,
-        date=date, dates=dates,
+        date=date, dates=dates, lang=lang,
         all_dates=all_dates,
         researchers=RESEARCHERS,
         **data
@@ -160,13 +171,14 @@ def brief():
 @app.route("/brief/<date>")
 def brief_date(date):
     dates = get_dates()
-    synthesis_raw = read_file(f"{BASE}/synthesis/findings/{date}.md")
-    chief_raw = read_file(f"{BASE}/chief/findings/{date}.md")
+    lang = get_lang()
+    synthesis_raw = read_file(f"{BASE}/synthesis/findings/{date}.md", lang)
+    chief_raw = read_file(f"{BASE}/chief/findings/{date}.md", lang)
     thesis = read_file(f"{BASE}/synthesis/memory/thesis.md")
     predictions = read_file(f"{BASE}/chief/memory/predictions.md")
 
     return render_template("brief.html",
-        date=date, dates=dates,
+        date=date, dates=dates, lang=lang,
         synthesis_html=render_md(synthesis_raw),
         chief_html=render_md(chief_raw),
         thesis_html=render_md(thesis),
