@@ -1,21 +1,26 @@
 [
   {
-    "finding_idx": 1,
+    "finding_idx": 0,
     "source_url": "https://news.danpatterson.com/p/webinar-the-2026-state-of-disinformation",
     "image_path": "/static/images/2026-03-04/psyops/432a25f4e773.jpeg"
   },
   {
-    "finding_idx": 2,
+    "finding_idx": 1,
     "source_url": "https://www.eff.org/deeplinks/2026/01/beware-government-using-image-manipulation-propaganda",
     "image_path": "/static/images/2026-03-04/psyops/b08a05d867c6.jpg"
   },
   {
-    "finding_idx": 4,
+    "finding_idx": 2,
+    "source_url": "https://mronline.org/2026/02/05/165285/",
+    "image_path": "/static/images/2026-03-04/psyops/f85a323f4be9.png"
+  },
+  {
+    "finding_idx": 3,
     "source_url": "https://deadline.com/2025/12/2026-mergers-acquisitions-media-outlook-1236655942/",
     "image_path": "/static/images/2026-03-04/psyops/7f90add847ba.jpg"
   },
   {
-    "finding_idx": 5,
+    "finding_idx": 4,
     "source_url": "https://www.disinfo.eu/disinfo-update-16-12-2025-2-2-2-2-2-2",
     "image_path": "/static/images/2026-03-04/psyops/cf2a0fbd92b3.png"
   }

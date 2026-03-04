@@ -1,11 +1,16 @@
 [
   {
-    "finding_idx": 1,
+    "finding_idx": 0,
     "source_url": "https://understandingwar.org/research/middle-east/iran-update-evening-special-report-march-2-2026/",
     "image_path": "/static/images/2026-03-04/war/5fc5c244f6f1.webp"
   },
   {
-    "finding_idx": 4,
+    "finding_idx": 2,
+    "source_url": "https://www.nytimes.com/2026/02/27/us/politics/trump-taiwan-arms-sale.html",
+    "image_path": "/static/images/2026-03-04/war/3f5e904a3d13.jpg"
+  },
+  {
+    "finding_idx": 3,
     "source_url": "https://www.theguardian.com/world/2026/mar/03/ukraine-war-briefing-russia-army-records-slowest-advance-since-2024-amid-starlink-cut-data-shows",
     "image_path": "/static/images/2026-03-04/war/249ae761b81d.jpg"
   }

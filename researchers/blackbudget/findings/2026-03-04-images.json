@@ -1,21 +1,26 @@
 [
   {
-    "finding_idx": 1,
+    "finding_idx": 0,
     "source_url": "https://defensescoop.com/2026/02/25/hegseth-ufo-disclosure-trump-aaro-uap-caseload/",
     "image_path": "/static/images/2026-03-04/blackbudget/da503741b8ef.jpg"
   },
   {
-    "finding_idx": 2,
+    "finding_idx": 1,
     "source_url": "https://www.congress.gov/bill/119th-congress/house-bill/7555/text",
     "image_path": "/static/images/2026-03-04/blackbudget/f6cfe1617a97.jpg"
   },
   {
-    "finding_idx": 4,
+    "finding_idx": 2,
+    "source_url": "https://www.darpa.mil/research/programs/securing-information-for-encrypted-verification-and-evaluation",
+    "image_path": "/static/images/2026-03-04/blackbudget/518b57a0f090.jpg"
+  },
+  {
+    "finding_idx": 3,
     "source_url": "https://defensescoop.com/2026/02/20/trump-ufo-uap-government-files-disclosure/",
     "image_path": "/static/images/2026-03-04/blackbudget/e334b3e49d3b.jpg"
   },
   {
-    "finding_idx": 5,
+    "finding_idx": 4,
     "source_url": "https://defence-blog.com/darpa-launches-biomass-to-chemicals-fleetwood-program/",
     "image_path": "/static/images/2026-03-04/blackbudget/0ec2196f93bf.jpg"
   }

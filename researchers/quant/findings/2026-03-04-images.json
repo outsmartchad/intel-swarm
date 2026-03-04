@@ -1,22 +1,17 @@
 [
   {
-    "finding_idx": 1,
+    "finding_idx": 0,
     "source_url": "https://www.coindesk.com/markets/2026/02/28/bitcoin-sets-up-potential-short-squeeze-as-funding-plunges-to-6",
     "image_path": "/static/images/2026-03-04/quant/6da1842d8163.png"
   },
   {
-    "finding_idx": 2,
+    "finding_idx": 1,
     "source_url": "https://www.coindesk.com/markets/2026/03/02/bitcoin-s-5-spike-higher-monday-driven-by-short-covering-not-fresh-buying-says-analyst",
     "image_path": "/static/images/2026-03-04/quant/d2b45109a714.jpg"
   },
   {
-    "finding_idx": 3,
+    "finding_idx": 2,
     "source_url": "https://goldbroker.com/news/2026-the-year-true-capital-rotation-3650",
     "image_path": "/static/images/2026-03-04/quant/9b8ec00b8772.jpg"
-  },
-  {
-    "finding_idx": 4,
-    "source_url": "https://jalookout.com/2026/02/28/bitcoin-price-drop-iran-strikes-geopolitical-risk-weekend-selloff/",
-    "image_path": "/static/images/2026-03-04/quant/83b5bdd57a2e.jpg"
   }
 ]

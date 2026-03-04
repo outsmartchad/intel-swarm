@@ -13,31 +13,65 @@ from urllib.parse import urljoin, urlparse
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
 }
-TIMEOUT = 8
-MAX_IMG_MB = 3
+TIMEOUT = 12
+MAX_IMG_MB = 5
+
+# Generic/useless images to skip
+SKIP_PATTERNS = [
+    'publication-cover', 'default-cover', 'placeholder', 'logo-only',
+    'favicon', 'apple-touch', 'blank.', 'ghost.org/v', 'generic',
+]
 
 def extract_urls(text):
     """Extract all https URLs from markdown text."""
     return re.findall(r'https?://[^\s\)\]\"\'<>]+', text)
 
+def is_generic_image(img_url):
+    """Return True if the image URL looks like a generic placeholder."""
+    low = img_url.lower()
+    return any(p in low for p in SKIP_PATTERNS)
+
 def get_og_image(url):
-    """Fetch a page and return its og:image URL."""
+    """Fetch a page and return its best image URL."""
     try:
         r = requests.get(url, headers=HEADERS, timeout=TIMEOUT, allow_redirects=True)
         if r.status_code != 200: return None
         soup = BeautifulSoup(r.text, 'html.parser')
-        # Try og:image first
+        candidates = []
+
+        # 1. og:image / twitter:image meta tags
         for prop in ['og:image', 'twitter:image', 'twitter:image:src']:
             tag = soup.find('meta', property=prop) or soup.find('meta', attrs={'name': prop})
             if tag and tag.get('content'):
                 img_url = tag['content'].strip()
                 if img_url.startswith('//'): img_url = 'https:' + img_url
                 elif img_url.startswith('/'): img_url = urljoin(url, img_url)
-                return img_url
+                elif not img_url.startswith('http'): img_url = urljoin(url, img_url)
+                if not is_generic_image(img_url):
+                    candidates.append(img_url)
+
+        # 2. Fallback: first large <img> in article/main content
+        if not candidates:
+            for tag in soup.select('article img, main img, .article img, .post-content img'):
+                src = tag.get('src') or tag.get('data-src') or tag.get('data-lazy-src')
+                if not src: continue
+                if src.startswith('//'): src = 'https:' + src
+                elif src.startswith('/'): src = urljoin(url, src)
+                elif not src.startswith('http'): continue
+                # Skip tiny images
+                w = int(tag.get('width') or 0)
+                h = int(tag.get('height') or 0)
+                if w and w < 200: continue
+                if h and h < 150: continue
+                if not is_generic_image(src):
+                    candidates.append(src)
+                    break
+
+        return candidates[0] if candidates else None
     except Exception as e:
-        pass
-    return None
+        return None
 
 def download_image(img_url, save_path):
     """Download image to save_path. Returns True on success."""
@@ -99,10 +133,13 @@ def scrape_findings_images(findings_path):
             print(f"Up to date: {images_json_path}"); return
 
     # Parse findings blocks — each **bold** finding with sources
-    findings_blocks = re.split(r'\n(?=[-*]\s*\*\*)', content)
+    # Split on bullet lines starting with **
+    all_blocks = re.split(r'\n(?=[-*]\s*\*\*)', content)
+    # Drop header block (no ** title = not a finding)
+    findings_blocks = [b for b in all_blocks if re.search(r'\*\*.+\*\*', b)]
     results = []
 
-    print(f"Scraping images for {findings_path}")
+    print(f"Scraping {len(findings_blocks)} findings: {findings_path}")
 
     for idx, block in enumerate(findings_blocks):
         urls = extract_urls(block)
