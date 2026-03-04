@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Intel Swarm — Org Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #080b12;
+      color: #e2e8f0;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 56px 48px 64px;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    header h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #f8fafc;
+      margin-bottom: 10px;
+    }
+    header .tagline {
+      font-size: 12px;
+      color: #475569;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .quote {
+      margin-bottom: 40px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.9;
+    }
+    .chart-wrapper {
+      background: #0d1117;
+      border: 1px solid #1e293b;
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 1500px;
+      box-shadow: 0 0 120px rgba(99,102,241,0.05), 0 0 40px rgba(0,0,0,0.8);
+      overflow-x: auto;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      min-width: 1200px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 11px;
+      color: #1e293b;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🐝 Intel Swarm</h1>
+  <p class="tagline">Private Intelligence Research Org &nbsp;·&nbsp; 15 Researchers &nbsp;·&nbsp; Memory-Enabled &nbsp;·&nbsp; Daily 06:00 HKT</p>
+</header>
+
+<div class="quote">
+  The real edge isn't in what everyone is reading.<br>
+  It's in what 99% of people don't know, don't want to know, and can't connect.
+</div>
+
+<div class="chart-wrapper">
+  <div class="mermaid">
+flowchart LR
+
+    subgraph RESEARCHERS["🕕  06:00–07:10 HKT  ·  Researcher Wave"]
+        direction TB
+        subgraph ROW1[" "]
+            C["🪙\nCrypto"]
+            AI["🤖\nAI Agents"]
+            CN["🕳️\nConspiracy"]
+            EP["📁\nEpstein"]
+            WR["⚔️\nWar"]
+        end
+        subgraph ROW2[" "]
+            MA["📊\nMacro"]
+            PW["🕴️\nPower"]
+            SG["🧠\nSingularity"]
+            PS["📡\nPsyops"]
+            BB["🖤\nBlack Budget"]
+        end
+        subgraph ROW3[" "]
+            EM["🌍\nEmerging"]
+            RG["⚖️\nRegulatory"]
+            WE["🌏\nWest-East"]
+            QT["📈\nQuant"]
+            CU["🎭\nCulture"]
+        end
+    end
+
+    subgraph MEMORY["🧠  Memory Layer  ·  Persistent Across Days"]
+        direction TB
+        TH["threads.md\nOngoing Stories · Max 5"]
+        SR["sources.md\nSource Quality Log"]
+    end
+
+    subgraph SYNTHESIS["🕖  07:15 HKT"]
+        SY["🔮 Synthesis\nOpus 4.6\nConnects all 15 domains\nUpdates meta-thesis"]
+    end
+
+    subgraph CHIEF["🕖  07:45 HKT"]
+        CH["🧑‍🔬 Chief Scientist\nOpus 4.6\nChallenges everything\nTracks predictions"]
+    end
+
+    subgraph OUTPUT["📤  Output"]
+        direction TB
+        TG["📱 Telegram\nDaily briefing\nto Vincent"]
+        GIT["🗂️ Git Repo\nFull archive\nqueryable"]
+        ALT["🚨 Escalation\nImmediate alert\ntime-critical only"]
+    end
+
+    RESEARCHERS -->|"findings/YYYY-MM-DD.md"| SYNTHESIS
+    RESEARCHERS <-->|"read before\nwrite after"| MEMORY
+    RESEARCHERS -.->|"urgent"| ALT
+    SYNTHESIS -->|"synthesis/findings/"| CHIEF
+    CHIEF --> TG
+    CHIEF --> GIT
+    SYNTHESIS --> GIT
+    ALT --> TG
+
+    style RESEARCHERS fill:#0d1117,stroke:#334155,color:#94a3b8
+    style ROW1 fill:#0d1117,stroke:#1e293b,color:#64748b
+    style ROW2 fill:#0d1117,stroke:#1e293b,color:#64748b
+    style ROW3 fill:#0d1117,stroke:#1e293b,color:#64748b
+    style MEMORY fill:#0a1628,stroke:#1d4ed8,color:#93c5fd
+    style SYNTHESIS fill:#120d30,stroke:#4f46e5,color:#a5b4fc
+    style CHIEF fill:#120d30,stroke:#4f46e5,color:#a5b4fc
+    style OUTPUT fill:#0a1f0a,stroke:#166534,color:#86efac
+
+    style C fill:#161d2e,stroke:#334155,color:#94a3b8
+    style AI fill:#161d2e,stroke:#334155,color:#94a3b8
+    style CN fill:#161d2e,stroke:#334155,color:#94a3b8
+    style EP fill:#161d2e,stroke:#334155,color:#94a3b8
+    style WR fill:#161d2e,stroke:#334155,color:#94a3b8
+    style MA fill:#161d2e,stroke:#334155,color:#94a3b8
+    style PW fill:#161d2e,stroke:#334155,color:#94a3b8
+    style SG fill:#161d2e,stroke:#334155,color:#94a3b8
+    style PS fill:#161d2e,stroke:#334155,color:#94a3b8
+    style BB fill:#161d2e,stroke:#334155,color:#94a3b8
+    style EM fill:#161d2e,stroke:#334155,color:#94a3b8
+    style RG fill:#161d2e,stroke:#334155,color:#94a3b8
+    style WE fill:#161d2e,stroke:#334155,color:#94a3b8
+    style QT fill:#161d2e,stroke:#334155,color:#94a3b8
+    style CU fill:#161d2e,stroke:#334155,color:#94a3b8
+
+    style TH fill:#0c1a3a,stroke:#2563eb,color:#93c5fd
+    style SR fill:#0c1a3a,stroke:#2563eb,color:#93c5fd
+
+    style SY fill:#1a1040,stroke:#6366f1,color:#c7d2fe
+    style CH fill:#1a1040,stroke:#6366f1,color:#c7d2fe
+
+    style TG fill:#052e16,stroke:#16a34a,color:#bbf7d0
+    style GIT fill:#052e16,stroke:#16a34a,color:#bbf7d0
+    style ALT fill:#450a0a,stroke:#dc2626,color:#fecaca
+  </div>
+</div>
+
+<footer>Built with OpenClaw &nbsp;·&nbsp; Running daily since March 2026</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    flowchart: {
+      curve: 'basis',
+      nodeSpacing: 30,
+      rankSpacing: 60,
+      padding: 20,
+      useMaxWidth: false,
+    },
+    themeVariables: {
+      darkMode: true,
+      background: '#0d1117',
+      primaryColor: '#161d2e',
+      primaryTextColor: '#94a3b8',
+      primaryBorderColor: '#334155',
+      lineColor: '#334155',
+      fontSize: '12px',
+      clusterBkg: '#0d1117',
+      clusterBorder: '#1e293b',
+    }
+  });
+</script>
+</body>
+</html>
