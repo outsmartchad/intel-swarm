@@ -124,14 +124,26 @@ def extract_findings(raw):
     return findings[:5]
 
 def extract_headline(raw):
-    """Get first strong finding title"""
+    """Get first strong finding title — prefers Chinese text if available"""
     findings = extract_findings(raw)
-    return findings[0]["title"] if findings else None
+    if not findings: return None
+    for f in findings:
+        title = f["title"]
+        body = f.get("body", "")
+        # If title has Chinese chars, use it directly
+        if any('\u4e00' <= c <= '\u9fff' for c in title):
+            return title
+        # Title is English (technical term) — try to get first Chinese sentence from body
+        zh_match = re.search(r'[\u4e00-\u9fff][^\n]{10,}', body)
+        if zh_match:
+            return zh_match.group(0)[:120]
+        return title  # fallback to English title
+    return findings[0]["title"]
 
 def extract_edge(raw):
-    """Extract Edge Signal section"""
+    """Extract Edge Signal section (EN or ZH)"""
     if not raw: return None
-    m = re.search(r'##\s*Edge Signal\s*\n(.+?)(?=\n##|\Z)', raw, re.DOTALL)
+    m = re.search(r'##\s*(?:Edge Signal|邊緣信號|边缘信号|邊緣訊號)\s*\n(.+?)(?=\n##|\Z)', raw, re.DOTALL)
     if m: return re.sub(r'\s+', ' ', m.group(1).strip())[:300]
     return None
 
