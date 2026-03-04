@@ -111,25 +111,27 @@ def get_latest_date():
     d = get_dates(); return d[0] if d else "2026-03-04"
 
 def extract_findings(raw):
-    """Parse researcher markdown → list of {title, body, score} dicts"""
+    """Parse researcher markdown → list of {title, body, score, url} dicts"""
     if not raw: return []
     findings = []
     pattern = re.finditer(r'\*\*(.+?)\*\*[:\s—–-]*(.+?)(?=\n[-*]|\n\n|\Z)', raw, re.DOTALL)
     for m in pattern:
         title = m.group(1).strip()
         body_raw = m.group(2).strip()
-        # Extract inline score tag [SCORE:N] or [★★★★☆] if present
-        score = 3  # default
+        # Extract inline score tag
+        score = 3
         score_m = re.search(r'\[SCORE[:\s]*([1-5])\]', body_raw, re.IGNORECASE)
         if score_m:
             score = int(score_m.group(1))
             body_raw = body_raw[:score_m.start()].strip()
-        # Boost score for keywords
         elif any(k in title.lower() for k in ['breaking','critical','urgent','war','attack','collapse','ban','crash']):
             score = 4
+        # Extract first source URL
+        url_m = re.search(r'https?://[^\s\)\]\"\'<>,]+', body_raw)
+        source_url = url_m.group(0).rstrip('.,;)') if url_m else None
         body = re.sub(r'\s+', ' ', body_raw)[:240]
         if len(title) > 10 and len(title) < 200:
-            findings.append({"title": title, "body": body, "score": score})
+            findings.append({"title": title, "body": body, "score": score, "url": source_url})
     return findings[:5]
 
 def top_score(findings):

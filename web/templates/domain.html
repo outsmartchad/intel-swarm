@@ -12,92 +12,88 @@
   position: sticky; top: 88px; z-index: 98;
 }
 
+/* ── PAGE LAYOUT ── */
+.domain-wrap {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+.domain-main { min-width: 0; }
+.domain-sidebar {
+  position: sticky; top: 116px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto; scrollbar-width: thin;
+  scrollbar-color: #2a2e3a transparent;
+}
+.domain-sidebar::-webkit-scrollbar { width: 3px; }
+.domain-sidebar::-webkit-scrollbar-thumb { background: #2a2e3a; border-radius: 99px; }
+
 /* ── FINDINGS GRID ── */
 .findings-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 4px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .fcard {
   position: relative; overflow: hidden; border-radius: 6px;
-  background: #111418;
-  text-decoration: none; color: inherit;
-  display: flex; flex-direction: column;
-  cursor: default;
+  background: #111418; display: flex; flex-direction: column;
   transition: box-shadow .2s, transform .2s;
+  cursor: pointer;
 }
-.fcard:hover {
+.fcard[href]:hover, .fcard:hover {
   box-shadow: 0 0 0 2px {{ col2 }}80, 0 8px 32px rgba(0,0,0,.5);
   transform: translateY(-2px);
   z-index: 2;
 }
-
-/* Sizes */
 .fcard-hero     { grid-column: span 7; height: 360px; }
 .fcard-featured { grid-column: span 5; height: 360px; }
 .fcard-medium   { grid-column: span 4; height: 220px; }
 .fcard-small    { grid-column: span 4; height: 160px; }
 
-/* Background image */
 .fcard-bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
   transition: transform .5s ease;
 }
 .fcard:hover .fcard-bg { transform: scale(1.05); }
-.fcard-grad {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, {{ col1 }} 0%, {{ col2 }} 100%);
-  opacity: .7;
-}
+.fcard-grad { position: absolute; inset: 0; background: linear-gradient(135deg, {{ col1 }} 0%, {{ col2 }} 100%); opacity: .7; }
 .fcard-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top,
-    rgba(5,7,10,.97) 0%,
-    rgba(5,7,10,.6) 45%,
-    rgba(5,7,10,.05) 100%
-  );
+  background: linear-gradient(to top, rgba(5,7,10,.97) 0%, rgba(5,7,10,.6) 45%, rgba(5,7,10,.05) 100%);
 }
 .fcard-hero .fcard-overlay, .fcard-featured .fcard-overlay {
-  background: linear-gradient(to top,
-    rgba(5,7,10,1) 0%,
-    rgba(5,7,10,.65) 40%,
-    rgba(5,7,10,.05) 100%
-  );
+  background: linear-gradient(to top, rgba(5,7,10,1) 0%, rgba(5,7,10,.65) 40%, rgba(5,7,10,.05) 100%);
 }
-
-/* Content */
 .fcard-content {
-  position: relative; z-index: 2; height: 100%;
-  padding: 14px 16px;
-  display: flex; flex-direction: column;
-  justify-content: space-between;
+  position: relative; z-index: 2; height: 100%; padding: 14px 16px;
+  display: flex; flex-direction: column; justify-content: space-between;
 }
-.fcard-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.fcard-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
 .fcard-num {
   font-family: var(--mono); font-size: 10px; font-weight: 700;
-  color: {{ col2 }}; letter-spacing: .08em;
-  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
-  padding: 2px 8px; border-radius: 99px;
-  border: 1px solid {{ col2 }}44;
+  color: {{ col2 }}; background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  padding: 2px 8px; border-radius: 99px; border: 1px solid {{ col2 }}44;
+  white-space: nowrap;
+}
+.fcard-link-badge {
+  font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,.4);
+  background: rgba(0,0,0,.4); padding: 2px 7px; border-radius: 99px;
+  border: 1px solid rgba(255,255,255,.1); white-space: nowrap;
+  display: flex; align-items: center; gap: 4px;
 }
 .fcard-pips { display: flex; gap: 3px; align-items: center; }
 .fpip { width: 5px; height: 5px; border-radius: 1px; }
 .fpip.on  { background: {{ col2 }}; }
 .fpip.off { background: rgba(255,255,255,.12); }
-
 .fcard-bottom { display: flex; flex-direction: column; gap: 7px; }
-.fcard-title {
-  font-weight: 700; color: #fff; line-height: 1.3;
-  text-shadow: 0 1px 4px rgba(0,0,0,.8);
-}
+.fcard-title { font-weight: 700; color: #fff; line-height: 1.3; text-shadow: 0 1px 4px rgba(0,0,0,.8); }
 .fcard-hero     .fcard-title { font-size: 18px; }
 .fcard-featured .fcard-title { font-size: 15px; }
 .fcard-medium   .fcard-title { font-size: 13px; }
 .fcard-small    .fcard-title { font-size: 12px; }
-
 .fcard-body {
   font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.55;
   display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
@@ -108,13 +104,8 @@
 .fcard-medium   .fcard-body { -webkit-line-clamp: 2; }
 .fcard-small    .fcard-body { display: none; }
 
-.fcard-link {
-  font-family: var(--mono); font-size: 10px;
-  color: {{ col2 }}; letter-spacing: .04em;
-}
-
-/* Tail sections */
-.tail-section { max-width: 820px; margin-bottom: 12px; }
+/* ── TAIL SECTIONS ── */
+.tail-section { max-width: 100%; margin-bottom: 12px; }
 .tail-section h2 {
   font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
   color: var(--muted); text-transform: uppercase; margin: 24px 0 10px;
@@ -126,17 +117,41 @@
 .tail-section a { color: var(--accent); font-family: var(--mono); font-size: 11px; }
 .tail-section ul { padding-left: 18px; }
 
+/* ── SIDEBAR ── */
+.sidebar-label {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  letter-spacing: .14em; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sidebar-threads { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.sidebar-threads h3 {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  margin: 16px 0 4px; padding-bottom: 4px;
+  border-bottom: 1px solid {{ col2 }}33;
+}
+.sidebar-threads h3:first-child { margin-top: 0; }
+.sidebar-threads strong { color: var(--text); font-weight: 600; }
+.sidebar-threads ul { padding-left: 14px; list-style: disc; }
+.sidebar-threads li { margin-bottom: 3px; font-size: 11px; }
+.sidebar-threads a { color: var(--accent); font-family: var(--mono); font-size: 10px; }
+.sidebar-threads p { font-size: 11px; margin-bottom: 8px; }
+
+/* Archive in sidebar */
+.sidebar-archive { margin-top: 24px; }
+.sidebar-archive .sidebar-label { margin-bottom: 10px; }
+
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 960px) {
+  .domain-wrap { grid-template-columns: 1fr; }
+  .domain-sidebar { position: static; max-height: none; margin-top: 32px; }
   .fcard-hero     { grid-column: span 12; height: 280px; }
   .fcard-featured { grid-column: span 12; height: 240px; }
   .fcard-medium   { grid-column: span 6;  height: 180px; }
   .fcard-small    { grid-column: span 6;  height: 140px; }
 }
 @media (max-width: 600px) {
-  .fcard-hero, .fcard-featured, .fcard-medium, .fcard-small {
-    grid-column: span 12; height: 180px;
-  }
+  .fcard-hero, .fcard-featured, .fcard-medium, .fcard-small { grid-column: span 12; height: 180px; }
 }
 </style>
 
@@ -150,75 +165,95 @@
       <span class="domain-big-name">{{ name }}</span>
     </div>
     <div class="domain-meta">{{ date }} &nbsp;·&nbsp; INTEL SWARM</div>
-    {% if all_dates and all_dates|length > 1 %}
-    <div class="archive-bar">
-      {% for d in all_dates %}
-      <a class="archive-link {% if d == date %}active{% endif %}"
-         href="/domain/{{ rid }}/{{ d }}?lang={{ lang|default('en') }}">{{ d }}</a>
-      {% endfor %}
-    </div>
-    {% endif %}
   </div>
 
-  {% if findings %}
-  <div class="findings-grid">
-    {% for f in findings %}
-    {% set idx = loop.index0 %}
-    {% set score = f.score|default(3) %}
+  <div class="domain-wrap">
 
-    {# Assign layout: first=hero, second=featured, rest=medium or small #}
-    {% if idx == 0 %}{% set fsize = "fcard-hero" %}
-    {% elif idx == 1 %}{% set fsize = "fcard-featured" %}
-    {% elif idx <= 4 %}{% set fsize = "fcard-medium" %}
-    {% else %}{% set fsize = "fcard-small" %}{% endif %}
+    <!-- MAIN: findings grid -->
+    <div class="domain-main">
 
-    <div class="fcard {{ fsize }}">
+      {% if findings %}
+      <div class="findings-grid">
+        {% for f in findings %}
+        {% set idx = loop.index0 %}
+        {% set score = f.score|default(3) %}
+        {% if idx == 0 %}{% set fsize = "fcard-hero" %}
+        {% elif idx == 1 %}{% set fsize = "fcard-featured" %}
+        {% elif idx <= 4 %}{% set fsize = "fcard-medium" %}
+        {% else %}{% set fsize = "fcard-small" %}{% endif %}
 
-      {# Background #}
-      {% if f.image %}
-      <div class="fcard-bg" style="background-image:url('{{ f.image }}')"></div>
-      {% else %}
-      <div class="fcard-grad"></div>
-      {% endif %}
-      <div class="fcard-overlay"></div>
+        {# Wrap in <a> if source URL available #}
+        {% if f.url %}
+        <a href="{{ f.url }}" target="_blank" rel="noopener" class="fcard {{ fsize }}">
+        {% else %}
+        <div class="fcard {{ fsize }}">
+        {% endif %}
 
-      <div class="fcard-content">
-        <div class="fcard-top">
-          <span class="fcard-num">0{{ loop.index }}</span>
-          <div class="fcard-pips">
-            {% for i in range(1,6) %}
-            <div class="fpip {% if i <= score %}on{% else %}off{% endif %}"></div>
-            {% endfor %}
+          {% if f.image %}
+          <div class="fcard-bg" style="background-image:url('{{ f.image }}')"></div>
+          {% else %}
+          <div class="fcard-grad"></div>
+          {% endif %}
+          <div class="fcard-overlay"></div>
+
+          <div class="fcard-content">
+            <div class="fcard-top">
+              <span class="fcard-num">0{{ loop.index }}</span>
+              <div style="display:flex;align-items:center;gap:6px">
+                {% if f.url %}
+                <span class="fcard-link-badge">↗ {{ f.url | replace('https://','') | replace('http://','') | truncate(20, True, '') }}</span>
+                {% endif %}
+                <div class="fcard-pips">
+                  {% for i in range(1,6) %}
+                  <div class="fpip {% if i <= score %}on{% else %}off{% endif %}"></div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="fcard-bottom">
+              {% if f.title %}<div class="fcard-title">{{ f.title }}</div>{% endif %}
+              {% if f.body %}<div class="fcard-body">{{ f.body }}</div>{% endif %}
+            </div>
           </div>
-        </div>
-        <div class="fcard-bottom">
-          {% if f.title %}
-          <div class="fcard-title">{{ f.title }}</div>
-          {% endif %}
-          {% if f.body %}
-          <div class="fcard-body">{{ f.body }}</div>
-          {% endif %}
+
+        {% if f.url %}</a>{% else %}</div>{% endif %}
+        {% endfor %}
+      </div>
+      {% elif html %}
+      <div class="article">{{ html | safe }}</div>
+      {% else %}
+      <div class="empty-state">No findings for {{ date }}</div>
+      {% endif %}
+
+      {% if tail_html %}
+      <div class="tail-section">{{ tail_html | safe }}</div>
+      {% endif %}
+
+    </div>
+
+    <!-- SIDEBAR: threads + archive -->
+    <aside class="domain-sidebar">
+
+      {% if threads %}
+      <div class="sidebar-label">ACTIVE THREADS</div>
+      <div class="sidebar-threads">{{ threads | safe }}</div>
+      {% endif %}
+
+      {% if all_dates and all_dates|length > 1 %}
+      <div class="sidebar-archive">
+        <div class="sidebar-label">ARCHIVE</div>
+        <div class="archive-bar" style="flex-direction:column;gap:4px">
+          {% for d in all_dates %}
+          <a class="archive-link {% if d == date %}active{% endif %}"
+             href="/domain/{{ rid }}/{{ d }}?lang={{ lang|default('en') }}">{{ d }}</a>
+          {% endfor %}
         </div>
       </div>
-    </div>
-    {% endfor %}
-  </div>
-  {% elif html %}
-  <div class="article">{{ html | safe }}</div>
-  {% else %}
-  <div class="empty-state">No findings for {{ date }}</div>
-  {% endif %}
+      {% endif %}
 
-  {% if tail_html %}
-  <div class="tail-section">{{ tail_html | safe }}</div>
-  {% endif %}
+    </aside>
 
-  {% if threads %}
-  <div class="threads-section">
-    <div class="threads-label">ACTIVE THREADS</div>
-    <div class="threads-body article">{{ threads | safe }}</div>
   </div>
-  {% endif %}
 
 </div>
 {% endblock %}
