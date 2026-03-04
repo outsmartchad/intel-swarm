@@ -34,11 +34,54 @@ def no_cache(response):
     response.headers["Expires"] = "0"
     return response
 
+KNOWN_SITES = {
+    "theguardian.com": "The Guardian", "guardian.com": "The Guardian",
+    "nytimes.com": "NY Times", "wsj.com": "WSJ", "ft.com": "FT",
+    "bloomberg.com": "Bloomberg", "reuters.com": "Reuters",
+    "bbc.com": "BBC", "bbc.co.uk": "BBC", "washingtonpost.com": "WashPost",
+    "cnbc.com": "CNBC", "cnbcafrica.com": "CNBC Africa",
+    "techcrunch.com": "TechCrunch", "wired.com": "Wired",
+    "fortune.com": "Fortune", "forbes.com": "Forbes", "time.com": "Time",
+    "economist.com": "The Economist", "apnews.com": "AP News",
+    "axios.com": "Axios", "politico.com": "Politico",
+    "coindesk.com": "CoinDesk", "cointelegraph.com": "CoinTelegraph",
+    "theblock.co": "The Block", "decrypt.co": "Decrypt",
+    "nature.com": "Nature", "science.org": "Science",
+    "wikipedia.org": "Wikipedia", "arxiv.org": "arXiv",
+    "understandingwar.org": "ISW", "defenseone.com": "Defense One",
+    "wapo.com": "WashPost", "theintercept.com": "The Intercept",
+    "propublica.org": "ProPublica", "bellingcat.com": "Bellingcat",
+}
+
+def url_to_label(url):
+    """Extract a human-readable label from a URL."""
+    try:
+        m = re.search(r'https?://(?:www\.)?([^/]+)', url)
+        if not m: return "Source"
+        domain = m.group(1).lower()
+        # Check known sites (longest match first)
+        for key in sorted(KNOWN_SITES, key=len, reverse=True):
+            if domain.endswith(key) or domain == key:
+                return KNOWN_SITES[key]
+        # Unknown: use domain name without TLD, capitalize
+        name = domain.split('.')[0]
+        return name.replace('-', ' ').title()
+    except:
+        return "Source"
+
 def render_md(text):
     if not text: return ""
-    # Convert bare [https://...] patterns to proper markdown links
-    text = re.sub(r'\[(?!.*\]\()(https?://[^\]]+)\]', r'[\1](\1)', text)
-    return md_lib.markdown(text, extensions=["extra", "nl2br", "sane_lists", "toc"])
+    # Convert [https://url] → [Label](url)
+    def replace_bracket_url(m):
+        url = m.group(1)
+        return f"[{url_to_label(url)}]({url})"
+    text = re.sub(r'\[(?!.*\]\()(https?://[^\]]+)\]', replace_bracket_url, text)
+    # Convert bare https://url (not already in markdown link) → [Label](url)
+    def replace_bare_url(m):
+        url = m.group(0).rstrip('.,;)')
+        return f"[{url_to_label(url)}]({url})"
+    text = re.sub(r'(?<!\()(?<!\[)https?://\S+', replace_bare_url, text)
+    return md_lib.markdown(text, extensions=["extra", "nl2br", "sane_lists"])
 
 def read_file(path, lang="en"):
     # Try Chinese version first if lang=zh
