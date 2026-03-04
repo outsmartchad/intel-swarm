@@ -26,8 +26,9 @@
       --sans: -apple-system,BlinkMacSystemFont,'Inter',sans-serif;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
+    html,body{width:100%;min-height:100vh;}
     html{font-size:14px;scroll-behavior:smooth;}
-    body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);}
     a{color:inherit;text-decoration:none;}
 
     /* ── MASTHEAD ── */
@@ -35,6 +36,7 @@
       border-bottom: 1px solid var(--border2);
       background: var(--bg);
       position: sticky; top:0; z-index:200;
+      width: 100%;
     }
     .masthead-top {
       display:flex; align-items:center; justify-content:space-between;
@@ -89,11 +91,11 @@
     .domain-nav .top-link.active { color:var(--accent); }
 
     /* ── PAGE WRAPPER ── */
-    .page { width:100%; padding:32px 28px 80px; }
+    .page { width:100%; min-width:0; padding:32px 28px 80px; }
 
     /* ── HERO STRIP ── */
     .hero {
-      display:grid; grid-template-columns:1fr 380px; gap:0;
+      display:grid; grid-template-columns:1fr 380px; gap:0; width:100%;
       border:1px solid var(--border2); border-radius:10px;
       overflow:hidden; margin-bottom:48px; background:var(--card);
     }
@@ -140,7 +142,7 @@
     /* ── DOMAIN GRID ── */
     .domain-grid {
       display:grid; grid-template-columns:repeat(5,1fr); gap:14px;
-      margin-bottom:48px;
+      margin-bottom:48px; width:100%;
     }
     .domain-card {
       background:var(--card); border:1px solid var(--border2);
@@ -180,7 +182,8 @@
     .dc-edge::before { content:'⚡ '; }
 
     /* ── FULL ARTICLE ── */
-    .article-layout { display:grid; grid-template-columns:1fr 360px; gap:56px; }
+    .article-layout { display:grid; grid-template-columns:1fr 360px; gap:40px; width:100%; min-width:0; }
+    .article-layout > * { min-width:0; }
     .article-header { margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid var(--border); }
     .article-tag {
       font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
