@@ -202,17 +202,21 @@
         '</div>';
     });
 
+    var tradeUrl = data.url || 'https://polymarket.com';
     var html =
       '<div class="pm-question">\uD83D\uDCCA This finding may affect:</div>' +
       '<div class="pm-question" style="margin-top:1px;opacity:1;font-weight:600">' + escHtml(question) + '</div>' +
       '<svg class="pm-chart" viewBox="0 0 80 32" preserveAspectRatio="none"></svg>' +
       '<div class="pm-outcomes">' + outcomesHtml + '</div>' +
+      '<a class="pm-trade-link" href="' + escHtml(tradeUrl) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">View on Polymarket \u2197</a>' +
       '<div class="pm-live-dot"></div>';
 
     if (oldOverlay) {
-      // Update in place — flash changed pct values
+      // Update in place — preserve expanded state, flash changed pct values
+      var wasExpanded = oldOverlay.classList.contains('pm-expanded');
       var oldPcts = oldOverlay.querySelectorAll('.pm-pct');
       oldOverlay.innerHTML = html;
+      if (wasExpanded) oldOverlay.classList.add('pm-expanded');
       var newPcts = oldOverlay.querySelectorAll('.pm-pct');
       newPcts.forEach(function (el, i) {
         var oldVal = oldPcts[i] ? oldPcts[i].getAttribute('data-pct') : '';
@@ -225,13 +229,53 @@
       var overlay = document.createElement('div');
       overlay.className = 'pm-overlay';
       overlay.innerHTML = html;
+
+      // Hover: expand on mouseenter, collapse on mouseleave (unless pinned)
+      overlay.addEventListener('mouseenter', function () {
+        overlay.classList.add('pm-expanded');
+        var svg = overlay.querySelector('.pm-chart');
+        if (svg && svg._pmPoints) setTimeout(function(){ drawSparklineAt(svg, svg._pmPoints, 260, 72); }, 50);
+      });
+      overlay.addEventListener('mouseleave', function () {
+        if (!overlay._pmPinned) {
+          overlay.classList.remove('pm-expanded');
+          var svg = overlay.querySelector('.pm-chart');
+          if (svg && svg._pmPoints) drawSparklineAt(svg, svg._pmPoints, 80, 32);
+        }
+      });
+      // Click: toggle pinned (stays expanded even when mouse leaves)
+      overlay.addEventListener('click', function (e) {
+        if (e.target.classList.contains('pm-trade-link')) return;
+        overlay._pmPinned = !overlay._pmPinned;
+        if (!overlay._pmPinned) overlay.classList.remove('pm-expanded');
+      });
+
       card.appendChild(overlay);
     }
   }
 
+  // Draw sparkline sized for small overlay (80x32)
+  function drawSparklineSmall(svg, points) {
+    svg.setAttribute('viewBox', '0 0 80 32');
+    svg._pmPoints = points;
+    drawSparklineAt(svg, points, 80, 32);
+  }
+
   function drawSparkline(svg, points) {
     if (!points.length) return;
-    var W = 80, H = 32;
+    svg._pmPoints = points; // store for redraw on expand/collapse
+    // Use expanded size if overlay is expanded
+    var overlay = svg.closest('.pm-overlay');
+    var isExpanded = overlay && overlay.classList.contains('pm-expanded');
+    drawSparklineAt(svg, points, 80, 32);
+    if (isExpanded) {
+      setTimeout(function() { drawSparklineAt(svg, points, 260, 72); }, 50);
+    }
+  }
+
+  function drawSparklineAt(svg, points, W, H) {
+    if (!points || !points.length) return;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     var prices = points.map(function (p) { return p.p; });
     var min = Math.min.apply(null, prices);
     var max = Math.max.apply(null, prices);
