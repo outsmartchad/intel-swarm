@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#141b26"/>
+      <stop offset="100%" stop-color="#060a0e"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#c8a96e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="80" fill="url(#glow)"/>
+
+  <!-- Subtle grid -->
+  <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+    <line x1="0" y1="128" x2="512" y2="128"/>
+    <line x1="0" y1="256" x2="512" y2="256"/>
+    <line x1="0" y1="384" x2="512" y2="384"/>
+    <line x1="128" y1="0" x2="128" y2="512"/>
+    <line x1="256" y1="0" x2="256" y2="512"/>
+    <line x1="384" y1="0" x2="384" y2="512"/>
+  </g>
+
+  <!-- Main hex group centered at 256,256 -->
+  <g transform="translate(256,256)">
+    <!-- Outermost ring (faint) -->
+    <polygon points="0,-150 129.9,-75 129.9,75 0,150 -129.9,75 -129.9,-75"
+             fill="none" stroke="#c8a96e" stroke-width="1" opacity="0.2"/>
+
+    <!-- Outer hex -->
+    <polygon points="0,-112 97,-56 97,56 0,112 -97,56 -97,-56"
+             fill="none" stroke="#c8a96e" stroke-width="2" opacity="0.8"/>
+
+    <!-- Middle hex -->
+    <polygon points="0,-80 69.3,-40 69.3,40 0,80 -69.3,40 -69.3,-40"
+             fill="none" stroke="#c8a96e" stroke-width="1.5" opacity="0.45"/>
+
+    <!-- Inner hex (filled glow) -->
+    <polygon points="0,-48 41.6,-24 41.6,24 0,48 -41.6,24 -41.6,-24"
+             fill="#c8a96e" opacity="0.12"/>
+    <polygon points="0,-48 41.6,-24 41.6,24 0,48 -41.6,24 -41.6,-24"
+             fill="none" stroke="#c8a96e" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Spokes outer→middle -->
+    <line x1="0" y1="-112" x2="0" y2="-80" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+    <line x1="97" y1="-56" x2="69.3" y2="-40" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+    <line x1="97" y1="56" x2="69.3" y2="40" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+    <line x1="0" y1="112" x2="0" y2="80" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+    <line x1="-97" y1="56" x2="-69.3" y2="40" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+    <line x1="-97" y1="-56" x2="-69.3" y2="-40" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Spokes middle→inner -->
+    <line x1="0" y1="-80" x2="0" y2="-48" stroke="#c8a96e" stroke-width="1" opacity="0.3"/>
+    <line x1="69.3" y1="-40" x2="41.6" y2="-24" stroke="#c8a96e" stroke-width="1" opacity="0.3"/>
+    <line x1="69.3" y1="40" x2="41.6" y2="24" stroke="#c8a96e" stroke-width="1" opacity="0.3"/>
+    <line x1="0" y1="80" x2="0" y2="48" stroke="#c8a96e" stroke-width="1" opacity="0.3"/>
+    <line x1="-69.3" y1="40" x2="-41.6" y2="24" stroke="#c8a96e" stroke-width="1" opacity="0.3"/>
+    <line x1="-69.3" y1="-40" x2="-41.6" y2="-24" stroke="#c8a96e" stroke-width="1" opacity="0.3"/>
+
+    <!-- Outer nodes -->
+    <circle cx="0" cy="-112" r="5" fill="#c8a96e" opacity="0.9"/>
+    <circle cx="97" cy="-56" r="5" fill="#c8a96e" opacity="0.9"/>
+    <circle cx="97" cy="56" r="5" fill="#c8a96e" opacity="0.9"/>
+    <circle cx="0" cy="112" r="5" fill="#c8a96e" opacity="0.9"/>
+    <circle cx="-97" cy="56" r="5" fill="#c8a96e" opacity="0.9"/>
+    <circle cx="-97" cy="-56" r="5" fill="#c8a96e" opacity="0.9"/>
+
+    <!-- Middle nodes -->
+    <circle cx="0" cy="-80" r="3.5" fill="#c8a96e" opacity="0.6"/>
+    <circle cx="69.3" cy="-40" r="3.5" fill="#c8a96e" opacity="0.6"/>
+    <circle cx="69.3" cy="40" r="3.5" fill="#c8a96e" opacity="0.6"/>
+    <circle cx="0" cy="80" r="3.5" fill="#c8a96e" opacity="0.6"/>
+    <circle cx="-69.3" cy="40" r="3.5" fill="#c8a96e" opacity="0.6"/>
+    <circle cx="-69.3" cy="-40" r="3.5" fill="#c8a96e" opacity="0.6"/>
+
+    <!-- Center pulse -->
+    <circle cx="0" cy="0" r="16" fill="#c8a96e" opacity="0.08"/>
+    <circle cx="0" cy="0" r="10" fill="#c8a96e" opacity="0.15"/>
+    <circle cx="0" cy="0" r="6" fill="#c8a96e" opacity="0.95"/>
+
+    <!-- IS monogram below hex -->
+  </g>
+
+  <!-- IS monogram -->
+  <text x="256" y="410" font-family="Inter, -apple-system, sans-serif"
+        font-size="40" font-weight="700" letter-spacing="12"
+        text-anchor="middle" fill="#c8a96e" opacity="0.85">IS</text>
+
+  <!-- Bottom label -->
+  <text x="256" y="452" font-family="Inter, -apple-system, sans-serif"
+        font-size="13" font-weight="400" letter-spacing="4"
+        text-anchor="middle" fill="rgba(200,169,110,0.4)">INTEL SWARM</text>
+</svg>
