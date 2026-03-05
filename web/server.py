@@ -1282,12 +1282,12 @@ def _fetch_live_markets():
     # CoinGecko crypto prices
     try:
         r = http_requests.get(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,ripple&order=market_cap_desc&sparkline=false&price_change_percentage=24h",
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,ripple,hyperliquid,zcash,pump-fun&order=market_cap_desc&sparkline=false&price_change_percentage=24h",
             timeout=8, headers={"User-Agent": "Mozilla/5.0"}
         )
         for c in r.json():
             result["crypto"].append({
-                "symbol": c["symbol"].upper(),
+                "symbol": {"pump-fun": "PUMP"}.get(c["symbol"], c["symbol"].upper()),
                 "name": c["name"],
                 "price": c["current_price"],
                 "change_24h": round(c.get("price_change_percentage_24h") or 0, 2)
