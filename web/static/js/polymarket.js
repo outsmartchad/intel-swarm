@@ -18,32 +18,15 @@
     return words.slice(0, 4).join(' ');
   }
 
-  // Simple causal relevance check — does the finding headline relate to the market question?
+  // Simple causal relevance check — server already scores, so just do light validation
   function isCausallyRelevant(headline, marketQuestion) {
     if (!headline || !marketQuestion) return false;
-    headline = headline.toLowerCase();
-    marketQuestion = marketQuestion.toLowerCase();
-
-    // Extract key entities from headline
-    var headlineWords = headline.replace(/[^\w\s]/g, ' ').split(/\s+/).filter(function(w) { return w.length > 3; });
-    // Count how many headline words appear in the market question
-    var overlap = 0;
-    headlineWords.forEach(function(w) {
-      if (marketQuestion.indexOf(w) !== -1) overlap++;
-    });
-    // Need at least 2 overlapping words for causal relevance
-    if (overlap < 2) return false;
-
-    // Check for causal action words in headline (these indicate events that move markets)
-    var causalWords = ['attack','strike','ban','sanction','crash','collapse','surge','launch','invade',
-                       'war','peace','deal','elect','resign','arrest','kill','bomb','fire','hack',
-                       'approve','reject','veto','sign','announce','deploy','test','default','fail',
-                       'win','lose','withdraw','escalat','negoti','threat','seize','block','halt',
-                       'suspend','tariff','restrict','cut','raise','lower','boost','plunge','soar'];
-    var hasCausal = causalWords.some(function(cw) { return headline.indexOf(cw) !== -1; });
-
-    // Also allow if very high overlap even without explicit causal words
-    return hasCausal || overlap >= 3;
+    // Server already does causal scoring; just check there's ANY word overlap
+    var h = headline.toLowerCase();
+    var q = marketQuestion.toLowerCase();
+    var hWords = h.replace(/[^\w\s]/g, ' ').split(/\s+/).filter(function(w) { return w.length > 3; });
+    var overlap = hWords.some(function(w) { return q.indexOf(w) !== -1; });
+    return overlap; // At least one meaningful word overlap
   }
 
   function initPolymarketMode() {
