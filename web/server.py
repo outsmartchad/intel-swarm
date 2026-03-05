@@ -796,10 +796,121 @@ def _gdelt_event_type(title):
         if w in t: return "POLITICAL"
     return "OTHER"
 
+_CONFLICT_GEO = {
+    # Domain → (lat, lng, label)
+    "war":        (32.0,  44.0,  "Middle East"),
+    "russia":     (48.5,  35.0,  "Ukraine/Russia"),
+    "china":      (35.0, 105.0,  "China"),
+    "north-korea":(40.0, 127.5,  "Korean Peninsula"),
+    "macro":      (40.7, -74.0,  "United States"),
+    "crypto":     (37.8, -122.4, "Global Markets"),
+    "commodities":(26.0,  50.5,  "Gulf Region"),
+    "religion":   (31.8,  35.2,  "Israel/Palestine"),
+    "health":     (46.2,   6.1,  "Geneva/WHO"),
+    "ai-agents":  (37.4, -122.1, "Silicon Valley"),
+    "singularity":(37.4, -122.1, "Silicon Valley"),
+    "culture":    (48.9,   2.3,  "Europe"),
+    "emerging":   (-1.3,  36.8,  "Africa/EM"),
+    "westeast":   (39.9, 116.4,  "Beijing"),
+    "blackbudget":(38.9, -77.0,  "Washington DC"),
+    "conspiracy": (38.9, -77.0,  "Washington DC"),
+    "epstein":    (40.7, -74.0,  "New York"),
+    "sports":     (34.0, -118.2, "Los Angeles"),
+    "quant":      (40.7, -74.0,  "Wall Street"),
+}
+
+# Per-finding keyword → geo override
+_FINDING_GEO_KEYWORDS = [
+    (["iran","persian","tehran","khamenei","irgc"],      (33.0, 53.7,  "Iran")),
+    (["ukraine","kyiv","kyiv","zelensky","kherson"],     (49.0, 32.0,  "Ukraine")),
+    (["russia","moscow","putin","kremlin"],              (55.8, 37.6,  "Russia")),
+    (["israel","tel aviv","idf","mossad","netanyahu"],   (31.8, 35.2,  "Israel")),
+    (["gaza","hamas","rafah","west bank"],               (31.4, 34.3,  "Gaza")),
+    (["lebanon","beirut","hezbollah"],                   (33.9, 35.5,  "Lebanon")),
+    (["taiwan","taipei","tsmc","strait"],                (23.7, 121.0, "Taiwan")),
+    (["north korea","kim jong","pyongyang"],             (39.0, 125.7, "North Korea")),
+    (["china","beijing","xi jinping","pla","ccp"],       (39.9, 116.4, "Beijing")),
+    (["saudi","aramco","riyadh","opec"],                 (24.7, 46.7,  "Saudi Arabia")),
+    (["hormuz","gulf","uae","dubai"],                    (26.0, 56.0,  "Persian Gulf")),
+    (["sudan","khartoum","rsf"],                         (15.6, 32.5,  "Sudan")),
+    (["myanmar","burma","naypyidaw"],                    (19.7, 96.1,  "Myanmar")),
+    (["syria","damascus","aleppo"],                      (34.8, 38.9,  "Syria")),
+    (["yemen","houthi","sanaa"],                         (15.4, 44.2,  "Yemen")),
+    (["trump","white house","pentagon","cia","fbi"],     (38.9, -77.0, "Washington DC")),
+    (["fed","federal reserve","treasury","powell"],      (38.9, -77.0, "Washington DC")),
+    (["nvidia","openai","silicon valley","anthropic"],   (37.4, -122.1,"Silicon Valley")),
+    (["bitcoin","crypto","defi","solana","ethereum"],    (40.7, -74.0, "New York")),
+    (["who","who headquarter","pandemic","virus"],       (46.2,  6.1,  "Geneva")),
+    (["nato","brussels","europe","eu "],                 (50.9,  4.4,  "Brussels")),
+    (["africa","nairobi","lagos","accra"],               (-1.3, 36.8,  "Africa")),
+    (["india","modi","delhi","mumbai"],                  (28.6, 77.2,  "India")),
+    (["pakistan","islamabad","karachi"],                 (33.7, 73.0,  "Pakistan")),
+    (["japan","tokyo","abe"],                            (35.7, 139.7, "Tokyo")),
+]
+
+def _geocode_finding(title, body, domain):
+    """Return (lat, lng, geo_label) for a finding."""
+    import random
+    text = (title + " " + (body or "")).lower()
+    for keywords, coords in _FINDING_GEO_KEYWORDS:
+        if any(kw in text for kw in keywords):
+            lat = coords[0] + random.uniform(-0.3, 0.3)
+            lng = coords[1] + random.uniform(-0.3, 0.3)
+            return round(lat, 3), round(lng, 3), coords[2]
+    # Fall back to domain default
+    if domain in _CONFLICT_GEO:
+        base = _CONFLICT_GEO[domain]
+        lat = base[0] + random.uniform(-0.5, 0.5)
+        lng = base[1] + random.uniform(-0.5, 0.5)
+        return round(lat, 3), round(lng, 3), base[2]
+    return None, None, ""
+
 @app.route("/conflict")
 def conflict_page():
-    lang = get_lang()
-    return render_template("conflict.html", lang=lang, researchers=RESEARCHERS)
+    lang    = get_lang()
+    date    = get_latest_date()
+    # Build intel events from all domain findings
+    intel_events = []
+    domain_colors = {r["id"]: r["colors"] for r in RESEARCHERS}
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [(s["id"], s) for s in subs] if subs else [(r["id"], r)]
+        for rid, meta in ids:
+            data = get_researcher_data(rid, date, "en")
+            for i, f in enumerate(data.get("findings") or []):
+                title = f.get("title") or ""
+                body  = f.get("body")  or ""
+                if not title: continue
+                lat, lng, geo = _geocode_finding(title, body, rid)
+                intel_events.append({
+                    "title":       title,
+                    "geo":         geo,
+                    "lat":         lat,
+                    "lng":         lng,
+                    "category":    rid,
+                    "domain_name": meta.get("name") or r.get("name") or rid,
+                    "domain_url":  f"/domain/{r['id']}/{date}?lang=en#finding-{i}",
+                    "date":        date,
+                    "url":         f.get("url") or "",
+                    "colors":      r.get("colors","#888,#aaa"),
+                })
+    # GDELT heat points from static file (lat/lng only for heat layer)
+    heat_data = []
+    static_path = os.path.join(BASE, "web", "static", "conflict-events.json")
+    if os.path.exists(static_path):
+        try:
+            with open(static_path) as f:
+                gd = json.load(f)
+            for ev in gd.get("events", []):
+                if ev.get("lat") and ev.get("lng"):
+                    intensity = 1.0 if ev.get("type") == "CONFLICT" else 0.4
+                    heat_data.append([ev["lat"], ev["lng"], intensity])
+        except Exception:
+            pass
+    return render_template("conflict.html",
+        lang=lang, researchers=RESEARCHERS,
+        intel_events=intel_events,
+        heat_data=heat_data[:2000])
 
 _COUNTRY_COORDS = {
     "iran": (32.4, 53.7), "ukraine": (49.0, 32.0), "russia": (61.5, 105.3),

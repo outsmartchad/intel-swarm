@@ -5,180 +5,297 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 <style>
-  .conflict-wrap { max-width: 1400px; margin: 0 auto; padding: 24px 20px; }
-  .conflict-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
-  .conflict-title { font-size: 22px; font-weight: 800; letter-spacing: -.03em; }
-  .conflict-sub   { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
-  .conflict-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-  .cbadge {
-    font-size: 10px; font-family: var(--mono); font-weight: 700; letter-spacing: .04em;
-    padding: 3px 8px; border-radius: 20px; border: 1px solid;
-    cursor: pointer; transition: all .15s;
+  .cm-wrap { display: flex; flex-direction: column; height: calc(100vh - 80px); min-height: 600px; }
+
+  /* Top bar */
+  .cm-bar {
+    flex-shrink: 0; display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px; border-bottom: 1px solid var(--border);
+    background: var(--masthead-bg); backdrop-filter: blur(10px);
+    flex-wrap: wrap;
   }
-  .cbadge.active { background: var(--accent); border-color: var(--accent); color: #000; }
-  .cbadge:not(.active) { border-color: var(--border); color: var(--muted); }
-  .cbadge:not(.active):hover { border-color: var(--accent); color: var(--accent); }
-  .conflict-stats { display: flex; gap: 20px; margin-bottom: 14px; flex-wrap: wrap; }
-  .cstat { font-family: var(--mono); }
-  .cstat-val { font-size: 20px; font-weight: 900; color: var(--accent); }
-  .cstat-lbl { font-size: 10px; color: var(--muted); letter-spacing: .05em; }
-  #conflict-map {
-    width: 100%; height: 560px; border-radius: 10px;
-    border: 1px solid var(--border); background: #0a0d12;
+  .cm-title { font-size: 15px; font-weight: 800; letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; }
+  .cm-live { display: flex; align-items: center; gap: 5px; font-size: 10px; font-family: var(--mono); color: #4ade80; font-weight: 700; }
+  .cm-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 1.5s infinite; }
+  .cm-stats { display: flex; gap: 20px; margin-left: auto; }
+  .cm-stat { text-align: center; }
+  .cm-stat-v { font-size: 16px; font-weight: 900; color: var(--accent); font-family: var(--mono); line-height: 1; }
+  .cm-stat-l { font-size: 9px; color: var(--muted); letter-spacing: .06em; font-family: var(--mono); }
+  .cm-filters { display: flex; gap: 6px; }
+  .cmf {
+    font-size: 10px; font-family: var(--mono); font-weight: 700;
+    padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border);
+    cursor: pointer; transition: all .15s; color: var(--muted);
+    background: transparent;
   }
-  .conflict-legend {
-    display: flex; align-items: center; gap: 16px; margin-top: 12px;
-    font-size: 11px; font-family: var(--mono); color: var(--muted);
+  .cmf.on { border-color: var(--accent); color: #000; background: var(--accent); }
+  .cmf:hover:not(.on) { border-color: var(--accent); color: var(--accent); }
+
+  /* Main layout: map left, sidebar right */
+  .cm-body { flex: 1; display: flex; overflow: hidden; }
+  #cmap { flex: 1; }
+
+  /* Sidebar */
+  .cm-side {
+    width: 320px; flex-shrink: 0; overflow-y: auto;
+    border-left: 1px solid var(--border);
+    background: var(--bg);
+    display: flex; flex-direction: column;
   }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
-  .conflict-feed { margin-top: 28px; }
-  .feed-title { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px; }
-  .cevent-list { display: flex; flex-direction: column; gap: 8px; }
-  .cevent {
-    display: flex; gap: 12px; align-items: flex-start;
-    padding: 10px 14px; border-radius: 8px;
-    background: var(--surface); border: 1px solid var(--border);
-    font-size: 13px; transition: border-color .15s;
+  .cm-side-hdr {
+    padding: 12px 16px 8px;
+    font-size: 10px; font-weight: 700; letter-spacing: .08em;
+    color: var(--muted); font-family: var(--mono);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0; position: sticky; top: 0;
+    background: var(--bg); z-index: 2;
   }
-  .cevent:hover { border-color: var(--border-hover); }
-  .cevent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-  .cevent-body { flex: 1; }
-  .cevent-title { font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
-  .cevent-meta  { font-size: 11px; color: var(--muted); font-family: var(--mono); }
-  .cevent-geo   { font-size: 11px; color: var(--accent); font-family: var(--mono); margin-top: 2px; }
-  .map-loading  { text-align: center; padding: 80px 0; color: var(--muted); font-family: var(--mono); font-size: 13px; }
-  @media(max-width:600px){ #conflict-map { height: 340px; } }
+  .cm-card {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 16px; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background .12s;
+    text-decoration: none; color: inherit;
+  }
+  .cm-card:hover { background: var(--surface-hover); }
+  .cm-card.active { background: var(--surface); border-left: 2px solid var(--accent); padding-left: 14px; }
+  .cm-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .cm-card-body { flex: 1; min-width: 0; }
+  .cm-card-title { font-size: 12px; font-weight: 600; line-height: 1.4; margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cm-card-meta { font-size: 10px; color: var(--muted); font-family: var(--mono); display: flex; gap: 8px; }
+  .cm-card-geo { font-size: 10px; color: var(--accent); font-family: var(--mono); margin-top: 2px; }
+
+  /* Map popup */
+  .leaflet-popup-content-wrapper {
+    background: rgba(10,13,20,0.96) !important;
+    border: 1px solid rgba(200,169,110,0.3) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 40px rgba(0,0,0,.8) !important;
+    color: #f0f0f0 !important;
+    backdrop-filter: blur(12px) !important;
+    max-width: 280px !important;
+  }
+  .leaflet-popup-tip { background: rgba(10,13,20,0.96) !important; }
+  .leaflet-popup-close-button { color: rgba(255,255,255,.4) !important; top: 8px !important; right: 8px !important; }
+  .cmpop { padding: 2px; }
+  .cmpop-tag { font-size: 9px; font-family: monospace; font-weight: 700; letter-spacing: .06em;
+    color: #000; padding: 2px 6px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
+  .cmpop-title { font-size: 13px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+  .cmpop-geo { font-size: 10px; color: #c8a96e; font-family: monospace; margin-bottom: 8px; }
+  .cmpop-link { font-size: 10px; color: #5b9cf6; text-decoration: none; font-family: monospace; }
+  .cmpop-link:hover { text-decoration: underline; }
+
+  /* Legend */
+  .cm-legend {
+    position: absolute; bottom: 24px; left: 16px; z-index: 999;
+    background: rgba(8,11,16,.88); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+    padding: 8px 12px; font-size: 10px; font-family: monospace; color: rgba(255,255,255,.7);
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .cm-legend-row { display: flex; align-items: center; gap: 7px; }
+  .cm-legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+  @media(max-width:768px){
+    .cm-body { flex-direction: column; }
+    .cm-side { width: 100%; height: 260px; border-left: none; border-top: 1px solid var(--border); }
+    #cmap { height: 360px; flex: none; }
+    .cm-stats { display: none; }
+  }
 </style>
 
-<div class="conflict-wrap">
-  <div class="conflict-header">
-    <div>
-      <div class="conflict-title">🌍 Global Conflict Monitor</div>
-      <div class="conflict-sub">Live data via GDELT · updates every 15 min · last 24h events</div>
+<div class="cm-wrap">
+  <!-- Top bar -->
+  <div class="cm-bar">
+    <div class="cm-title">
+      🌍 Global Conflict Monitor
+      <div class="cm-live"><div class="cm-live-dot"></div>GDELT · LIVE</div>
     </div>
-    <div class="conflict-badges">
-      <button class="cbadge active" data-type="all" onclick="filterType('all')">ALL</button>
-      <button class="cbadge" data-type="CONFLICT" onclick="filterType('CONFLICT')">⚔️ CONFLICT</button>
-      <button class="cbadge" data-type="PROTEST" onclick="filterType('PROTEST')">✊ PROTEST</button>
-      <button class="cbadge" data-type="POLITICAL" onclick="filterType('POLITICAL')">🏛 POLITICAL</button>
+    <div class="cm-filters">
+      <button class="cmf on"  data-f="all"      onclick="setFilter('all')">ALL</button>
+      <button class="cmf"     data-f="war"       onclick="setFilter('war')">⚔️ WAR</button>
+      <button class="cmf"     data-f="political" onclick="setFilter('political')">🏛 POLITICAL</button>
+      <button class="cmf"     data-f="intel"     onclick="setFilter('intel')">📡 INTEL</button>
+    </div>
+    <div class="cm-stats">
+      <div class="cm-stat"><div class="cm-stat-v" id="s-events">—</div><div class="cm-stat-l">EVENTS</div></div>
+      <div class="cm-stat"><div class="cm-stat-v" id="s-zones">—</div><div class="cm-stat-l">HOT ZONES</div></div>
+      <div class="cm-stat"><div class="cm-stat-v" id="s-updated">—</div><div class="cm-stat-l">UPDATED</div></div>
     </div>
   </div>
 
-  <div class="conflict-stats">
-    <div class="cstat"><div class="cstat-val" id="stat-total">—</div><div class="cstat-lbl">EVENTS</div></div>
-    <div class="cstat"><div class="cstat-val" id="stat-countries">—</div><div class="cstat-lbl">COUNTRIES</div></div>
-    <div class="cstat"><div class="cstat-val" id="stat-hottest">—</div><div class="cstat-lbl">HOTTEST ZONE</div></div>
-  </div>
+  <!-- Map + Sidebar -->
+  <div class="cm-body">
+    <div id="cmap" style="position:relative">
+      <div class="cm-legend">
+        <div style="font-weight:700;margin-bottom:3px;color:rgba(255,255,255,.5)">INTENSITY</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#ff3030"></div>Active conflict</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#ff8c00"></div>Escalation risk</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#c8a96e"></div>Intel finding</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#5b9cf6"></div>Political</div>
+      </div>
+    </div>
 
-  <div id="conflict-map"><div class="map-loading">Loading conflict data…</div></div>
-
-  <div class="conflict-legend">
-    <span><span class="legend-dot" style="background:#ff4444"></span>High intensity</span>
-    <span><span class="legend-dot" style="background:#ff8c00"></span>Medium</span>
-    <span><span class="legend-dot" style="background:#ffd700"></span>Low intensity</span>
-    <span style="margin-left:auto">Source: GDELT Project · Real-time open data</span>
-  </div>
-
-  <div class="conflict-feed">
-    <div class="feed-title">LATEST EVENTS</div>
-    <div class="cevent-list" id="event-feed"></div>
+    <div class="cm-side">
+      <div class="cm-side-hdr">ACTIVE INTELLIGENCE FEED</div>
+      <div id="cm-feed"></div>
+    </div>
   </div>
 </div>
 
 <script>
-var _map, _heatLayer, _markersLayer, _allEvents = [], _activeType = 'all';
+// ── Data from intel domains ──────────────────────────────────────────────────
+var INTEL_EVENTS = {{ intel_events | tojson }};
+
+// ── GDELT background heat data (from static file) ───────────────────────────
+var HEAT_DATA = {{ heat_data | tojson }};
+
+var _map, _heatLayer, _markerLayer;
+var _allMarkers = [];
+var _activeFilter = 'all';
+var _activeCard = null;
 
 function initMap() {
-  _map = L.map('conflict-map', {
-    center: [20, 10], zoom: 2,
+  _map = L.map('cmap', {
+    center: [25, 15], zoom: 2,
     zoomControl: true,
-    attributionControl: false
+    attributionControl: false,
   });
 
-  // Dark tile layer
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19, subdomains: 'abcd'
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    maxZoom: 18, subdomains: 'abcd',
   }).addTo(_map);
 
-  L.control.attribution({ prefix: false })
-    .addAttribution('© <a href="https://carto.com">CARTO</a> | <a href="https://www.gdeltproject.org">GDELT</a>')
+  // Labels layer on top
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+    maxZoom: 18, subdomains: 'abcd', pane: 'shadowPane',
+  }).addTo(_map);
+
+  L.control.attribution({prefix:false})
+    .addAttribution('© <a href="https://carto.com">CARTO</a> · <a href="https://www.gdeltproject.org">GDELT</a>')
     .addTo(_map);
 
-  _heatLayer   = L.heatLayer([], { radius: 28, blur: 22, maxZoom: 10,
-    gradient: {0.2:'#ffd700', 0.5:'#ff8c00', 0.8:'#ff4444', 1.0:'#cc0000'} }).addTo(_map);
-  _markersLayer = L.layerGroup().addTo(_map);
+  // Heat layer from GDELT
+  _heatLayer = L.heatLayer(HEAT_DATA, {
+    radius: 22, blur: 20, maxZoom: 10, max: 1.0,
+    gradient: {0.2:'#ffd000', 0.5:'#ff8c00', 0.8:'#ff3030', 1.0:'#cc0000'},
+  }).addTo(_map);
 
-  loadEvents();
+  _markerLayer = L.layerGroup().addTo(_map);
+
+  renderMarkers(INTEL_EVENTS);
+  renderFeed(INTEL_EVENTS);
+  updateStats(INTEL_EVENTS);
 }
 
-function loadEvents() {
-  fetch('/api/conflict/events')
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      _allEvents = data.events || [];
-      renderMap(_allEvents);
-      renderFeed(_allEvents.slice(0,20));
-      updateStats(_allEvents);
-    })
-    .catch(function(e){ console.error('Conflict load error', e); });
-}
+// Color by event category
+var CAT_COLORS = {
+  'war':       '#ff3030',
+  'conflict':  '#ff3030',
+  'russia':    '#ff5c5c',
+  'china':     '#ff5c5c',
+  'north-korea':'#ff8c00',
+  'macro':     '#5b9cf6',
+  'political': '#5b9cf6',
+  'intel':     '#c8a96e',
+  'default':   '#c8a96e',
+};
+function catColor(c) { return CAT_COLORS[c] || CAT_COLORS.default; }
 
-function filterType(t) {
-  _activeType = t;
-  document.querySelectorAll('.cbadge').forEach(function(b){
-    b.classList.toggle('active', b.dataset.type === t);
+function makeMarker(ev) {
+  if (!ev.lat || !ev.lng) return null;
+  var col = catColor(ev.category);
+  var radius = ev.category === 'war' || ev.category === 'conflict' ? 9 : 7;
+  var marker = L.circleMarker([ev.lat, ev.lng], {
+    radius: radius,
+    fillColor: col, color: 'rgba(0,0,0,0.5)',
+    weight: 1.5, fillOpacity: 0.88,
+    pane: 'markerPane',
   });
-  var filtered = t === 'all' ? _allEvents : _allEvents.filter(function(e){ return e.type === t; });
-  renderMap(filtered);
-  renderFeed(filtered.slice(0,20));
-  updateStats(filtered);
+
+  var tagColor = col;
+  var popHtml = '<div class="cmpop">' +
+    '<div class="cmpop-tag" style="background:' + tagColor + '">' + (ev.domain_name || ev.category || 'INTEL').toUpperCase() + '</div>' +
+    '<div class="cmpop-title">' + escHtml(ev.title) + '</div>' +
+    (ev.geo ? '<div class="cmpop-geo">📍 ' + escHtml(ev.geo) + '</div>' : '') +
+    (ev.url ? '<a class="cmpop-link" href="' + escHtml(ev.url) + '" target="_blank" rel="noopener">Read source ↗</a>' : '') +
+    '</div>';
+  marker.bindPopup(popHtml, {maxWidth: 280, autoPan: true});
+  marker._cmEv = ev;
+  return marker;
 }
 
-function renderMap(events) {
-  _heatLayer.setLatLngs([]);
-  _markersLayer.clearLayers();
-  var pts = [];
-  events.forEach(function(e) {
-    if (!e.lat || !e.lng) return;
-    var intensity = e.tone < -5 ? 1.0 : e.tone < -2 ? 0.6 : 0.3;
-    pts.push([e.lat, e.lng, intensity]);
+function renderMarkers(events) {
+  _markerLayer.clearLayers();
+  _allMarkers = [];
+  events.forEach(function(ev) {
+    var m = makeMarker(ev);
+    if (m) { _markerLayer.addLayer(m); _allMarkers.push(m); }
   });
-  _heatLayer.setLatLngs(pts);
 }
 
 function renderFeed(events) {
-  var feed = document.getElementById('event-feed');
-  if (!events.length) { feed.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px">No events found.</div>'; return; }
-  feed.innerHTML = events.map(function(e) {
-    var col = e.tone < -5 ? '#ff4444' : e.tone < -2 ? '#ff8c00' : '#ffd700';
-    var typeLabel = e.type || 'EVENT';
-    return '<a class="cevent" href="' + (e.url||'#') + '" target="_blank" rel="noopener">' +
-      '<div class="cevent-dot" style="background:' + col + '"></div>' +
-      '<div class="cevent-body">' +
-        '<div class="cevent-title">' + escHtml(e.title||'Untitled') + '</div>' +
-        '<div class="cevent-meta">' + typeLabel + ' · Tone: ' + (e.tone||0).toFixed(1) + ' · ' + (e.date||'') + '</div>' +
-        (e.geo ? '<div class="cevent-geo">📍 ' + escHtml(e.geo) + '</div>' : '') +
+  var feed = document.getElementById('cm-feed');
+  if (!events.length) {
+    feed.innerHTML = '<div style="padding:24px 16px;color:var(--muted);font-size:12px;font-family:monospace">No events for this filter.</div>';
+    return;
+  }
+  feed.innerHTML = events.map(function(ev, i) {
+    var col = catColor(ev.category);
+    return '<a class="cm-card" data-idx="' + i + '" href="' + (ev.domain_url||'#') + '" target="_blank" rel="noopener" onclick="flyTo(event,' + i + ')">' +
+      '<div class="cm-dot" style="background:' + col + '"></div>' +
+      '<div class="cm-card-body">' +
+        '<div class="cm-card-title">' + escHtml(ev.title) + '</div>' +
+        '<div class="cm-card-meta">' +
+          '<span style="color:' + col + '">' + (ev.domain_name||ev.category||'').toUpperCase() + '</span>' +
+          (ev.date ? ' <span>' + ev.date + '</span>' : '') +
+        '</div>' +
+        (ev.geo ? '<div class="cm-card-geo">📍 ' + escHtml(ev.geo) + '</div>' : '') +
       '</div></a>';
   }).join('');
 }
 
-function updateStats(events) {
-  document.getElementById('stat-total').textContent = events.length;
-  var countries = new Set(events.map(function(e){ return e.country||''; }).filter(Boolean));
-  document.getElementById('stat-countries').textContent = countries.size;
-  // Find hottest country by negative tone
-  var byCountry = {};
-  events.forEach(function(e){
-    if (!e.country) return;
-    if (!byCountry[e.country]) byCountry[e.country] = 0;
-    byCountry[e.country] += Math.abs(e.tone||0);
+function flyTo(e, idx) {
+  e.preventDefault();
+  var ev = _currentEvents[idx];
+  if (!ev || !ev.lat || !ev.lng) return;
+  _map.flyTo([ev.lat, ev.lng], 5, {duration: 1.2});
+  // Open popup
+  _allMarkers.forEach(function(m) {
+    if (m._cmEv === ev) { setTimeout(function(){ m.openPopup(); }, 1300); }
   });
-  var hottest = Object.entries(byCountry).sort(function(a,b){return b[1]-a[1];})[0];
-  document.getElementById('stat-hottest').textContent = hottest ? hottest[0] : '—';
+  // Highlight card
+  document.querySelectorAll('.cm-card').forEach(function(c){ c.classList.remove('active'); });
+  var card = document.querySelector('.cm-card[data-idx="' + idx + '"]');
+  if (card) card.classList.add('active');
+}
+
+var _currentEvents = INTEL_EVENTS;
+function setFilter(f) {
+  _activeFilter = f;
+  document.querySelectorAll('.cmf').forEach(function(b){ b.classList.toggle('on', b.dataset.f === f); });
+  var filtered = f === 'all' ? INTEL_EVENTS : INTEL_EVENTS.filter(function(e){
+    if (f === 'war')       return ['war','russia','china','north-korea','conflict'].includes(e.category);
+    if (f === 'political') return ['macro','political','westeast','conspiracy','epstein'].includes(e.category);
+    if (f === 'intel')     return ['blackbudget','singularity','ai-agents','quant','health'].includes(e.category);
+    return true;
+  });
+  _currentEvents = filtered;
+  renderMarkers(filtered);
+  renderFeed(filtered);
+  updateStats(filtered);
+}
+
+function updateStats(events) {
+  document.getElementById('s-events').textContent = events.length;
+  var zones = new Set(events.filter(function(e){ return e.geo; }).map(function(e){ return e.geo; }));
+  document.getElementById('s-zones').textContent = zones.size;
+  var now = new Date();
+  document.getElementById('s-updated').textContent = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
 }
 
 function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 document.addEventListener('DOMContentLoaded', initMap);
