@@ -98,7 +98,12 @@
   }
 
   function fetchMarket(card, terms, headline) {
-    fetch('/api/polymarket/market?q=' + encodeURIComponent(terms))
+    // Extract domain from card badge text (e.g. "war", "crypto")
+    var badge = card.querySelector('[class*="badge"],[class*="pill"],[class*="domain"]');
+    var domain = (badge ? badge.textContent : (card.getAttribute('data-domain') || '')).toLowerCase()
+      .replace(/[^a-z-]/g, '').trim();
+    var url = '/api/polymarket/market?q=' + encodeURIComponent(terms) + '&domain=' + encodeURIComponent(domain);
+    fetch(url)
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (!data || !data.question) {

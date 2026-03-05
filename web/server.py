@@ -487,72 +487,141 @@ def _pm_cached(key, ttl):
 def _pm_set(key, data):
     _pm_cache[key] = (time.time(), data)
 
+# Domain → Polymarket tag/keyword mapping for causal market search
+_PM_DOMAIN_TAGS = {
+    "war":        ["geopolitics", "politics"],
+    "commodities":["economics", "crypto"],
+    "russia":     ["geopolitics", "politics"],
+    "china":      ["geopolitics", "politics"],
+    "north-korea":["geopolitics", "politics"],
+    "macro":      ["economics", "politics"],
+    "crypto":     ["crypto"],
+    "ai-agents":  ["technology"],
+    "health":     ["science"],
+    "religion":   ["politics"],
+    "culture":    ["entertainment"],
+    "emerging":   ["politics", "economics"],
+    "singularity":["technology", "science"],
+    "quant":      ["economics"],
+    "westeast":   ["geopolitics"],
+    "blackbudget":["geopolitics", "politics"],
+    "conspiracy": ["politics"],
+    "epstein":    ["politics"],
+    "sports":     ["sports"],
+}
+
+def _pm_parse_market(m):
+    """Parse a Gamma market dict into our response format."""
+    outcomes_raw = m.get("outcomes", "[]")
+    if isinstance(outcomes_raw, str):
+        try: outcomes_list = json.loads(outcomes_raw)
+        except Exception: outcomes_list = []
+    else:
+        outcomes_list = outcomes_raw
+    prices_raw = m.get("outcomePrices", "[]")
+    if isinstance(prices_raw, str):
+        try: prices_list = json.loads(prices_raw)
+        except Exception: prices_list = []
+    else:
+        prices_list = prices_raw
+    tokens_raw = m.get("clobTokenIds", "[]")
+    if isinstance(tokens_raw, str):
+        try: tokens_list = json.loads(tokens_raw)
+        except Exception: tokens_list = []
+    else:
+        tokens_list = tokens_raw
+    if not outcomes_list:
+        return None
+    outcomes = []
+    for i, name in enumerate(outcomes_list):
+        price = float(prices_list[i]) if i < len(prices_list) else 0
+        token_id = tokens_list[i] if i < len(tokens_list) else ""
+        outcomes.append({"name": name, "price": price, "token_id": token_id})
+    return {
+        "condition_id": m.get("conditionId", ""),
+        "question": m.get("question", m.get("groupItemTitle", "")),
+        "outcomes": outcomes[:3],
+        "end_date_iso": m.get("endDate", m.get("endDateIso", "")),
+        "url": f"https://polymarket.com/event/{m.get('slug', '')}",
+    }
+
+def _pm_score(headline, question):
+    """Score causal relevance between headline and market question (0–10)."""
+    h = headline.lower()
+    q = question.lower()
+    stop = {"the","a","an","and","or","but","in","on","at","to","for","of","is","are",
+            "was","were","has","have","had","with","from","by","as","its","it","this",
+            "that","no","not","will","would","could","should","can","do","does","did"}
+    h_words = {w for w in re.findall(r'\w+', h) if len(w) > 3 and w not in stop}
+    q_words = {w for w in re.findall(r'\w+', q) if len(w) > 3 and w not in stop}
+    overlap = len(h_words & q_words)
+    causal = {"attack","strike","war","bomb","invade","sanction","ban","crash",
+              "collapse","surge","elect","resign","arrest","kill","fire","hack",
+              "approve","reject","deploy","test","default","fail","win","lose",
+              "withdraw","escalat","negoti","threat","seize","block","tariff",
+              "restrict","cut","raise","plunge","soar","deal","peace","ceasefire"}
+    has_causal = any(cw in h for cw in causal)
+    score = overlap * 2 + (3 if has_causal else 0)
+    return score
+
 @app.route("/api/polymarket/market")
 def pm_market():
     q = request.args.get("q", "").strip()
+    domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market:{q}"
+    cache_key = f"pm_market2:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
     try:
-        resp = http_requests.get(
-            "https://gamma-api.polymarket.com/markets",
-            params={"search": q, "limit": 3},
-            headers=_PM_HEADERS,
-            timeout=5,
-        )
-        resp.raise_for_status()
-        markets = resp.json()
-        if not markets:
-            _pm_set(cache_key, {})
-            return flask_jsonify({})
-        # Return first market with outcomes
-        for m in markets:
-            outcomes_raw = m.get("outcomes", "[]")
-            if isinstance(outcomes_raw, str):
-                try:
-                    outcomes_list = json.loads(outcomes_raw)
-                except Exception:
-                    outcomes_list = []
-            else:
-                outcomes_list = outcomes_raw
-            prices_raw = m.get("outcomePrices", "[]")
-            if isinstance(prices_raw, str):
-                try:
-                    prices_list = json.loads(prices_raw)
-                except Exception:
-                    prices_list = []
-            else:
-                prices_list = prices_raw
-            tokens_raw = m.get("clobTokenIds", "[]")
-            if isinstance(tokens_raw, str):
-                try:
-                    tokens_list = json.loads(tokens_raw)
-                except Exception:
-                    tokens_list = []
-            else:
-                tokens_list = tokens_raw
-            if not outcomes_list:
+        # Get tag list for this domain (default to geopolitics + politics)
+        tags = _PM_DOMAIN_TAGS.get(domain, ["geopolitics", "politics"])
+        best_result = None
+        best_score = 3  # Minimum threshold to show an overlay
+
+        for tag in tags:
+            resp = http_requests.get(
+                "https://gamma-api.polymarket.com/events",
+                params={"limit": 20, "order": "volume", "ascending": "false",
+                        "tag_slug": tag, "active": "true"},
+                headers=_PM_HEADERS,
+                timeout=5,
+            )
+            resp.raise_for_status()
+            events = resp.json()
+            if not isinstance(events, list):
                 continue
-            outcomes = []
-            for i, name in enumerate(outcomes_list):
-                price = float(prices_list[i]) if i < len(prices_list) else 0
-                token_id = tokens_list[i] if i < len(tokens_list) else ""
-                outcomes.append({"name": name, "price": price, "token_id": token_id})
-            result = {
-                "condition_id": m.get("conditionId", ""),
-                "question": m.get("question", ""),
-                "outcomes": outcomes[:3],
-                "end_date_iso": m.get("endDate", ""),
-                "url": f"https://polymarket.com/event/{m.get('slug', '')}",
-            }
-            _pm_set(cache_key, result)
-            return flask_jsonify(result)
+            for event in events:
+                # Try matching against event title first
+                ev_question = event.get("title", "")
+                ev_score = _pm_score(q, ev_question)
+                # Also check individual markets inside the event
+                for m in event.get("markets", [])[:5]:
+                    mq = m.get("question", m.get("groupItemTitle", ""))
+                    ms = _pm_score(q, mq)
+                    if ms > ev_score:
+                        ev_score = ms
+                    if ms >= best_score:
+                        parsed = _pm_parse_market(m)
+                        if parsed and parsed["outcomes"]:
+                            best_score = ms
+                            best_result = parsed
+                if ev_score >= best_score and not best_result:
+                    # Use first market from this event
+                    for m in event.get("markets", [])[:3]:
+                        parsed = _pm_parse_market(m)
+                        if parsed and parsed["outcomes"]:
+                            best_result = parsed
+                            best_score = ev_score
+                            break
+
+        if best_result:
+            _pm_set(cache_key, best_result)
+            return flask_jsonify(best_result)
         _pm_set(cache_key, {})
         return flask_jsonify({})
-    except Exception:
+    except Exception as e:
         return flask_jsonify({})
 
 @app.route("/api/polymarket/chart")
