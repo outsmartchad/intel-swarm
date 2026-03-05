@@ -9,7 +9,8 @@ Strategies (tried in order):
   3. Plain curl-style UA
   4. Google AMP version of the page
   5. Wayback Machine (latest snapshot)
-  6. Domain homepage og:image (last resort — at least shows the outlet brand)
+  6. Domain homepage og:image (brand fallback)
+  7. Brave Image Search — searches for a relevant image using the finding title
 
 Usage:
   python3 scrape-images-retry.py <findings.md>
@@ -22,6 +23,9 @@ from bs4 import BeautifulSoup
 
 BASE  = Path(__file__).resolve().parents[1]
 TIMEOUT = 10
+
+# Brave Search API key (loaded from openclaw config or env)
+BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "BRAVE_API_KEY_REDACTED")
 
 # ── User-Agent rotation ────────────────────────────────────────────────────────
 USER_AGENTS = [
@@ -110,7 +114,48 @@ def try_homepage(url):
                 return img
     return None
 
-def find_image(url):
+def brave_image_search(query):
+    """Search Brave Images API for a relevant image URL."""
+    if not BRAVE_API_KEY:
+        return None
+    try:
+        r = requests.get(
+            "https://api.search.brave.com/res/v1/images/search",
+            headers={
+                "Accept": "application/json",
+                "Accept-Encoding": "gzip",
+                "X-Subscription-Token": BRAVE_API_KEY,
+            },
+            params={"q": query, "count": 5, "safesearch": "off"},
+            timeout=10,
+        )
+        if r.status_code != 200:
+            return None
+        data = r.json()
+        results = data.get("results", [])
+        for result in results:
+            img_url = result.get("thumbnail", {}).get("src") or result.get("url")
+            # Prefer full-size source over thumbnail
+            src = result.get("properties", {}).get("url") or img_url
+            if src and src.startswith("http") and is_usable(src):
+                return src
+    except Exception:
+        pass
+    return None
+
+def extract_title_from_block(block):
+    """Extract the finding title from a markdown block for search query."""
+    m = re.search(r"\*\*(.+?)\*\*", block)
+    if m:
+        return m.group(1).strip()
+    # Fallback: first non-empty line
+    for line in block.split("\n"):
+        line = line.strip().lstrip("-* ")
+        if len(line) > 10:
+            return line[:120]
+    return None
+
+def find_image(url, title=None):
     """Try all strategies in order. Return first image URL found."""
     # Strategy 1-4: different User-Agents on the original URL
     for ua in USER_AGENTS:
@@ -132,6 +177,14 @@ def find_image(url):
     if img:
         print(f"    ✓ Domain homepage fallback")
         return img
+
+    # Strategy 7: Brave Image Search — find relevant image by title
+    if title:
+        query = re.sub(r"[^\w\s]", " ", title)[:100].strip()
+        img = brave_image_search(query)
+        if img:
+            print(f"    ✓ Brave Image Search: '{query[:50]}'")
+            return img
 
     return None
 
@@ -160,15 +213,16 @@ def download_image(img_url, dest_dir):
 
 # ── URL extraction from findings file ─────────────────────────────────────────
 def extract_finding_urls(findings_path):
-    """Return list of (finding_idx, first_url) for all findings."""
+    """Return list of (finding_idx, first_url, title) for all findings."""
     text   = Path(findings_path).read_text()
-    blocks = re.split(r"\n(?=[-*]\s*\*\*)", text)
-    blocks = [b for b in blocks if re.search(r"\*\*.+\*\*", b)]
+    blocks = re.split(r"\n(?=[-*]\s*(?:\*\*|🟢|🟡|🔴))", text)
+    blocks = [b for b in blocks if len(b.strip()) > 20 and re.search(r"https?://", b)]
     result = []
     for i, block in enumerate(blocks):
         m = re.search(r"https?://[^\s\)\]\"\'<>,]+", block)
         url = m.group(0).rstrip(".,;)") if m else None
-        result.append((i, url))
+        title = extract_title_from_block(block)
+        result.append((i, url, title))
     return result
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -195,7 +249,7 @@ def main(findings_path):
 
     # Find which finding indices are missing
     all_findings = extract_finding_urls(findings_path)
-    missing = [(i, url) for i, url in all_findings if i not in existing and url]
+    missing = [(i, url, title) for i, url, title in all_findings if i not in existing and url]
 
     if not missing:
         print(f"✅ All findings already have images — nothing to retry")
@@ -204,9 +258,9 @@ def main(findings_path):
     print(f"🔄 Retrying {len(missing)} missing finding(s) for {rid}/{date_str}")
     new_found = 0
 
-    for idx, url in missing:
+    for idx, url, title in missing:
         print(f"  [{idx}] {url[:70]}")
-        img_url = find_image(url)
+        img_url = find_image(url, title=title)
         if not img_url:
             print(f"    ✗ No image found")
             continue

@@ -13,5 +13,11 @@
     "finding_idx": 2,
     "source_url": "https://watcher.guru/news/brazil-makes-major-declaration-on-brics-currency-de-dollarization",
     "image_path": "/static/images/2026-03-05/macro/d54e60d70c01.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://www.oecd.org/en/publications/2026/03/global-debt-report-2026_59d2d627.html",
+    "image_path": "/static/images/2026-03-05/macro/194ff14a59fb.jpg",
+    "via": "retry"
   }
 ]
