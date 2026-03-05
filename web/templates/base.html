@@ -147,8 +147,20 @@
       transition: border-color .2s;
     }
     .date-select:hover { border-color: var(--accent); }
-    .masthead-tagline { font-size: 11px; color: var(--muted); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 340px; }
+    .masthead-tagline { font-size: 11px; color: var(--muted); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
     @media (max-width: 860px) { .masthead-tagline { display: none; } }
+    .masthead-quicklinks { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .masthead-quicklinks a {
+      font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: .05em;
+      color: var(--muted); text-decoration: none; white-space: nowrap;
+      padding: 4px 9px; border-radius: 4px;
+      border: 1px solid var(--border);
+      transition: all .18s;
+    }
+    .masthead-quicklinks a:hover { color: var(--text); border-color: rgba(200,169,110,0.4); background: rgba(200,169,110,0.06); }
+    .masthead-quicklinks a.ql-terminal { color: var(--accent); border-color: rgba(200,169,110,0.3); }
+    .masthead-quicklinks a.ql-terminal:hover { background: rgba(200,169,110,0.1); border-color: var(--accent); }
+    @media (max-width: 780px) { .masthead-quicklinks { display: none; } }
     .gh-link { color: var(--muted); display: flex; align-items: center; transition: color .15s; }
     .gh-link:hover { color: var(--text); }
 
@@ -548,6 +560,10 @@
     INTEL SWARM
   </a>
   <span class="masthead-tagline">A swarm of AI researchers delivering daily intelligence. Signal over noise.</span>
+  <div class="masthead-quicklinks">
+    <a href="/conflict?lang={{ lang|default('en') }}" {% if request.path == '/conflict' %}style="color:var(--text);border-color:rgba(200,169,110,0.4)"{% endif %}>🌍 {% if (lang|default('en')) == 'zh' %}衝突地圖{% else %}Conflict Map{% endif %}</a>
+    <a href="/terminal?lang={{ lang|default('en') }}" class="ql-terminal" {% if request.path == '/terminal' %}style="color:var(--accent);border-color:var(--accent)"{% endif %}>⚡ {% if (lang|default('en')) == 'zh' %}終端機{% else %}Terminal{% endif %}</a>
+  </div>
   <div class="masthead-divider"></div>
   <div class="masthead-meta">
     <div class="masthead-search">
@@ -601,13 +617,6 @@
       {{ r.emoji }} {% if (lang|default('en')) == 'zh' %}{{ r.zh }}{% else %}{{ r.name }}{% endif %}
     </a>
     {% endfor %}
-    <div class="nav-sep"></div>
-    <a href="/conflict" {% if request.path == '/conflict' %}data-active="true"{% endif %}>
-      🌍 {% if (lang|default('en')) == 'zh' %}衝突地圖{% else %}Conflict Map{% endif %}
-    </a>
-    <a href="/terminal" {% if request.path == '/terminal' %}data-active="true"{% endif %} style="color:var(--accent);font-weight:700">
-      ⚡ {% if (lang|default('en')) == 'zh' %}終端機{% else %}Terminal{% endif %}
-    </a>
   </nav>
   <button class="nav-arrow" id="navRight" onclick="navScroll(1)" aria-label="Scroll right">&#8250;</button>
 </div>
