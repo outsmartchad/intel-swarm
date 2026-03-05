@@ -5,6 +5,12 @@
     "image_path": "/static/images/2026-03-05/commodities/00d070bfd95f.png"
   },
   {
+    "finding_idx": 1,
+    "source_url": "https://www.euronews.com/business/2026/03/04/passage-denied-hormuz-shutdown-keeps-oil-prices-on-an-upward-trajectory",
+    "image_path": "/static/images/2026-03-05/commodities/5962177dbf49.png",
+    "via": "retry"
+  },
+  {
     "finding_idx": 2,
     "source_url": "https://www.sbcgold.com/gold-price-forecasts/gold-price-forecast-2026/",
     "image_path": "/static/images/2026-03-05/commodities/b91ab4987d2b.jpg",

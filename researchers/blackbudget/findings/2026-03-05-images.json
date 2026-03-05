@@ -5,8 +5,20 @@
     "image_path": "/static/images/2026-03-05/blackbudget/7c43780f485b.jpg"
   },
   {
+    "finding_idx": 1,
+    "source_url": "https://www.prnewswire.com/news-releases/darpa-taps-rtx-to-advance-kilometer-range-x-ray-vision-302691631.html",
+    "image_path": "/static/images/2026-03-05/blackbudget/184a004f9e83.gif",
+    "via": "retry"
+  },
+  {
     "finding_idx": 2,
     "source_url": "https://rollcall.com/2026/02/26/hill-added-34-billion-in-unrequested-defense-program-funds/",
     "image_path": "/static/images/2026-03-05/blackbudget/ebb4d59431db.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://breakingdefense.com/2026/03/pentagon-plans-for-reconciliation-slush-fund-make-a-perfect-case-against-another-round/",
+    "image_path": "/static/images/2026-03-05/blackbudget/77a6211e4145.jpg",
+    "via": "retry"
   }
 ]
