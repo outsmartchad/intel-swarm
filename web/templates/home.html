@@ -339,7 +339,7 @@ function setView(v) {
   document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
   document.getElementById('btn-feed').classList.toggle('active', v === 'feed');
   localStorage.setItem('intel-view', v);
-  filterCards(document.getElementById('search-input').value);
+  const si = document.getElementById('global-search'); filterCards(si ? si.value : '');
 }
 
 function filterCards(q) {

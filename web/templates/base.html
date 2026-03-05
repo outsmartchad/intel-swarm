@@ -352,7 +352,8 @@
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
       <input class="msearch-input" id="global-search" type="text" autocomplete="off"
-        placeholder="{% if (lang|default('en')) == 'zh' %}搜尋…{% else %}Search…{% endif %}" />
+        placeholder="{% if (lang|default('en')) == 'zh' %}搜尋…{% else %}Search…{% endif %}"
+        oninput="if(typeof filterCards==='function') filterCards(this.value)" />
       <span class="gsearch-count" id="search-count"></span>
     </div>
     <div class="live-badge"><span class="live-dot"></span>LIVE</div>
