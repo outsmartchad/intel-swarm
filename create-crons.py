@@ -325,6 +325,50 @@ def create_synthesis_cron():
         print(f"  stderr: {result.stderr[:200]}")
     return None
 
+AUTOPUSH_PROMPT = """INTERNAL_TASK - AUTO PUSH INTEL TO GITHUB
+
+Run the following shell commands using the exec tool to commit and push todays intel findings to GitHub (which will trigger a Vercel auto-deploy):
+
+```
+cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main && echo "PUSH OK"
+```
+
+If the push succeeds, reply with: "✅ Intel pushed to GitHub. Vercel deploying now → https://intel-swarm.vercel.app/"
+If it fails, reply with the error so it can be investigated."""
+
+
+def create_autopush_cron():
+    cmd = [
+        "openclaw", "cron", "add",
+        "--name", "intel-autopush",
+        "--description", "Auto-commit and push daily intel findings to GitHub → triggers Vercel deploy",
+        "--cron", "0 8 * * *",  # 08:00 HKT (after intel-chief at 07:45)
+        "--tz", "Asia/Hong_Kong",
+        "--session", "isolated",
+        "--model", "anthropic/claude-sonnet-4-6",
+        "--message", AUTOPUSH_PROMPT,
+        "--timeout-seconds", "60",
+        "--announce",
+        "--to", "934847281",
+        "--channel", "telegram",
+        "--json"
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode == 0:
+        try:
+            data = json.loads(result.stdout)
+            print(f"  Created: Auto-push | ID: {data.get('id', '?')}")
+            return data.get('id')
+        except:
+            print(f"  Created: Auto-push (JSON parse error)")
+            print(f"  stdout: {result.stdout[:200]}")
+    else:
+        print(f"  FAILED: Auto-push")
+        print(f"  stderr: {result.stderr[:200]}")
+    return None
+
+
 if __name__ == "__main__":
     ids = {}
     
@@ -338,13 +382,20 @@ if __name__ == "__main__":
     synthesis_id = create_synthesis_cron()
     if synthesis_id:
         ids["synthesis"] = synthesis_id
-    
+
+    print("\nCreating auto-push cron (run at 08:00 HKT)...")
+    autopush_id = create_autopush_cron()
+    if autopush_id:
+        ids["autopush"] = autopush_id
+
     # Save IDs
     with open("/Users/outsmart/.openclaw/workspace/projects/intel-swarm/cron-ids.json", "w") as f:
         json.dump(ids, f, indent=2)
     
-    print(f"\nDone! {len(ids)}/14 crons created.")
+    print(f"\nDone! {len(ids)}/15 crons created.")
     print(f"IDs saved to projects/intel-swarm/cron-ids.json")
     print("\nSchedule:")
-    print("  22:00 HKT — 13 researchers run in parallel")
-    print("  23:00 HKT — synthesis reads all findings + sends Telegram briefing")
+    print("  06:00 HKT — 13 researchers run in parallel")
+    print("  07:00 HKT — synthesis reads all findings + sends Telegram briefing")
+    print("  07:45 HKT — intel-chief final briefing")
+    print("  08:00 HKT — auto-push to GitHub → Vercel deploys")
