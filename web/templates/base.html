@@ -138,17 +138,45 @@
 
     /* ── DOMAIN NAV ── */
     .masthead-search { position: relative; display: flex; align-items: center; }
-    .msearch-icon { position: absolute; left: 8px; color: rgba(255,255,255,.3); pointer-events: none; }
+    .msearch-icon { position: absolute; left: 8px; color: rgba(255,255,255,.3); pointer-events: none; z-index: 1; }
     .msearch-input {
       background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-      border-radius: 6px; padding: 5px 52px 5px 26px;
+      border-radius: 6px; padding: 5px 10px 5px 26px;
       color: var(--text); font-size: 12px; outline: none; width: 180px;
       transition: border .15s, background .15s, width .2s;
     }
     .msearch-input::placeholder { color: rgba(255,255,255,.25); }
-    .msearch-input:focus { border-color: rgba(200,169,110,.45); background: rgba(255,255,255,.08); width: 240px; }
-    .gsearch-count { position: absolute; right: 8px; font-size: 10px; color: rgba(255,255,255,.3); font-family: var(--mono); white-space: nowrap; }
+    .msearch-input:focus { border-color: rgba(200,169,110,.45); background: rgba(255,255,255,.08); width: 280px; }
     @media (max-width: 700px) { .masthead-search { display: none; } }
+
+    /* Search dropdown */
+    .search-dropdown {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      width: 380px; max-height: 480px; overflow-y: auto;
+      background: #0f1318; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px; box-shadow: 0 16px 48px rgba(0,0,0,.8);
+      z-index: 200; display: none;
+    }
+    .search-dropdown.open { display: block; }
+    .sdrop-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; text-decoration: none; color: inherit;
+      border-bottom: 1px solid rgba(255,255,255,.05); transition: background .1s;
+    }
+    .sdrop-item:last-child { border-bottom: none; }
+    .sdrop-item:hover, .sdrop-item.active { background: rgba(255,255,255,.05); }
+    .sdrop-img {
+      width: 52px; min-width: 52px; height: 36px;
+      border-radius: 3px; background-size: cover; background-position: center; flex-shrink: 0;
+    }
+    .sdrop-body { flex: 1; min-width: 0; }
+    .sdrop-cat { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+    .sdrop-title { font-size: 12px; font-weight: 600; color: #fff; line-height: 1.35;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sdrop-snippet { font-size: 11px; color: rgba(255,255,255,.4); line-height: 1.4; margin-top: 2px;
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+    .sdrop-empty { padding: 20px; text-align: center; font-size: 12px; color: rgba(255,255,255,.3); }
+    .sdrop-loading { padding: 16px; text-align: center; font-size: 11px; color: rgba(255,255,255,.3); font-family: var(--mono); }
     .domain-nav {
       position: sticky; top: 54px; z-index: 99;
       background: rgba(8,11,16,0.75);
@@ -353,7 +381,10 @@
       </svg>
       <input class="msearch-input" id="global-search" type="text" autocomplete="off"
         placeholder="{% if (lang|default('en')) == 'zh' %}搜尋…{% else %}Search…{% endif %}"
-        oninput="if(typeof filterCards==='function') filterCards(this.value)" />
+        oninput="globalSearch(this.value)"
+        onkeydown="searchKeyNav(event)"
+        autocomplete="off" />
+      <div class="search-dropdown" id="search-dropdown"></div>
       <span class="gsearch-count" id="search-count"></span>
     </div>
     <div class="live-badge"><span class="live-dot"></span>LIVE</div>
@@ -474,6 +505,101 @@ function navigateDate(d){
   if(m){ const a=document.querySelector(`.domain-nav [data-rid="${m[1]}"]`); if(a) a.setAttribute('data-active','true'); }
   const h=document.querySelector('.domain-nav a[href^="/?"]');
   if(h && window.location.pathname=='/') h.setAttribute('data-active','true');
+})();
+</script>
+<script>
+(function() {
+  var _timer = null;
+  var _active = -1;
+  var _results = [];
+  var _lang = "{{ lang|default('en') }}";
+  var _date = "{{ date|default('') }}";
+
+  function getDate() {
+    // Try date from URL or use current date in select
+    var sel = document.querySelector('.date-select');
+    return sel ? sel.value : (_date || '');
+  }
+
+  window.globalSearch = function(q) {
+    // Also drive homepage card filter if available
+    if (typeof filterCards === 'function') filterCards(q);
+
+    clearTimeout(_timer);
+    var drop = document.getElementById('search-dropdown');
+    if (!q || q.trim().length < 2) { closeDrop(); return; }
+
+    drop.innerHTML = '<div class="sdrop-loading">Searching…</div>';
+    drop.classList.add('open');
+
+    _timer = setTimeout(function() {
+      var date = getDate();
+      var url = '/api/search?q=' + encodeURIComponent(q) + '&date=' + date + '&lang=' + _lang;
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) { renderDrop(data, q); })
+        .catch(function() { drop.innerHTML = '<div class="sdrop-empty">Search unavailable</div>'; });
+    }, 220);
+  };
+
+  function renderDrop(results, q) {
+    _results = results;
+    _active = -1;
+    var drop = document.getElementById('search-dropdown');
+    if (!results.length) {
+      drop.innerHTML = '<div class="sdrop-empty">No results for "' + q + '"</div>';
+      return;
+    }
+    drop.innerHTML = results.map(function(r, i) {
+      var col2 = (r.colors || '#888,#aaa').split(',')[1];
+      var col1 = (r.colors || '#888,#aaa').split(',')[0];
+      var img = r.image
+        ? 'background-image:url("' + r.image + '")'
+        : 'background:linear-gradient(135deg,' + col1 + ' 0%,' + col2 + ' 100%)';
+      return '<a href="' + r.url + '" class="sdrop-item" data-idx="' + i + '">' +
+        '<div class="sdrop-img" style="' + img + '"></div>' +
+        '<div class="sdrop-body">' +
+          '<div class="sdrop-cat" style="color:' + col2 + '">' + r.domain_emoji + ' ' + r.domain_name + '</div>' +
+          '<div class="sdrop-title">' + highlight(r.title, q) + '</div>' +
+          (r.snippet ? '<div class="sdrop-snippet">' + r.snippet + '</div>' : '') +
+        '</div></a>';
+    }).join('');
+  }
+
+  function highlight(text, q) {
+    if (!text) return '';
+    var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return text.replace(re, '<mark style="background:rgba(200,169,110,.3);color:#fff;border-radius:2px">$1</mark>');
+  }
+
+  window.searchKeyNav = function(e) {
+    var drop = document.getElementById('search-dropdown');
+    var items = drop.querySelectorAll('.sdrop-item');
+    if (!items.length) return;
+    if (e.key === 'ArrowDown')  { e.preventDefault(); setActive(Math.min(_active + 1, items.length - 1)); }
+    if (e.key === 'ArrowUp')    { e.preventDefault(); setActive(Math.max(_active - 1, -1)); }
+    if (e.key === 'Enter' && _active >= 0) { e.preventDefault(); items[_active].click(); }
+    if (e.key === 'Escape') closeDrop();
+  };
+
+  function setActive(i) {
+    var drop = document.getElementById('search-dropdown');
+    drop.querySelectorAll('.sdrop-item').forEach(function(el, idx) {
+      el.classList.toggle('active', idx === i);
+    });
+    _active = i;
+  }
+
+  function closeDrop() {
+    var drop = document.getElementById('search-dropdown');
+    if (drop) { drop.classList.remove('open'); drop.innerHTML = ''; }
+    _active = -1;
+  }
+
+  // Close on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.masthead-search')) closeDrop();
+  });
 })();
 </script>
 </body>

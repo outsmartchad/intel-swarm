@@ -409,6 +409,53 @@ def domain_date(rid, date):
         **data,
     )
 
+@app.route("/api/search")
+def api_search():
+    from flask import jsonify
+    q    = request.args.get("q", "").strip().lower()
+    date = request.args.get("date", get_latest_date())
+    lang = get_lang()
+    if not q or len(q) < 2:
+        return jsonify([])
+
+    results = []
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [s["id"] for s in subs] if subs else [r["id"]]
+        for rid in ids:
+            data = get_researcher_data(rid, date, lang)
+            for i, f in enumerate(data.get("findings") or []):
+                title = f.get("title", "")
+                body  = f.get("body",  "")
+                if q in title.lower() or q in body.lower():
+                    results.append({
+                        "domain_id":    r["id"],
+                        "domain_name":  r["zh"] if lang == "zh" else r["name"],
+                        "domain_emoji": r["emoji"],
+                        "colors":       r["colors"],
+                        "title":        title,
+                        "snippet":      body[:120],
+                        "image":        f.get("image"),
+                        "url":          f"/domain/{r['id']}/{date}?lang={lang}",
+                        "finding_idx":  i,
+                    })
+            # Also search headline
+            hl = data.get("headline", "") or ""
+            if q in hl.lower() and not any(res["domain_id"] == r["id"] for res in results[-5:]):
+                results.append({
+                    "domain_id":    r["id"],
+                    "domain_name":  r["zh"] if lang == "zh" else r["name"],
+                    "domain_emoji": r["emoji"],
+                    "colors":       r["colors"],
+                    "title":        hl,
+                    "snippet":      "",
+                    "image":        data.get("cover_image"),
+                    "url":          f"/domain/{r['id']}/{date}?lang={lang}",
+                    "finding_idx":  0,
+                })
+
+    return jsonify(results[:12])
+
 @app.route("/brief")
 def brief():
     return brief_date(get_latest_date())
