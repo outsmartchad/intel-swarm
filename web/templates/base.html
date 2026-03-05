@@ -160,7 +160,12 @@
     .masthead-quicklinks a:hover { color: var(--text); border-color: rgba(200,169,110,0.4); background: rgba(200,169,110,0.06); }
     .masthead-quicklinks a.ql-terminal { color: var(--accent); border-color: rgba(200,169,110,0.3); }
     .masthead-quicklinks a.ql-terminal:hover { background: rgba(200,169,110,0.1); border-color: var(--accent); }
-    @media (max-width: 780px) { .masthead-quicklinks { display: none; } }
+    /* mobile: icon-only, no label text */
+    @media (max-width: 600px) {
+      .masthead-quicklinks { gap: 4px; }
+      .masthead-quicklinks a { padding: 4px 7px; }
+      .masthead-quicklinks .ql-label { display: none; }
+    }
     .gh-link { color: var(--muted); display: flex; align-items: center; transition: color .15s; }
     .gh-link:hover { color: var(--text); }
 
@@ -561,8 +566,8 @@
   </a>
   <span class="masthead-tagline">A swarm of AI researchers delivering daily intelligence. Signal over noise.</span>
   <div class="masthead-quicklinks">
-    <a href="/conflict?lang={{ lang|default('en') }}" {% if request.path == '/conflict' %}style="color:var(--text);border-color:rgba(200,169,110,0.4)"{% endif %}>🌍 {% if (lang|default('en')) == 'zh' %}衝突地圖{% else %}Conflict Map{% endif %}</a>
-    <a href="/terminal?lang={{ lang|default('en') }}" class="ql-terminal" {% if request.path == '/terminal' %}style="color:var(--accent);border-color:var(--accent)"{% endif %}>⚡ {% if (lang|default('en')) == 'zh' %}終端機{% else %}Terminal{% endif %}</a>
+    <a href="/conflict?lang={{ lang|default('en') }}" {% if request.path == '/conflict' %}style="color:var(--text);border-color:rgba(200,169,110,0.4)"{% endif %}>🌍<span class="ql-label">&nbsp;{% if (lang|default('en')) == 'zh' %}衝突地圖{% else %}Conflict Map{% endif %}</span></a>
+    <a href="/terminal?lang={{ lang|default('en') }}" class="ql-terminal" {% if request.path == '/terminal' %}style="color:var(--accent);border-color:var(--accent)"{% endif %}>⚡<span class="ql-label">&nbsp;{% if (lang|default('en')) == 'zh' %}終端機{% else %}Terminal{% endif %}</span></a>
   </div>
   <div class="masthead-divider"></div>
   <div class="masthead-meta">
