@@ -3,6 +3,7 @@
 
 import subprocess
 import json
+import os
 
 AGENTS = [
     {
@@ -198,7 +199,7 @@ Ask yourself:
 - What is the actionable edge for someone building at the intersection of crypto + AI agents?
 - What is the West-East information arbitrage today?
 
-## Step 3: Send briefing to Telegram (934847281)
+## Step 3: Send briefing to Telegram (your TELEGRAM_USER_ID)
 Format exactly like this:
 
 INTEL BRIEFING - [DATE]
@@ -306,7 +307,7 @@ def create_synthesis_cron():
         "--message", SYNTHESIS_PROMPT,
         "--timeout-seconds", "180",
         "--announce",
-        "--to", "934847281",
+        "--to", os.environ.get("TELEGRAM_USER_ID", "YOUR_TELEGRAM_USER_ID"),
         "--channel", "telegram",
         "--json"
     ]
@@ -341,22 +342,22 @@ done
 
 Step 2 - Run full translation pipeline for today:
 ```
-cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && bash web/translate-all.sh $(date +%Y-%m-%d)
+cd ${HOME}/.openclaw/workspace/projects/intel-swarm && bash web/translate-all.sh $(date +%Y-%m-%d)
 ```
 
 Step 3 - Scrape OG images for all researchers for today:
 ```
-cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && python3 web/scrape-all-images.sh $(date +%Y-%m-%d)
+cd ${HOME}/.openclaw/workspace/projects/intel-swarm && python3 web/scrape-all-images.sh $(date +%Y-%m-%d)
 ```
 
 Step 4 - Commit and push everything to GitHub:
 ```
-cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main
+cd ${HOME}/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main
 ```
 
 Step 5 - Deploy to Vercel production:
 ```
-cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && vercel deploy --prod --yes 2>&1 | tail -5
+cd ${HOME}/.openclaw/workspace/projects/intel-swarm && vercel deploy --prod --yes 2>&1 | tail -5
 ```
 
 If all steps succeed, reply: "✅ Intel $(date +%Y-%m-%d) pipeline complete — copied, translated, images scraped, pushed to GitHub, deployed to https://intel-swarm.vercel.app/"
@@ -375,7 +376,7 @@ def create_autopush_cron():
         "--message", AUTOPUSH_PROMPT,
         "--timeout-seconds", "60",
         "--announce",
-        "--to", "934847281",
+        "--to", os.environ.get("TELEGRAM_USER_ID", "YOUR_TELEGRAM_USER_ID"),
         "--channel", "telegram",
         "--json"
     ]
@@ -415,7 +416,7 @@ if __name__ == "__main__":
         ids["autopush"] = autopush_id
 
     # Save IDs
-    with open("/Users/outsmart/.openclaw/workspace/projects/intel-swarm/cron-ids.json", "w") as f:
+    with open("${HOME}/.openclaw/workspace/projects/intel-swarm/cron-ids.json", "w") as f:
         json.dump(ids, f, indent=2)
     
     print(f"\nDone! {len(ids)}/15 crons created.")

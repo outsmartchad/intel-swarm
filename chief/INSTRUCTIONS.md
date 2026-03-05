@@ -40,7 +40,7 @@ cat ~/.openclaw/workspace/projects/intel-swarm/synthesis/findings/$(date +%Y-%m-
 
 4. Write chief review to: `chief/findings/YYYY-MM-DD.md`
 
-5. Send Telegram briefing to Vincent (934847281)
+5. Send Telegram briefing to Vincent (${TELEGRAM_USER_ID})
 
 ## Step Last: Update Memory
 

@@ -1,78 +1,137 @@
 # 🐝 Intel Swarm
 
-> *"You are now programming an organization. The source code is prompts, skills, tools, and processes."*
-> — Andrej Karpathy
+> Daily intelligence briefings across 15+ domains — AI, Crypto, War, Macro, Geopolitics, Health, Religion, Commodities & more. Signal over noise.
+
+**Live:** [intel-swarm.vercel.app](https://intel-swarm.vercel.app)
 
 ---
 
-> *The real edge isn't in what everyone is reading.*
-> *It's in what 99% of people don't know, don't want to know, and can't connect.*
+## What is this?
+
+Intel Swarm is an autonomous AI-powered intelligence network. A swarm of specialized researcher agents scrape, analyze, and synthesize the web daily — delivering high-signal briefings that 99% of people miss.
+
+Each morning:
+1. **15+ researcher agents** run in parallel across domains
+2. **Synthesis agent** connects the dots across all findings
+3. **Chief analyst** delivers the final actionable briefing
+4. Everything is **translated to Traditional Chinese** automatically
+5. Published to the web and delivered via Telegram
 
 ---
 
-## Why We Built This
+## Domains
 
-The news is noise.
-
-The real signal is buried in court filings, DARPA announcements, on-chain data, regulatory dockets, and the gap between what Asian markets are pricing and what Western media is reporting. By the time it reaches a newsletter, someone faster already acted on it.
-
-We needed an edge. Not a digest — a private intelligence org with researchers who have real personalities, real lenses, and real memory. People who say "this story has been developing for 6 days, here's what changed today." Who notice when five outlets run the same headline in 24 hours. Who follow logistics, not headlines. Who read both sides of the information gap.
-
-The synthesis agent finds the pattern none of the researchers individually could hear. The chief scientist challenges everything.
-
-Every day they get a little smarter — because they remember.
+| Domain | Focus |
+|--------|-------|
+| ⚔️ War | Active conflicts, geopolitical flashpoints, military movements |
+| 🛢️ Commodities | Gold, oil, copper, rare earths, supply chains |
+| 🔴 Communist States | Russia 🇷🇺 · China 🇨🇳 · North Korea 🇰🇵 |
+| ✝️ Religion | Religious nationalism, Vatican, AI & faith |
+| 🧬 Health | Biotech, longevity, pandemics, AI diagnostics |
+| 🎭 Culture | Gen Z, virality, social movements |
+| 🌍 Emerging | Southeast Asia, Africa, LatAm opportunities |
+| 🤖 AI Agents | Autonomous AI, frameworks, agentic products |
+| 🪙 Crypto | DeFi, Solana, on-chain signals |
+| 📊 Macro | Fed, BRICS, debt, currency wars |
+| 🧠 Singularity | AGI timelines, compute wars |
+| 📈 Quant | Market signals, volatility |
+| 🌏 West-East | China/HK signals the West misses |
+| 🖤 Black Budget | DARPA, CIA, UAP disclosure |
+| 🕳️ Conspiracy | Mainstream-bound narratives |
+| 📁 Epstein | Files, court docs, elite networks |
+| 🏆 Sports | Business side of sports |
 
 ---
 
-## The Real Moat
+## Stack
 
-The data it accumulates is worth more than the code.
-
-After 30 days: patterns emerge across domains.
-After 90 days: the org anticipates, not just reports.
-After 6 months: a knowledge graph nobody can replicate.
+- **Agents:** [OpenClaw](https://openclaw.ai) — AI agent platform running cron jobs
+- **Models:** Claude Sonnet 4.6 for research, Claude Haiku for translation
+- **Web:** Python / Flask, deployed on Vercel
+- **Images:** OG image scraping from source URLs
+- **Languages:** English + Traditional Chinese (繁體中文)
 
 ---
 
-## Architecture
+## Setup
+
+### Prerequisites
+- [OpenClaw](https://openclaw.ai) installed and configured
+- Vercel account + CLI (`npm i -g vercel`)
+- Claude API access via OpenClaw
+
+### 1. Clone & install
+```bash
+git clone https://github.com/outsmartchad/intel-swarm
+cd intel-swarm
+pip install -r requirements.txt
+```
+
+### 2. Configure environment
+```bash
+cp .env.example .env
+# Edit .env with your Telegram user ID and paths
+```
+
+### 3. Create all researcher crons
+```bash
+# Set your Telegram user ID
+export TELEGRAM_USER_ID=your_telegram_id
+
+python3 create-crons.py
+```
+
+### 4. Run locally
+```bash
+cd web && python3 server.py
+# Open http://localhost:5757
+```
+
+### 5. Deploy to Vercel
+```bash
+vercel deploy --prod
+```
+
+---
+
+## Daily Pipeline
 
 ```
-06:00 ─── 15 Researchers (read memory → search → write → update memory)
-            └── 🚨 Time-critical findings escalate immediately
-07:15 ─── Synthesis (connects the dots, updates meta-thesis)
-07:45 ─── Chief Scientist (challenges everything, tracks predictions)
-            └── Final briefing delivered
+06:00 HKT  →  15+ researchers run in parallel
+07:00 HKT  →  Synthesis + Chief briefing
+07:45 HKT  →  Chief delivers Telegram briefing
+08:00 HKT  →  Autopush: copy → translate → scrape images → git push → vercel deploy
 ```
 
-## The Team
+---
 
-| | Domain | Lens |
-|--|--------|------|
-| 🪙 | Crypto | On-chain over CT. Smells rugs. |
-| 🤖 | AI Agents | Reads the papers. Tracks what labs aren't saying. |
-| 🕳️ | Conspiracy | Evidence-first. Paranoia vs pattern recognition. |
-| 📁 | Epstein & Deep State | FOIA obsessive. Follows the networks. |
-| ⚔️ | War | Logistics not headlines. Every war has an economic motive. |
-| 📊 | Macro | Watches what central banks DO, not SAY. |
-| 🕴️ | Power Structures | Revolving doors, boards, who actually controls what. |
-| 🧠 | Tech Singularity | Compute, scaling laws, capability jumps. |
-| 📡 | Psyops | 5 outlets, same story, 24 hours = coordinated. |
-| 🖤 | Black Budget | DARPA programs. Pentagon audit failures. |
-| 🌍 | Emerging Markets | Sees opportunity where CNN sees chaos. |
-| ⚖️ | Regulatory | Loopholes before they close. Jurisdictions that matter. |
-| 🌏 | West-East | Reads both sides. Exploits the information gap. |
-| 📈 | Quant | Funding rates, flows, cross-market signals. |
-| 🎭 | Culture | Memes as economic signals. Gen Z tells you where things are going. |
+## Project Structure
 
-**🔮 Synthesis** — finds the pattern connecting all 15.
-**🧑‍🔬 Chief Scientist** — challenges the synthesis. Takes positions. Tracks predictions.
+```
+intel-swarm/
+├── researchers/          # Per-domain researcher agents
+│   ├── {domain}/
+│   │   ├── findings/     # Daily MD files (EN + ZH)
+│   │   └── memory/       # Persistent threads & sources
+├── synthesis/            # Synthesis agent
+├── chief/                # Chief analyst agent
+├── web/                  # Flask web server
+│   ├── server.py
+│   ├── templates/
+│   ├── static/
+│   ├── translate.py      # EN → ZH translation
+│   ├── scrape-images.py  # OG image scraper
+│   └── translate-all.sh  # Batch translation
+├── create-crons.py       # Spin up all OpenClaw crons
+└── .env.example          # Config template
+```
 
 ---
 
-## One Rule
+## License
 
-Signal over everything. A slow day honestly reported beats five manufactured findings.
+MIT — fork it, build on it, run your own swarm.
 
 ---
 
-Built with [OpenClaw](https://github.com/openclaw/openclaw). Running daily since March 2026.
+*Built with [OpenClaw](https://openclaw.ai)*

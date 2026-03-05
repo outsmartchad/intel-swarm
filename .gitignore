@@ -2,3 +2,14 @@
 __pycache__/
 .DS_Store
 .vercel
+
+# Operational files — contain local paths and IDs, not for public repo
+cron-ids.json
+cron-jobs.json
+.env
+.env.local
+
+# Local dev
+venv/
+.venv/
+*.egg-info/

@@ -91,7 +91,7 @@ When updating threads.md, enforce these strictly:
 
 ## 🚨 Escalation Protocol
 
-If a finding is genuinely time-critical (active conflict escalation, imminent market event, political event within 24h), send an IMMEDIATE Telegram alert to Vincent (934847281) BEFORE writing the full findings file:
+If a finding is genuinely time-critical (active conflict escalation, imminent market event, political event within 24h), send an IMMEDIATE Telegram alert to Vincent (${TELEGRAM_USER_ID}) BEFORE writing the full findings file:
 
 ```
 🚨 [DOMAIN] ALERT - [DATE]

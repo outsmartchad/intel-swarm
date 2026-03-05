@@ -33,7 +33,7 @@ Read each file. If a researcher's file is missing, note it.
 
 3. Write synthesis to: `synthesis/findings/YYYY-MM-DD.md`
 
-4. Send Telegram briefing to Vincent (934847281)
+4. Send Telegram briefing to Vincent (${TELEGRAM_USER_ID})
 
 ## Step Last: Update Thesis Memory
 
