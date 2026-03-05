@@ -7,6 +7,86 @@
 /* ── SYNTHESIS STRIP ── */
 .syn-hero { margin-bottom: 20px; }
 
+/* ── SEARCH BAR ── */
+.search-bar-wrap {
+  position: relative; margin-bottom: 16px;
+}
+.search-input {
+  width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px; padding: 10px 14px 10px 38px;
+  color: var(--text); font-size: 13px; outline: none;
+  transition: border .15s, background .15s;
+}
+.search-input::placeholder { color: var(--muted); }
+.search-input:focus { border-color: rgba(200,169,110,.5); background: rgba(255,255,255,.06); }
+.search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); pointer-events: none;
+}
+.search-count {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; color: var(--muted); font-family: var(--mono);
+}
+
+/* ── VIEW TOGGLE ── */
+.view-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.view-label { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.view-btns { display: flex; gap: 4px; }
+.view-btn {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  color: var(--muted); border-radius: 5px; padding: 4px 9px;
+  font-size: 11px; cursor: pointer; transition: all .15s;
+}
+.view-btn.active { background: rgba(200,169,110,.15); border-color: rgba(200,169,110,.4); color: var(--accent); }
+
+/* ── HERO BANNER (Apple Daily style) ── */
+.hero-banner {
+  position: relative; width: 100%; height: 480px;
+  overflow: hidden; border-radius: 6px;
+  margin-bottom: 4px; text-decoration: none; display: block;
+}
+.hero-banner .ecard-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transition: transform .8s ease;
+}
+.hero-banner:hover .ecard-bg { transform: scale(1.04); }
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(5,7,10,1) 0%, rgba(5,7,10,.65) 45%, rgba(5,7,10,.1) 100%);
+}
+.hero-inner {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 32px 36px; z-index: 2;
+}
+.hero-cat {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-pick-badge {
+  background: var(--accent); color: #080b10;
+  font-size: 10px; font-weight: 800; padding: 2px 7px;
+  border-radius: 3px; letter-spacing: .06em;
+}
+.hero-headline {
+  font-size: 32px; font-weight: 800; line-height: 1.2;
+  color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.9);
+  margin-bottom: 12px; max-width: 800px;
+}
+.hero-preview {
+  font-size: 14px; color: rgba(255,255,255,.6); line-height: 1.6;
+  max-width: 640px; text-shadow: 0 1px 6px rgba(0,0,0,.8);
+}
+@media (max-width: 700px) {
+  .hero-banner { height: 300px; }
+  .hero-headline { font-size: 20px; }
+  .hero-inner { padding: 20px; }
+}
+
 /* ── EDITORIAL GRID ── */
 .editorial {
   display: grid;
@@ -32,73 +112,42 @@
   transform: scale(1.01);
   transition: box-shadow .15s, transform .2s;
 }
-
-/* Column spans — set server-side via d.cols */
 .span-7  { grid-column: span 7; }
 .span-6  { grid-column: span 6; }
 .span-5  { grid-column: span 5; }
 .span-4  { grid-column: span 4; }
 .span-3  { grid-column: span 3; }
-
-/* Row heights tied to column width */
-.span-7, .span-5 { height: 400px; }
-.span-6          { height: 400px; }
-.span-4          { height: 240px; }
-.span-3          { height: 190px; }
-
-/* Background image */
+.span-7, .span-5 { height: 360px; }
+.span-6          { height: 360px; }
+.span-4          { height: 220px; }
+.span-3          { height: 180px; }
 .ecard-bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
   transition: transform .6s ease;
 }
 .ecard:hover .ecard-bg { transform: scale(1.06); }
-
-/* Gradient fallback */
 .ecard-grad { position: absolute; inset: 0; }
-
-/* Overlay */
 .ecard-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(5,7,10,.98) 0%,
-    rgba(5,7,10,.55) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(to top, rgba(5,7,10,.98) 0%, rgba(5,7,10,.55) 50%, transparent 100%);
 }
 .span-7 .ecard-overlay, .span-5 .ecard-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(5,7,10,1) 0%,
-    rgba(5,7,10,.7) 40%,
-    rgba(5,7,10,.05) 100%
-  );
+  background: linear-gradient(to top, rgba(5,7,10,1) 0%, rgba(5,7,10,.7) 40%, rgba(5,7,10,.05) 100%);
 }
-
-/* Content */
 .ecard-inner {
   position: relative; z-index: 2;
   height: 100%; padding: 14px 16px;
   display: flex; flex-direction: column;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: space-between; gap: 8px;
 }
-
-/* Top: category badge */
 .ecard-cat {
   display: flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: 10px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  width: fit-content;
+  letter-spacing: .1em; text-transform: uppercase; width: fit-content;
 }
-.ecard-cat-dot {
-  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-}
-
-/* Bottom: text stack */
+.ecard-cat-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .ecard-body-wrap { display: flex; flex-direction: column; gap: 6px; }
-
 .ecard-headline {
   font-weight: 700; color: #fff; line-height: 1.3;
   text-shadow: 0 1px 6px rgba(0,0,0,.9);
@@ -108,7 +157,6 @@
 .span-5 .ecard-headline { font-size: 17px; -webkit-line-clamp: 3; }
 .span-4 .ecard-headline { font-size: 14px; -webkit-line-clamp: 2; }
 .span-3 .ecard-headline { font-size: 12px; -webkit-line-clamp: 2; }
-
 .ecard-preview {
   font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.55;
   display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
@@ -118,25 +166,61 @@
 .span-5 .ecard-preview { -webkit-line-clamp: 1; }
 .span-4 .ecard-preview { -webkit-line-clamp: 1; }
 .span-3 .ecard-preview { display: none; }
-
-/* Score + meta row */
 .ecard-foot {
   display: flex; align-items: center; justify-content: space-between;
   font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,.3);
 }
 .ecard-pips { display: flex; gap: 2px; }
 .epip { width: 4px; height: 4px; border-radius: 1px; }
-.epip.on  { opacity: 1; }
+.epip.on { opacity: 1; }
 .epip.off { background: rgba(255,255,255,.12) !important; }
 .ecard-filed { color: #4ade80; }
-
-/* Entrance animation */
 .ecard { animation: fadeUp .35s ease both; }
-{% for i in range(1, 16) %}
+{% for i in range(1, 20) %}
 .ecard:nth-child({{ i }}) { animation-delay: {{ "%.2f"|format(i * 0.04) }}s; }
 {% endfor %}
 
-/* Responsive */
+/* ── FEED VIEW ── */
+.feed-list { display: none; flex-direction: column; gap: 2px; margin-bottom: 48px; }
+.feed-list.active { display: flex; }
+.editorial.feed-hidden { display: none; }
+
+.fcard {
+  display: flex; text-decoration: none; color: inherit;
+  background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06);
+  border-radius: 6px; overflow: hidden;
+  transition: background .15s, border-color .15s;
+  animation: fadeUp .3s ease both;
+}
+.fcard:hover { background: rgba(255,255,255,.04); border-color: rgba(200,169,110,.25); }
+{% for i in range(1, 20) %}
+.fcard:nth-child({{ i }}) { animation-delay: {{ "%.2f"|format(i * 0.04) }}s; }
+{% endfor %}
+.fcard-img {
+  width: 130px; min-width: 130px; height: 90px;
+  background-size: cover; background-position: center; flex-shrink: 0;
+}
+.fcard-body { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+.fcard-cat {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 5px;
+}
+.fcard-headline { font-size: 14px; font-weight: 700; line-height: 1.35; color: #fff; }
+.fcard-preview {
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.fcard-pips { display: flex; gap: 2px; margin-top: 2px; }
+@media (max-width: 600px) {
+  .fcard-img { width: 90px; min-width: 90px; height: 70px; }
+  .fcard-preview { display: none; }
+}
+
+/* ── SEARCH HIDE ── */
+.ecard.search-hidden, .fcard.search-hidden, .hero-banner.search-hidden { display: none !important; }
+.no-results { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; display: none; }
+
 @media (max-width: 900px) {
   .editorial { gap: 2px; border: none; }
   .ecard { border-radius: 4px; border: none; }
@@ -151,51 +235,92 @@
 
 <div class="wrap">
 
+  {# ── SYNTHESIS ── #}
   {% if synthesis_html %}
   <div class="syn-hero">
     <div class="syn-tag">🔮 SYNTHESIS &nbsp; {{ date }}</div>
     <div class="syn-headline">{{ syn_headline or "Intelligence Synthesis" }}</div>
     {% if chief_action %}
-    <div class="chief-call">🧑‍🔬 <strong>Chief:</strong> {{ chief_action[:360] }}</div>
+    <div class="chief-call">🧑🔬 <strong>Chief:</strong> {{ chief_action[:360] }}</div>
     {% endif %}
   </div>
   {% endif %}
 
-  <div class="editorial">
-    {% for d in domains %}
+  {# ── HERO BANNER — top domain (Apple Daily style) ── #}
+  {% set hero = domains[0] %}
+  {% set hero_col1 = hero.colors.split(',')[0] %}
+  {% set hero_col2 = hero.colors.split(',')[1] %}
+  <a href="{{ hero.card_url or ('/domain/' + hero.id + '?lang=' + (lang|default('en'))) }}"
+     class="hero-banner" data-search="{{ hero.name }} {{ hero.headline or '' }}" id="hero-card">
+    {% if hero.cover_image %}
+    <div class="ecard-bg" style="background-image:url('{{ hero.cover_image }}')"></div>
+    {% else %}
+    <div class="ecard-bg" style="background: linear-gradient(135deg, {{ hero_col1 }} 0%, {{ hero_col2 }} 100%)"></div>
+    {% endif %}
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-cat" style="color:{{ hero_col2 }}">
+        {{ hero.emoji }} {{ hero.name }}
+        <span class="hero-pick-badge">{% if (lang|default('en')) == 'zh' %}今日之選{% else %}TODAY'S PICK{% endif %}</span>
+      </div>
+      <div class="hero-headline">{{ hero.headline or "Top Story" }}</div>
+      {% if hero.findings and hero.findings|length > 0 and hero.findings[0].body %}
+      <div class="hero-preview">{{ hero.findings[0].body[:220] }}</div>
+      {% endif %}
+    </div>
+  </a>
+
+  {# ── TOOLBAR: search + view toggle ── #}
+  <div style="margin-top:16px">
+    <div class="search-bar-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" id="search-input"
+        placeholder="{% if (lang|default('en')) == 'zh' %}搜尋領域或標題…{% else %}Search domains or headlines…{% endif %}"
+        oninput="filterCards(this.value)" autocomplete="off" />
+      <span class="search-count" id="search-count"></span>
+    </div>
+    <div class="view-toolbar">
+      <span class="view-label">{% if (lang|default('en')) == 'zh' %}{{ domains|length }} 個領域{% else %}{{ domains|length }} domains{% endif %}</span>
+      <div class="view-btns">
+        <button class="view-btn active" id="btn-grid" onclick="setView('grid')" title="Grid view">
+          ⊞ {% if (lang|default('en')) == 'zh' %}格狀{% else %}Grid{% endif %}
+        </button>
+        <button class="view-btn" id="btn-feed" onclick="setView('feed')" title="Feed view">
+          ≡ {% if (lang|default('en')) == 'zh' %}列表{% else %}Feed{% endif %}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {# ── GRID VIEW (skip first domain — already in hero) ── #}
+  <div class="editorial" id="grid-view">
+    {% for d in domains[1:] %}
     {% set col1 = d.colors.split(',')[0] %}
     {% set col2 = d.colors.split(',')[1] %}
     {% set cols = d.cols | default(4) %}
-
-    <a href="/domain/{{ d.id }}?lang={{ lang|default('en') }}" class="ecard span-{{ cols }}">
-
-      {# Background #}
+    <a href="{{ d.card_url or ('/domain/' + d.id + '?lang=' + (lang|default('en'))) }}"
+       class="ecard span-{{ cols }}" data-search="{{ d.name }} {{ d.headline or '' }}">
       {% if d.cover_image %}
       <div class="ecard-bg" style="background-image:url('{{ d.cover_image }}')"></div>
       {% else %}
       <div class="ecard-grad" style="background:linear-gradient(135deg,{{ col1 }} 0%,{{ col2 }} 100%)"></div>
       {% endif %}
       <div class="ecard-overlay"></div>
-
       <div class="ecard-inner">
-
-        {# Category label — top #}
         <div class="ecard-cat" style="color:{{ col2 }}">
           <div class="ecard-cat-dot" style="background:{{ col2 }}"></div>
           {{ d.emoji }} {{ d.name }}
         </div>
-
-        {# Text + meta — bottom #}
         <div class="ecard-body-wrap">
           <div class="ecard-headline">
             {% if d.headline %}{{ d.headline }}
             {% else %}<span style="opacity:.35">No findings today</span>{% endif %}
           </div>
-
           {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
           <div class="ecard-preview">{{ d.findings[0].body[:180] }}</div>
           {% endif %}
-
           <div class="ecard-foot">
             <div class="ecard-pips">
               {% set score = d.score | default(3) %}
@@ -204,18 +329,107 @@
                    style="{% if i <= score %}background:{{ col2 }}{% endif %}"></div>
               {% endfor %}
             </div>
-            {% if d.filed %}
-            <span class="ecard-filed">✓</span>
-            {% else %}
-            <span style="opacity:.3">—</span>
-            {% endif %}
+            {% if d.filed %}<span class="ecard-filed">✓</span>{% else %}<span style="opacity:.3">—</span>{% endif %}
           </div>
         </div>
-
       </div>
     </a>
     {% endfor %}
   </div>
 
+  {# ── FEED VIEW (all domains) ── #}
+  <div class="feed-list" id="feed-view">
+    {% for d in domains %}
+    {% set col1 = d.colors.split(',')[0] %}
+    {% set col2 = d.colors.split(',')[1] %}
+    <a href="{{ d.card_url or ('/domain/' + d.id + '?lang=' + (lang|default('en'))) }}"
+       class="fcard" data-search="{{ d.name }} {{ d.headline or '' }}">
+      {% if d.cover_image %}
+      <div class="fcard-img" style="background-image:url('{{ d.cover_image }}')"></div>
+      {% else %}
+      <div class="fcard-img" style="background:linear-gradient(135deg,{{ col1 }} 0%,{{ col2 }} 100%)"></div>
+      {% endif %}
+      <div class="fcard-body">
+        <div class="fcard-cat" style="color:{{ col2 }}">{{ d.emoji }} {{ d.name }}</div>
+        <div class="fcard-headline">
+          {% if d.headline %}{{ d.headline }}
+          {% else %}<span style="opacity:.35">No findings today</span>{% endif %}
+        </div>
+        {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
+        <div class="fcard-preview">{{ d.findings[0].body[:160] }}</div>
+        {% endif %}
+        <div class="fcard-pips">
+          {% set score = d.score | default(3) %}
+          {% for i in range(1, 6) %}
+          <div class="epip {% if i <= score %}on{% else %}off{% endif %}"
+               style="{% if i <= score %}background:{{ col2 }}; width:4px; height:4px; border-radius:1px{% else %}background:rgba(255,255,255,.12); width:4px; height:4px; border-radius:1px{% endif %}"></div>
+          {% endfor %}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="no-results" id="no-results">
+    {% if (lang|default('en')) == 'zh' %}找不到相關領域{% else %}No domains match your search{% endif %}
+  </div>
+
 </div>
+
+<script>
+function setView(v) {
+  document.getElementById('grid-view').classList.toggle('feed-hidden', v === 'feed');
+  document.getElementById('feed-view').classList.toggle('active', v === 'feed');
+  document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('btn-feed').classList.toggle('active', v === 'feed');
+  localStorage.setItem('intel-view', v);
+  filterCards(document.getElementById('search-input').value);
+}
+
+function filterCards(q) {
+  q = q.trim().toLowerCase();
+  const hero = document.getElementById('hero-card');
+  const isGrid = !document.getElementById('grid-view').classList.contains('feed-hidden');
+  const cards = isGrid
+    ? document.querySelectorAll('#grid-view .ecard, #feed-view .fcard')
+    : document.querySelectorAll('#feed-view .fcard, #grid-view .ecard');
+
+  let visible = 0;
+
+  // Hero card
+  if (hero) {
+    const txt = (hero.dataset.search || '').toLowerCase();
+    const hide = q && !txt.includes(q);
+    hero.classList.toggle('search-hidden', hide);
+    if (!hide) visible++;
+  }
+
+  // Grid + feed cards
+  document.querySelectorAll('#grid-view .ecard').forEach(el => {
+    const match = !q || (el.dataset.search || '').toLowerCase().includes(q);
+    el.classList.toggle('search-hidden', !match);
+    if (match) visible++;
+  });
+  document.querySelectorAll('#feed-view .fcard').forEach(el => {
+    const match = !q || (el.dataset.search || '').toLowerCase().includes(q);
+    el.classList.toggle('search-hidden', !match);
+  });
+
+  const count = document.getElementById('search-count');
+  const noResults = document.getElementById('no-results');
+  if (q) {
+    count.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  } else {
+    count.textContent = '';
+    noResults.style.display = 'none';
+  }
+}
+
+// Restore saved view preference
+(function() {
+  const saved = localStorage.getItem('intel-view');
+  if (saved === 'feed') setView('feed');
+})();
+</script>
 {% endblock %}
