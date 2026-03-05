@@ -501,26 +501,28 @@ def _pm_set(key, data):
     _pm_cache[key] = (time.time(), data)
 
 # Domain → Polymarket tag/keyword mapping for causal market search
+# Format: list of (tag_slug, seed_keyword_for_search) tuples
+# seed_keyword biases the event search toward relevant markets first
 _PM_DOMAIN_TAGS = {
-    "war":        ["geopolitics", "politics"],
-    "commodities":["economics", "crypto"],
-    "russia":     ["geopolitics", "politics"],
-    "china":      ["geopolitics", "politics"],
-    "north-korea":["geopolitics", "politics"],
-    "macro":      ["economics", "politics"],
-    "crypto":     ["crypto"],
-    "ai-agents":  ["technology"],
-    "health":     ["science"],
-    "religion":   ["politics"],
-    "culture":    ["entertainment"],
-    "emerging":   ["politics", "economics"],
-    "singularity":["technology", "science"],
-    "quant":      ["economics"],
-    "westeast":   ["geopolitics"],
-    "blackbudget":["geopolitics", "politics"],
-    "conspiracy": ["politics"],
-    "epstein":    ["politics"],
-    "sports":     ["sports"],
+    "war":        [("geopolitics","iran"), ("geopolitics","ukraine"), ("geopolitics","war")],
+    "commodities":[("economics","oil"), ("economics","commodity"), ("economics","gold")],
+    "russia":     [("geopolitics","russia"), ("geopolitics","ukraine"), ("geopolitics","ceasefire")],
+    "china":      [("geopolitics","china"), ("geopolitics","taiwan"), ("geopolitics","xi")],
+    "north-korea":[("geopolitics","north korea"), ("geopolitics","kim"), ("geopolitics","nuclear")],
+    "macro":      [("economics","fed"), ("economics","interest rate"), ("economics","recession")],
+    "crypto":     [("crypto","bitcoin"), ("crypto","ethereum"), ("crypto","solana")],
+    "ai-agents":  [("technology","ai"), ("technology","openai"), ("technology","nvidia")],
+    "health":     [("science","fda"), ("science","health"), ("politics","vaccine")],
+    "religion":   [("politics","israel"), ("geopolitics","religion"), ("politics","trump")],
+    "culture":    [("entertainment","oscars"), ("entertainment","celebrity"), ("sports","culture")],
+    "emerging":   [("economics","emerging"), ("geopolitics","africa"), ("economics","developing")],
+    "singularity":[("technology","agi"), ("technology","ai"), ("technology","openai")],
+    "quant":      [("economics","stock"), ("economics","market"), ("economics","inflation")],
+    "westeast":   [("geopolitics","china"), ("geopolitics","us"), ("economics","trade")],
+    "blackbudget":[("geopolitics","military"), ("politics","pentagon"), ("geopolitics","defense")],
+    "conspiracy": [("politics","trump"), ("politics","us"), ("politics","government")],
+    "epstein":    [("politics","trump"), ("politics","us"), ("politics","justice")],
+    "sports":     [("sports","nfl"), ("sports","nba"), ("sports","soccer")],
 }
 
 def _pm_parse_market(m, chart_tokens=None):
@@ -606,20 +608,24 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market3:{domain}:{q}"
+    cache_key = f"pm_market4:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
     try:
-        tags = _PM_DOMAIN_TAGS.get(domain, ["geopolitics", "politics"])
+        tag_seeds = _PM_DOMAIN_TAGS.get(domain, [("geopolitics",""), ("politics","")])
         best_result = None
-        best_score = 1  # Lower threshold — prefer active markets
+        best_score = 3  # Raised threshold — require meaningful causal overlap
 
-        for tag in tags:
+        seen_event_ids = set()
+        for tag, seed in tag_seeds:
+            params = {"limit": 25, "order": "volume", "ascending": "false",
+                      "tag_slug": tag, "active": "true"}
+            if seed:
+                params["search"] = seed
             resp = http_requests.get(
                 "https://gamma-api.polymarket.com/events",
-                params={"limit": 30, "order": "volume", "ascending": "false",
-                        "tag_slug": tag, "active": "true"},
+                params=params,
                 headers=_PM_HEADERS,
                 timeout=6,
             )
@@ -629,9 +635,13 @@ def pm_market():
                 continue
 
             for event in events:
+                eid = event.get("id", event.get("slug", ""))
+                if eid in seen_event_ids:
+                    continue
+                seen_event_ids.add(eid)
                 ev_title = event.get("title", "")
                 ev_score = _pm_score(q, ev_title)
-                if ev_score < 1:
+                if ev_score < 2:
                     continue
 
                 all_markets = event.get("markets", [])
