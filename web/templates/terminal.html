@@ -268,7 +268,10 @@
     </div>
   </div>
 
-  <div class="tm-body">
+  <div class="tm-live-strip" id="liveStrip">
+  <div class="tm-strip-loading">&#9679; &nbsp;LOADING MARKET DATA…</div>
+</div>
+<div class="tm-body">
     <!-- Domain filters -->
     <div class="tm-filters" id="tm-filters">
       <div class="tm-filter-hdr">DOMAINS</div>
@@ -420,5 +423,48 @@ function highlight(text, q) {
 
 // Init
 render(ALL_FINDINGS);
+</script>
+<script>
+(function(){
+  fetch('/api/live/markets').then(function(r){return r.json();}).then(function(d){
+    var strip = document.getElementById('liveStrip');
+    if(!strip) return;
+    var html = '';
+    // Fear & Greed
+    var fg = d.fear_greed || {};
+    if(fg.value !== undefined){
+      var v = fg.value;
+      var cls = v<25?'extreme-fear':v<45?'fear':v<55?'neutral':v<75?'greed':'extreme-greed';
+      html += '<div class="tm-live-tile" style="min-width:100px"><div class="tm-tile-label">Fear &amp; Greed</div><div class="tm-tile-fg '+cls+'">'+v+'</div><div class="tm-tile-sub" style="color:var(--muted)">'+(fg.label||'')+'</div></div>';
+    }
+    html += '<div class="tm-strip-sep"></div>';
+    // Crypto
+    (d.crypto||[]).forEach(function(c){
+      var chg = c.change_24h||0;
+      var cls2 = chg>0?'up':chg<0?'dn':'neu';
+      var sign = chg>0?'+':'';
+      var price = c.price>1000?c.price.toLocaleString('en-US',{maximumFractionDigits:0}):c.price.toFixed(2);
+      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+c.symbol+'</div><div class="tm-tile-value">$'+price+'</div><div class="tm-tile-sub tm-tile-chg '+cls2+'">'+sign+chg+'%</div></div>';
+    });
+    html += '<div class="tm-strip-sep"></div>';
+    // Commodities
+    (d.commodities||[]).forEach(function(c){
+      var chg = c.change_pct||0;
+      var cls3 = chg>0?'up':chg<0?'dn':'neu';
+      var sign = chg>0?'+':'';
+      var price = c.price>100?c.price.toFixed(2):c.price.toFixed(3);
+      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+c.name+'</div><div class="tm-tile-value">$'+price+'</div><div class="tm-tile-sub tm-tile-chg '+cls3+'">'+sign+chg+'%</div></div>';
+    });
+    html += '<div class="tm-strip-sep"></div>';
+    // Central banks
+    (d.central_banks||[]).forEach(function(b){
+      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+b.bank+'</div><div class="tm-tile-value" style="color:rgba(200,169,110,0.9)">'+b.rate+'%</div><div class="tm-tile-sub" style="color:var(--dim)">'+b.currency+'</div></div>';
+    });
+    strip.innerHTML = html || '<div class="tm-strip-loading">NO MARKET DATA</div>';
+  }).catch(function(){
+    var strip = document.getElementById('liveStrip');
+    if(strip) strip.innerHTML = '<div class="tm-strip-loading">MARKET DATA UNAVAILABLE</div>';
+  });
+})();
 </script>
 {% endblock %}

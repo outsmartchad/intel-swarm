@@ -1275,6 +1275,140 @@ def terminal_page():
         all_findings=all_findings,
         top_tickers=top_tickers)
 
+# ── LIVE MARKET DATA ─────────────────────────────────────────────────────────
+def _fetch_live_markets():
+    result = {"crypto": [], "commodities": [], "fear_greed": {}, "central_banks": [], "ts": int(time.time())}
+    # CoinGecko crypto prices
+    try:
+        r = http_requests.get(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,ripple&order=market_cap_desc&sparkline=false&price_change_percentage=24h",
+            timeout=8, headers={"User-Agent": "Mozilla/5.0"}
+        )
+        for c in r.json():
+            result["crypto"].append({
+                "symbol": c["symbol"].upper(),
+                "name": c["name"],
+                "price": c["current_price"],
+                "change_24h": round(c.get("price_change_percentage_24h") or 0, 2)
+            })
+    except Exception as e:
+        print(f"CoinGecko err: {e}")
+    # Yahoo Finance commodities
+    _COMM = {"CL=F": "OIL", "GC=F": "GOLD", "NG=F": "NAT GAS", "ZW=F": "WHEAT"}
+    _YF_H = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+    for ticker, label in _COMM.items():
+        try:
+            r = http_requests.get(
+                f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=2d",
+                timeout=8, headers=_YF_H
+            )
+            meta = r.json()["chart"]["result"][0]["meta"]
+            price = meta.get("regularMarketPrice") or meta.get("previousClose") or 0
+            prev  = meta.get("previousClose") or price
+            chg   = round(((price - prev) / prev * 100) if prev else 0, 2)
+            result["commodities"].append({"symbol": ticker, "name": label, "price": price, "change_pct": chg})
+        except Exception as e:
+            print(f"YF {ticker} err: {e}")
+    # Alternative.me Fear & Greed Index
+    try:
+        r = http_requests.get("https://api.alternative.me/fng/?limit=1", timeout=8)
+        d = r.json()["data"][0]
+        result["fear_greed"] = {"value": int(d["value"]), "label": d["value_classification"], "ts": d["timestamp"]}
+    except Exception as e:
+        print(f"FnG err: {e}")
+    # BIS central bank policy rates
+    try:
+        r = http_requests.get(
+            "https://stats.bis.org/api/v2/data/dataflow/BIS/WS_CBPOL_D/1.0/D..?startPeriod=2025-01-01&format=jsondata",
+            timeout=10, headers={"Accept": "application/json"}
+        )
+        js = r.json()
+        series = js.get("data", {}).get("dataSets", [{}])[0].get("series", {})
+        dims   = js.get("data", {}).get("structure", {}).get("dimensions", {}).get("series", [])
+        curr_dim = next((d for d in dims if d.get("id") == "REF_AREA"), None)
+        if curr_dim:
+            curr_vals = curr_dim.get("values", [])
+            _BANKS = {"US": ("USD","Fed"), "XM": ("EUR","ECB"), "GB": ("GBP","BoE"), "JP": ("JPY","BoJ"), "CN": ("CNY","PBoC"), "AU": ("AUD","RBA")}
+            for idx, cval in enumerate(curr_vals):
+                cid = cval.get("id", "")
+                if cid in _BANKS:
+                    for sk, sv in series.items():
+                        parts = sk.split(":")
+                        if len(parts) > 1 and parts[1] == str(idx):
+                            obs = sv.get("observations", {})
+                            if obs:
+                                latest_key = max(obs.keys(), key=lambda x: int(x))
+                                rate_val = obs[latest_key][0]
+                                if rate_val is not None:
+                                    sym, bank = _BANKS[cid]
+                                    result["central_banks"].append({"currency": sym, "bank": bank, "rate": round(float(rate_val), 2)})
+                            break
+    except Exception as e:
+        print(f"BIS err: {e}")
+    return result
+
+@app.route("/api/live/markets")
+def api_live_markets():
+    cached = _pm_cached("live_markets", 300)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_live_markets()
+    _pm_set("live_markets", data)
+    return flask_jsonify(data)
+
+
+# ── LIVE EVENT DATA (USGS + NASA EONET) ──────────────────────────────────────
+def _fetch_live_events():
+    result = {"earthquakes": [], "eonet": [], "ts": int(time.time())}
+    # USGS earthquakes M4.5+
+    try:
+        r = http_requests.get(
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minmagnitude=4.5&limit=50&orderby=time",
+            timeout=8
+        )
+        for feat in r.json().get("features", []):
+            props  = feat["properties"]
+            coords = feat["geometry"]["coordinates"]
+            result["earthquakes"].append({
+                "lng": coords[0], "lat": coords[1], "depth": round(coords[2], 1),
+                "mag": props["mag"], "place": props.get("place") or "Unknown",
+                "time_ms": props["time"]
+            })
+    except Exception as e:
+        print(f"USGS err: {e}")
+    # NASA EONET open events
+    try:
+        r = http_requests.get("https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=30", timeout=8)
+        for ev in r.json().get("events", []):
+            geom = ev.get("geometry") or []
+            if not geom:
+                continue
+            g = geom[-1] if isinstance(geom, list) else geom
+            coords = g.get("coordinates")
+            if not coords:
+                continue
+            if isinstance(coords[0], list):
+                coords = coords[0]
+            cat      = (ev.get("categories") or [{}])[0].get("title", "Other")
+            date_str = g.get("date", "") if isinstance(geom, list) else ""
+            result["eonet"].append({
+                "lat": coords[1], "lng": coords[0],
+                "title": ev["title"], "category": cat, "date": date_str
+            })
+    except Exception as e:
+        print(f"EONET err: {e}")
+    return result
+
+@app.route("/api/live/events")
+def api_live_events():
+    cached = _pm_cached("live_events", 600)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_live_events()
+    _pm_set("live_events", data)
+    return flask_jsonify(data)
+
+
 # ── ENTRYPOINT ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     local_ip = os.popen(
