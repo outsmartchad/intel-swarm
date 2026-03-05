@@ -293,9 +293,9 @@
     {% endfor %}
   </div>
 
-  {# ── FEED VIEW (all domains) ── #}
+  {# ── FEED VIEW (skip first — already shown in hero) ── #}
   <div class="feed-list" id="feed-view">
-    {% for d in domains %}
+    {% for d in domains[1:] %}
     {% set col1 = d.colors.split(',')[0] %}
     {% set col2 = d.colors.split(',')[1] %}
     <a href="{{ d.card_url or ('/domain/' + d.id + '?lang=' + (lang|default('en'))) }}"
