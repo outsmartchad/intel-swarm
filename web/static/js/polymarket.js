@@ -189,36 +189,24 @@
     if (oldBadge) oldBadge.remove();
 
     var question = data.question || '';
-    if (question.length > 55) question = question.substring(0, 55) + '\u2026';
+    if (question.length > 40) question = question.substring(0, 40) + '\u2026';
 
-    // Right column: outcomes stacked vertically
     var outcomesHtml = '';
     (data.outcomes || []).slice(0, 3).forEach(function (o) {
       var pct = Math.round(o.price * 100);
       outcomesHtml +=
         '<div class="pm-outcome">' +
-          '<div class="pm-outcome-row">' +
-            '<span class="pm-name">' + escHtml(o.name).substring(0, 4).toUpperCase() + '</span>' +
-            '<span class="pm-pct" data-pct="' + pct + '">' + pct + '%</span>' +
-          '</div>' +
+          '<span class="pm-name">' + escHtml(o.name).substring(0, 4).toUpperCase() + '</span>' +
+          '<span class="pm-pct" data-pct="' + pct + '">' + pct + '%</span>' +
           '<div class="pm-bar"><div class="pm-fill" style="width:' + pct + '%"></div></div>' +
         '</div>';
     });
 
-    // Background: Polymarket event image (grayscale + dark tint via CSS)
-    var bgHtml = '';
-    if (data.event_image) {
-      bgHtml = '<div class="pm-bg" style="background-image:url(' + escHtml(data.event_image) + ')"></div>';
-    }
-
-    // Full-bleed layout: [bg] left (question + chart) | right (outcomes)
     var html =
-      bgHtml +
-      '<div class="pm-left">' +
-        '<div class="pm-question">' + escHtml(question) + '</div>' +
-        '<svg class="pm-chart" viewBox="0 0 120 44" preserveAspectRatio="none"></svg>' +
-      '</div>' +
-      '<div class="pm-right">' + outcomesHtml + '</div>' +
+      '<div class="pm-question">\uD83D\uDCCA This finding may affect:</div>' +
+      '<div class="pm-question" style="margin-top:1px;opacity:1;font-weight:600">' + escHtml(question) + '</div>' +
+      '<svg class="pm-chart" viewBox="0 0 80 32" preserveAspectRatio="none"></svg>' +
+      '<div class="pm-outcomes">' + outcomesHtml + '</div>' +
       '<div class="pm-live-dot"></div>';
 
     if (oldOverlay) {
@@ -243,7 +231,7 @@
 
   function drawSparkline(svg, points) {
     if (!points.length) return;
-    var W = 120, H = 40;
+    var W = 80, H = 32;
     var prices = points.map(function (p) { return p.p; });
     var min = Math.min.apply(null, prices);
     var max = Math.max.apply(null, prices);
@@ -257,16 +245,12 @@
 
     var polyline = coords.join(' ');
     var last = coords[coords.length - 1].split(',');
-    // Bright gray-white line — bold, visible against dark bg
-    var lineColor = 'rgba(230,230,230,0.92)';
-    var glowColor = 'rgba(255,255,255,0.25)';
+    var lineColor = 'rgba(190,190,190,0.7)';
 
-    // Bold line + soft glow duplicate behind it + pulsing end dot
     svg.innerHTML =
-      '<polyline points="' + polyline + '" fill="none" stroke="' + glowColor + '" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />' +
-      '<polyline points="' + polyline + '" fill="none" stroke="' + lineColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />' +
-      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="3" fill="#fff" opacity="0.95">' +
-        '<animate attributeName="opacity" values="0.95;0.4;0.95" dur="2s" repeatCount="indefinite" />' +
+      '<polyline points="' + polyline + '" fill="none" stroke="' + lineColor + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.5" fill="' + lineColor + '" opacity="0.9">' +
+        '<animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite" />' +
       '</circle>';
   }
 
