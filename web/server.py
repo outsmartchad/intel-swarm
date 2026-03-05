@@ -525,7 +525,7 @@ _PM_DOMAIN_TAGS = {
     "sports":     [("sports","nfl"), ("sports","nba"), ("sports","soccer")],
 }
 
-def _pm_parse_market(m, chart_tokens=None):
+def _pm_parse_market(m, chart_tokens=None, event_image=None):
     """Parse a Gamma market dict into our response format.
     chart_tokens: list of token_ids from high-volume sibling markets for chart data.
     """
@@ -562,6 +562,8 @@ def _pm_parse_market(m, chart_tokens=None):
         "url": f"https://polymarket.com/event/{m.get('slug', '')}",
         # chart_tokens: high-volume sibling tokens to use for real price history
         "chart_tokens": chart_tokens or [],
+        # Polymarket event image (S3 hosted) for overlay background
+        "event_image": event_image or "",
     }
 
 def _pm_is_active_market(m):
@@ -693,7 +695,8 @@ def pm_market():
                     except: tokens = []
                     top_chart_tokens.extend(tokens[:2])
 
-                parsed = _pm_parse_market(best_candidate_market, chart_tokens=top_chart_tokens)
+                ev_image = event.get("image", "")
+                parsed = _pm_parse_market(best_candidate_market, chart_tokens=top_chart_tokens, event_image=ev_image)
                 if parsed and parsed["outcomes"]:
                     vol = _pm_volume(best_candidate_market)
                     vol_bonus = 3 if vol > 10000 else (1 if vol > 1000 else 0)

@@ -205,11 +205,18 @@
         '</div>';
     });
 
-    // Full-bleed layout: left (question + chart) | right (outcomes)
+    // Background: Polymarket event image (grayscale + dark tint via CSS)
+    var bgHtml = '';
+    if (data.event_image) {
+      bgHtml = '<div class="pm-bg" style="background-image:url(' + escHtml(data.event_image) + ')"></div>';
+    }
+
+    // Full-bleed layout: [bg] left (question + chart) | right (outcomes)
     var html =
+      bgHtml +
       '<div class="pm-left">' +
         '<div class="pm-question">' + escHtml(question) + '</div>' +
-        '<svg class="pm-chart" viewBox="0 0 120 40" preserveAspectRatio="none"></svg>' +
+        '<svg class="pm-chart" viewBox="0 0 120 44" preserveAspectRatio="none"></svg>' +
       '</div>' +
       '<div class="pm-right">' + outcomesHtml + '</div>' +
       '<div class="pm-live-dot"></div>';
@@ -250,14 +257,16 @@
 
     var polyline = coords.join(' ');
     var last = coords[coords.length - 1].split(',');
-    // Soft light gray line — clean, subtle
-    var lineColor = 'rgba(190,190,190,0.7)';
+    // Bright gray-white line — bold, visible against dark bg
+    var lineColor = 'rgba(230,230,230,0.92)';
+    var glowColor = 'rgba(255,255,255,0.25)';
 
-    // Clean line only — no fill polygon, transparent background
+    // Bold line + soft glow duplicate behind it + pulsing end dot
     svg.innerHTML =
-      '<polyline points="' + polyline + '" fill="none" stroke="' + lineColor + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />' +
-      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.5" fill="' + lineColor + '" opacity="0.9">' +
-        '<animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite" />' +
+      '<polyline points="' + polyline + '" fill="none" stroke="' + glowColor + '" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />' +
+      '<polyline points="' + polyline + '" fill="none" stroke="' + lineColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="3" fill="#fff" opacity="0.95">' +
+        '<animate attributeName="opacity" values="0.95;0.4;0.95" dur="2s" repeatCount="indefinite" />' +
       '</circle>';
   }
 
