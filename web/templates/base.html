@@ -570,8 +570,7 @@ function toggleTheme() {
 }
 // Apply saved theme immediately
 (function() {
-  var saved = localStorage.getItem('intel-theme') ||
-    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  var saved = localStorage.getItem('intel-theme') || 'dark';
   applyTheme(saved);
 })();
 
