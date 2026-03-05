@@ -228,6 +228,8 @@ def _pack_cols(n):
         cols[-1] += 12 - leftover
     return cols
 
+PINNED_HERO = "war"  # always hero slot regardless of score
+
 def assign_layout(domains, date):
     """
     Assign editorial card sizes. All rows sum to exactly 12 cols — no gaps.
@@ -236,19 +238,22 @@ def assign_layout(domains, date):
     Rows 2+: remaining domains packed by _pack_cols()
              higher-scoring domains get span-4 (wider), lower get span-3
 
-    Most significant domain (highest score) always gets hero slot.
-    Domains are reordered: hero → featured → rest (score-descending).
+    PINNED_HERO domain always gets the hero slot.
+    Featured = highest scorer among the rest.
     """
     N = len(domains)
     if N == 0:
         return domains
 
+    # Find pinned hero index, fallback to top scorer
+    pinned = next((i for i, d in enumerate(domains) if d["id"] == PINNED_HERO), None)
     by_score = sorted(range(N), key=lambda i: domains[i]["score"], reverse=True)
+    hero_i = pinned if pinned is not None else by_score[0]
 
-    # Hero = #1 scorer, featured = #2 scorer — deterministic, score-driven
-    hero_i = by_score[0]
-    feat_i = by_score[1] if N > 1 else by_score[0]
-    rest   = by_score[2:]  # already score-sorted, wide → narrow
+    # Featured = top scorer excluding hero
+    remaining_by_score = [i for i in by_score if i != hero_i]
+    feat_i = remaining_by_score[0] if remaining_by_score else hero_i
+    rest   = remaining_by_score[1:]  # score-sorted, wide → narrow
 
     col_map = {hero_i: 7, feat_i: 5}
     for domain_i, cols in zip(rest, _pack_cols(len(rest))):
