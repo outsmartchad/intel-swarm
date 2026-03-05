@@ -17,3 +17,7 @@ _Track which sources are consistently high-signal_
 - https://www.nbcnews.com/politics/justice-department/overseas-epstein-investigations-multiply-america-not-much-rcna260827 | used: 2026-03-05 | quality: high | notes: NBC confirmed UK arrests/US inaction divergence with named charges
 - https://www.nytimes.com/2026/03/03/business/epstein-japan-ito-resigns.html | used: 2026-03-05 | quality: high | notes: NYT confirmed Ito departure from Japan ¥64B tech program
 - https://www.thedailybeast.com/jeffrey-epsteins-creepy-medical-cabal-unmasked-in-doj-files-bombshell/ | used: 2026-03-05 | quality: medium | notes: Daily Beast, confirmed by NYT doctors article, primary DOJ docs cited
+- https://www.statnews.com/2026/03/04/jeffrey-epstein-new-mystery-harvard-genetics-project-george-church/ | used: 2026-03-06 | quality: high | notes: STAT News, specialist science journalism, first to break PGP consent tampering story
+- https://www.cbsnews.com/projects/2026/epstein-files/ | used: 2026-03-06 | quality: high | notes: CBS News running tracker on DOJ Epstein file database — tracks what's been removed vs. initially released
+- https://apnews.com/article/bondi-subpoena-epstein-files-house-committee-b16a5ab68c4a37a3a533e5f2412d7a57 | used: 2026-03-06 | quality: high | notes: AP primary reporting on Bondi subpoena
+- https://www.bostonglobe.com/2026/02/25/metro/jeffrey-epstein-harvard-spotlight-report/ | used: 2026-03-06 | quality: high | notes: Boston Globe Spotlight investigation — confirms Epstein-Church biotech company and "pleasure genome" proposals from emails
