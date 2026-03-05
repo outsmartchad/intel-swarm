@@ -189,39 +189,41 @@
     if (oldBadge) oldBadge.remove();
 
     var question = data.question || '';
-    if (question.length > 40) question = question.substring(0, 40) + '\u2026';
+    if (question.length > 55) question = question.substring(0, 55) + '\u2026';
 
+    // Right column: outcomes stacked vertically
     var outcomesHtml = '';
     (data.outcomes || []).slice(0, 3).forEach(function (o) {
       var pct = Math.round(o.price * 100);
-      var pctStr = pct + '%';
       outcomesHtml +=
         '<div class="pm-outcome">' +
-          '<span class="pm-name">' + escHtml(o.name).substring(0, 4).toUpperCase() + '</span>' +
-          '<span class="pm-pct" data-pct="' + pct + '">' + pctStr + '</span>' +
+          '<div class="pm-outcome-row">' +
+            '<span class="pm-name">' + escHtml(o.name).substring(0, 4).toUpperCase() + '</span>' +
+            '<span class="pm-pct" data-pct="' + pct + '">' + pct + '%</span>' +
+          '</div>' +
           '<div class="pm-bar"><div class="pm-fill" style="width:' + pct + '%"></div></div>' +
         '</div>';
     });
 
+    // Full-bleed layout: left (question + chart) | right (outcomes)
     var html =
-      '<div class="pm-question">\uD83D\uDCCA This finding may affect:</div>' +
-      '<div class="pm-question" style="margin-top:1px;opacity:1;font-weight:600">' + escHtml(question) + '</div>' +
-      '<svg class="pm-chart" viewBox="0 0 80 32" preserveAspectRatio="none"></svg>' +
-      '<div class="pm-outcomes">' + outcomesHtml + '</div>' +
+      '<div class="pm-left">' +
+        '<div class="pm-question">' + escHtml(question) + '</div>' +
+        '<svg class="pm-chart" viewBox="0 0 120 40" preserveAspectRatio="none"></svg>' +
+      '</div>' +
+      '<div class="pm-right">' + outcomesHtml + '</div>' +
       '<div class="pm-live-dot"></div>';
 
     if (oldOverlay) {
-      // Update in place — animate pct changes
+      // Update in place — flash changed pct values
       var oldPcts = oldOverlay.querySelectorAll('.pm-pct');
       oldOverlay.innerHTML = html;
-      // Highlight changed values
       var newPcts = oldOverlay.querySelectorAll('.pm-pct');
       newPcts.forEach(function (el, i) {
         var oldVal = oldPcts[i] ? oldPcts[i].getAttribute('data-pct') : '';
         if (oldVal && oldVal !== el.getAttribute('data-pct')) {
-          el.style.transition = 'color .3s';
-          el.style.color = '#4ade80';
-          setTimeout(function () { el.style.color = ''; }, 1200);
+          el.classList.add('flash');
+          setTimeout(function () { el.classList.remove('flash'); }, 1200);
         }
       });
     } else {
@@ -234,7 +236,7 @@
 
   function drawSparkline(svg, points) {
     if (!points.length) return;
-    var W = 80, H = 32;
+    var W = 120, H = 40;
     var prices = points.map(function (p) { return p.p; });
     var min = Math.min.apply(null, prices);
     var max = Math.max.apply(null, prices);
