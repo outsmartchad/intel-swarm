@@ -36,3 +36,5 @@ Search the web for the latest high-signal intelligence in your domain. Find what
 ```
 
 Be ruthless about signal vs noise. Only include things that are genuinely surprising, hidden, or have implications most people haven't connected yet. Skip obvious mainstream news.
+
+Do NOT add status labels like "CONFIRMED", "UNCONFIRMED", "DISPUTED", or emoji status indicators (🟢🟡🔴) to findings. Just write the finding directly.
