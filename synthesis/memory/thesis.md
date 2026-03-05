@@ -2,12 +2,23 @@
 _Tracks how the big picture is evolving over time_
 
 ## Current Core Thesis
-_Last updated: 2026-03-05_
+_Last updated: 2026-03-06_
 
-**Every Refuge Is Compromised — Build for Zero Trust.**
-Yesterday's "Infrastructure Capture" thesis evolved: it's not just about who controls the pipes, but that the pipes themselves are unreliable. Treasuries lost safe-haven status during a US-initiated war. Safety alignment handicaps defenders while empowering attackers. Military C2, information infrastructure, regulatory frameworks, and institutional credibility are all simultaneously compromised under stress. The only infrastructure that survives is infrastructure that assumes no refuge exists: edge-deployed, trustless, privacy-native, permissionless. China's strategy isn't racing — it's building dependency through cheapness (tobacco playbook). BRICS sovereign de-dollarization is confirmed theater, but commercial parallel rails (CIPS, stablecoins, Visa/Bridge) keep growing.
+**The Pretense Layer Has Collapsed — Raw Power Dynamics Are Now Explicit.**
+Three-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 = infrastructure unreliability (pipes themselves compromised). Day 3 = pretense collapse (every actor stopped pretending about the pipes). The institutional frameworks built on shared fictions — safety alignment, export controls, diplomatic ambiguity, financial narratives, DOJ accountability — have all been abandoned simultaneously. Trump states regime change openly. Anthropic negotiates weapons contracts while claiming safety principles. Markets reward 40% AI layoffs with +17% stock moves. TSMC manufactures sanctioned chips at scale. China publishes its domination roadmap and hands it to the adversary. This isn't chaos — it's clarity. The information environment has improved because every actor's true objective is now visible. The competitive advantage is no longer information asymmetry but speed of execution. BTC + DXY rising simultaneously signals markets pricing the death of pretense — BTC as parallel safe-haven infrastructure, not risk-on speculation.
 
 ## Thesis Evolution Log
+
+### 2026-03-06 (Day 3)
+- **Theme:** "The Pretense Layer Has Collapsed" — every actor dropped pretense simultaneously, institutional frameworks built on shared fictions now irrelevant
+- **Shift from Day 2:** Evolution. Day 2 = refuges compromised. Day 3 = everyone openly acknowledges the compromise and acts on raw power dynamics
+- **Key convergence:** OpenAI Symphony (open-source formal verification for autonomous coding) + Block +17% for AI layoffs + OKX MCP integration = capability + incentive + infrastructure for autonomous workforce replacement converged in 24 hours
+- **BTC regime signal:** BTC $73K + DXY rising simultaneously = inverse correlation potentially dead. If sustained, the entire macro framework governing crypto allocation for 4 years is obsolete
+- **War escalation:** NATO directly engaged (Turkey missile intercept), Iran struck Azerbaijan (new Caucasus front), Trump stated regime change objective openly
+- **China:** 15th Five-Year Plan published (quantum networks, AI everywhere, humanoid robots) + 7% defense budget increase + Trump visit March 31 = strategic intent fully explicit
+- **Epstein:** Active cover-up operating in daylight — retroactive consent tampering, DOJ database shrinking by 65K+ pages, Congress subpoenas AG, DOJ tracking congressional searchers
+- **Source-level corroboration:** Reuters + Axios both independently confirmed Trump regime change statement; TechCrunch + Fast Company independently confirmed Anthropic Pentagon negotiation status
+- **Missing researchers:** power, psyops, conspiracy, regulatory (4/15 missing)
 
 ### 2026-03-05 (Day 2)
 - **Theme:** "Every Refuge Is Compromised" — Treasuries, safety alignment, military comms, information, regulation, institutional credibility all failing simultaneously
@@ -28,42 +39,60 @@ Yesterday's "Infrastructure Capture" thesis evolved: it's not just about who con
 
 ### [2026-03-04] Near-term BTC defensive
 - **Prediction:** Short squeeze exhausted + VIX cracking + Iran geopolitical shock = defensive positioning.
-- **Status:** ✅ CONFIRMED — BTC funding slipped negative again at $68K, VIX regime break confirmed (23.57 close, high 25.40), simultaneous stock/bond/crypto selling. Second short build forming with liquidation void to $62K.
-- **Confirmed on:** 2026-03-05
+- **Status:** ❌ WRONG — BTC broke $73K on Day 3, shorts liquidated ($433M), bearish consensus became squeeze fuel. Dollar correlation broke simultaneously.
+- **Falsified on:** 2026-03-06
 
 ### [2026-03-04] HK stablecoin window = non-US onramp
 - **Prediction:** HK licenses dropping this month create first institutional non-US stablecoin onramp.
-- **Status:** IN PROGRESS — HKMA confirmed licenses drop March, but "very few" issuers initially. Window open, no names announced yet.
+- **Status:** IN PROGRESS — 6 days into March, no licenses announced yet. Framework expanding (dealer + custodian legislation queued) but "very few" issuers expected initially.
 - **Check by:** 2026-03-31
 
 ### [2026-03-04] GENIUS Act yield loophole closes within months
-- **Prediction:** Banks successfully lobby RFIA to close stablecoin yield arbitrage. Window is months, not years.
-- **Status:** ACCELERATING — OCC went further than predicted: using regulatory interpretation (376-page NPRM) to classify Coinbase-style rewards as "intermediary evasion." No new legislation needed. 60-day comment window closes April 27. Faster than expected.
+- **Prediction:** Banks successfully lobby RFIA to close stablecoin yield arbitrage.
+- **Status:** ACCELERATING — OCC issued formal GENIUS Act rulemaking Feb 25 with "rebuttable presumption" on yield. JPMorgan lost battle for bank-level regulation. White House rejected JPMorgan's push. Stablecoin issuers locked into narrow-money instruments.
 - **Check by:** 2026-04-27 (comment deadline)
 
 ### [2026-03-04] Taiwan arms vacuum = ambiguity window March 15
 - **Prediction:** March 15 arms deadline expiry without renewal = first real Taiwan Strait ambiguity window since 1979.
-- **Status:** IN PLAY — LY voting defense budget March 6 (today). Trump discussing Taiwan arms with Beijing directly. March 15 deadline 10 days away.
+- **Status:** INTENSIFYING — TPP and KMT both conditioning budget passage on US delivery confirmation that doesn't exist. Trump discussing Taiwan arms with Beijing. China announced 7% defense increase. 9 days to deadline.
 - **Check by:** 2026-03-16
 
 ### [2026-03-05] Safety alignment = competitive disadvantage for Western agents
-- **Prediction:** Scale AI paper reveals alignment cripples defensive agents at 2.72× refusal rate. Chinese agents without this constraint will outperform in adversarial agent-vs-agent environments. Expect Chinese autonomous agents to dominate in unregulated markets within 6 months.
-- **Status:** pending
+- **Prediction:** Chinese agents without alignment constraints will outperform in adversarial environments.
+- **Status:** REINFORCED — Anthropic's safety stance dissolved on contact with Pentagon contract. OpenAI took the deal with no pretense. The alignment gap may narrow faster than predicted as Western labs abandon principles under commercial pressure.
 - **Check by:** 2026-09-05
 
 ### [2026-03-05] Stagflation trap prevents Fed pivot through H1 2026
-- **Prediction:** Oil-driven inflation from Iran/Hormuz + growth collapse = Fed frozen. Warsh's "QT-for-cuts" framework boxed in before confirmation. No rate cuts through June 2026.
-- **Status:** pending
+- **Prediction:** Oil-driven inflation + growth collapse = Fed frozen. No rate cuts through June 2026.
+- **Status:** pending — war escalation (naval combat off Sri Lanka, Iran striking NATO members) supports oil inflation thesis. SPX broke 100-day MA. But BTC correlation break complicates the framework.
 - **Check by:** 2026-06-30
 
 ### [2026-03-05] Solana agent infrastructure convergence = buildable stack by March end
-- **Prediction:** ERC-8004 identity (24K+ agents) + Solflare PAL privacy + pump.fun liquidity aggregation pivot = first complete autonomous agent stack on Solana within March.
-- **Status:** pending
+- **Prediction:** ERC-8004 + Solflare PAL + pump.fun liquidity = complete agent stack on Solana within March.
+- **Status:** ADVANCING — OKX MCP integration with 500 DEXes + x402 payments adds exchange-native execution layer. Astralane enters as Jito MEV alternative. Stack is expanding faster than predicted.
 - **Check by:** 2026-03-31
 
+### [2026-03-06] BTC-DXY correlation break = structural regime change
+- **Prediction:** If BTC + DXY rising simultaneously sustains through next week, the inverse correlation governing crypto allocation for 4 years is dead. BTC being priced as parallel safe-haven infrastructure, not risk-on.
+- **Status:** pending — need 5+ trading days of sustained co-movement to confirm.
+- **Check by:** 2026-03-13
+
+### [2026-03-06] NATO Article 5 invocation risk within 2 weeks
+- **Prediction:** Iran's missile trajectory through 3 sovereign airspaces into Turkish NATO space will either trigger Article 5 or force NATO to publicly decline, creating either escalation or credibility crisis.
+- **Status:** pending
+- **Check by:** 2026-03-20
+
+### [2026-03-06] Autonomous coding + market incentive = first Fortune 500 "AI-only engineering team" announcement by Q2
+- **Prediction:** Symphony open-source + Claude multi-agent compiler proof + Block's 17% reward for AI layoffs = at least one major company will announce an AI-only engineering division (no human coders) within 90 days.
+- **Status:** pending
+- **Check by:** 2026-06-06
+
 ## Recurring Themes Across Days
-- **Day 1-2:** Infrastructure control → infrastructure unreliability (evolutionary arc)
-- **Day 1-2:** China building parallel systems (CIPS/mBridge → DeepSeek V4 domestic chips → dependency playbook)
-- **Day 1-2:** Regulatory windows closing faster than expected (GENIUS → OCC NPRM acceleration)
-- **Day 1-2:** Agent infrastructure shipping at edge/on-chain (NEAR IronClaw → NullClaw + ERC-8004 + Solflare PAL)
-- **Day 1-2:** BRICS sovereign posturing vs commercial reality (Russia memo → Lula kill)
+- **Day 1-3:** Infrastructure control → infrastructure unreliability → pretense about infrastructure collapses (evolutionary arc)
+- **Day 1-3:** China building parallel systems openly (CIPS/mBridge → DeepSeek V4 → 15th Five-Year Plan published as strategic declaration)
+- **Day 1-3:** Regulatory windows closing faster than expected (GENIUS → OCC NPRM → formal rulemaking)
+- **Day 1-3:** Agent infrastructure shipping and expanding (NEAR → NullClaw/ERC-8004 → OKX MCP + Symphony open-source)
+- **Day 2-3:** AI safety principles dissolving under commercial/military pressure (Scale AI refusal paper → Anthropic Pentagon deal collapse/renegotiation)
+- **Day 3 NEW:** Markets explicitly rewarding AI workforce replacement (Block +17%)
+- **Day 3 NEW:** BTC-DXY correlation break — potential macro regime change
+- **Day 3 NEW:** War escalation beyond Gulf — NATO engagement, Caucasus front, naval combat in Indian Ocean
