@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Intel Swarm — Intelligence Dashboard Server"""
 
-import os, glob, re, json
-from flask import Flask, render_template, abort, request
+import os, glob, re, json, time
+from flask import Flask, render_template, abort, request, jsonify as flask_jsonify
 import markdown as md_lib
+import requests as http_requests
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -392,7 +393,7 @@ def domain_date(rid, date):
 
 @app.route("/api/search")
 def api_search():
-    from flask import jsonify
+    jsonify = flask_jsonify
     q    = request.args.get("q", "").strip().lower()
     date = request.args.get("date", get_latest_date())
     lang = get_lang()
@@ -472,6 +473,118 @@ def memory():
         threads_data=threads_data,
         researchers=RESEARCHERS,
     )
+
+# ── POLYMARKET ───────────────────────────────────────────────────────────
+_pm_cache = {}  # key -> (timestamp, data)
+_PM_HEADERS = {"User-Agent": "Mozilla/5.0"}
+
+def _pm_cached(key, ttl):
+    entry = _pm_cache.get(key)
+    if entry and time.time() - entry[0] < ttl:
+        return entry[1]
+    return None
+
+def _pm_set(key, data):
+    _pm_cache[key] = (time.time(), data)
+
+@app.route("/api/polymarket/market")
+def pm_market():
+    q = request.args.get("q", "").strip()
+    if not q:
+        return flask_jsonify({})
+    cache_key = f"pm_market:{q}"
+    cached = _pm_cached(cache_key, 300)
+    if cached is not None:
+        return flask_jsonify(cached)
+    try:
+        resp = http_requests.get(
+            "https://gamma-api.polymarket.com/markets",
+            params={"search": q, "limit": 3},
+            headers=_PM_HEADERS,
+            timeout=5,
+        )
+        resp.raise_for_status()
+        markets = resp.json()
+        if not markets:
+            _pm_set(cache_key, {})
+            return flask_jsonify({})
+        # Return first market with outcomes
+        for m in markets:
+            outcomes_raw = m.get("outcomes", "[]")
+            if isinstance(outcomes_raw, str):
+                try:
+                    outcomes_list = json.loads(outcomes_raw)
+                except Exception:
+                    outcomes_list = []
+            else:
+                outcomes_list = outcomes_raw
+            prices_raw = m.get("outcomePrices", "[]")
+            if isinstance(prices_raw, str):
+                try:
+                    prices_list = json.loads(prices_raw)
+                except Exception:
+                    prices_list = []
+            else:
+                prices_list = prices_raw
+            tokens_raw = m.get("clobTokenIds", "[]")
+            if isinstance(tokens_raw, str):
+                try:
+                    tokens_list = json.loads(tokens_raw)
+                except Exception:
+                    tokens_list = []
+            else:
+                tokens_list = tokens_raw
+            if not outcomes_list:
+                continue
+            outcomes = []
+            for i, name in enumerate(outcomes_list):
+                price = float(prices_list[i]) if i < len(prices_list) else 0
+                token_id = tokens_list[i] if i < len(tokens_list) else ""
+                outcomes.append({"name": name, "price": price, "token_id": token_id})
+            result = {
+                "condition_id": m.get("conditionId", ""),
+                "question": m.get("question", ""),
+                "outcomes": outcomes[:3],
+                "end_date_iso": m.get("endDate", ""),
+                "url": f"https://polymarket.com/event/{m.get('slug', '')}",
+            }
+            _pm_set(cache_key, result)
+            return flask_jsonify(result)
+        _pm_set(cache_key, {})
+        return flask_jsonify({})
+    except Exception:
+        return flask_jsonify({})
+
+@app.route("/api/polymarket/chart")
+def pm_chart():
+    token_id = request.args.get("token_id", "").strip()
+    if not token_id:
+        return flask_jsonify({"points": []})
+    cache_key = f"pm_chart:{token_id}"
+    cached = _pm_cached(cache_key, 60)
+    if cached is not None:
+        return flask_jsonify(cached)
+    try:
+        resp = http_requests.get(
+            "https://clob.polymarket.com/prices-history",
+            params={"market": token_id, "interval": "1d", "fidelity": "60"},
+            headers=_PM_HEADERS,
+            timeout=5,
+        )
+        resp.raise_for_status()
+        raw = resp.json()
+        points = []
+        history = raw.get("history", raw) if isinstance(raw, dict) else raw
+        if isinstance(history, list):
+            for pt in history:
+                t = pt.get("t", 0)
+                p = float(pt.get("p", 0))
+                points.append({"t": t, "p": p})
+        result = {"points": points}
+        _pm_set(cache_key, result)
+        return flask_jsonify(result)
+    except Exception:
+        return flask_jsonify({"points": []})
 
 # ── ENTRYPOINT ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
