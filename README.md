@@ -128,6 +128,18 @@ intel-swarm/
 
 ---
 
+## Contributing
+
+Intel Swarm is designed to be extended. You can:
+- **Add new research domains** — new topic, new researcher, automatic pipeline integration
+- **Refine researcher prompts** — tune search queries, source preferences, output format
+- **Modify synthesis/chief logic** — change how findings are connected and delivered
+- **Add sub-domain tabs** — group related topics (e.g. Russia / China / North Korea under Communist States)
+
+Full guide: **[CONTRIBUTING.md](./CONTRIBUTING.md)** · **[中文說明 CONTRIBUTING.zh.md](./CONTRIBUTING.zh.md)**
+
+---
+
 ## License
 
 MIT — fork it, build on it, run your own swarm.
