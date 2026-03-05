@@ -611,7 +611,7 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market5:{domain}:{q}"
+    cache_key = f"pm_market6:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
@@ -662,7 +662,7 @@ def pm_market():
                         best_market_score = ms
                         best_candidate_market = m
 
-                if best_market_score < 3 or not best_candidate_market:
+                if best_market_score < 2 or not best_candidate_market:
                     continue
 
                 # Collect chart tokens from high-volume siblings
