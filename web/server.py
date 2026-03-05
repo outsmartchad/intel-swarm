@@ -12,10 +12,10 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESEARCHERS = [
     {"id": "war",           "emoji": "⚔️",  "name": "War",                "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
     {"id": "commodities",  "emoji": "🛢️",  "name": "Commodities",         "zh": "大宗商品", "colors": "#78350f,#d97706"},
-    {"id": "authoritarian","emoji": "🔴",  "name": "Communist States","zh": "共產國家", "colors": "#3b0000,#dc2626",
+    {"id": "communist",    "emoji": "🔴",  "name": "Communist States","zh": "共產國家", "colors": "#3b0000,#dc2626",
      "subs": [
-         {"id": "russia",      "emoji": "🇷🇺", "name": "Russia",      "zh": "俄羅斯"},
          {"id": "china",       "emoji": "🇨🇳", "name": "China",       "zh": "中國"},
+         {"id": "russia",      "emoji": "🇷🇺", "name": "Russia",      "zh": "俄羅斯"},
          {"id": "north-korea", "emoji": "🇰🇵", "name": "North Korea", "zh": "北韓"},
      ]},
     {"id": "religion",    "emoji": "✝️", "name": "Religion",     "zh": "宗教",     "colors": "#1c1917,#a8a29e"},
@@ -324,7 +324,7 @@ def home(date):
         data = get_researcher_data(display_id, date, lang)
         en_findings = extract_findings(read_file(f"{BASE}/researchers/{display_id}/findings/{date}.md", "en")) if lang != "en" else data["findings"]
         # Link card to first sub by default
-        card_url = f"/domain/{r['id']}/{date}?sub=china" if subs else None
+        card_url = f"/domain/communist/{date}?sub=china" if subs else None
         domains.append({
             "id":       r["id"],
             "emoji":    r["emoji"],
