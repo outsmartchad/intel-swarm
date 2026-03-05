@@ -46,4 +46,15 @@ for f in "${FILES[@]}"; do
 done
 
 wait
+
+# Also translate memory/threads.md for new domains (if not yet translated)
+echo "📚 Translating memory threads..."
+for DOMAIN in war commodities religion health crypto ai-agents macro singularity quant westeast blackbudget emerging conspiracy epstein culture sports russia china north-korea; do
+  TFILE="$BASE/researchers/$DOMAIN/memory/threads.md"
+  if [ -f "$TFILE" ]; then
+    python3 "$TRANSLATE" "$TFILE" &
+  fi
+done
+wait
+
 echo "✅ Done translating $DATE"
