@@ -203,15 +203,14 @@
 
     var polyline = coords.join(' ');
     var last = coords[coords.length - 1].split(',');
-    // Determine trend colour: green if price went up, soft red if down
-    var firstP = points[0].p, lastP = points[points.length - 1].p;
-    var lineColor = lastP >= firstP ? 'rgba(160,210,160,0.75)' : 'rgba(210,160,160,0.75)';
+    // Soft light gray line — clean, subtle
+    var lineColor = 'rgba(190,190,190,0.7)';
 
     // Clean line only — no fill polygon, transparent background
     svg.innerHTML =
       '<polyline points="' + polyline + '" fill="none" stroke="' + lineColor + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />' +
-      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.5" fill="' + lineColor + '" opacity="0.95">' +
-        '<animate attributeName="opacity" values="0.95;0.4;0.95" dur="2s" repeatCount="indefinite" />' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.5" fill="' + lineColor + '" opacity="0.9">' +
+        '<animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite" />' +
       '</circle>';
   }
 
