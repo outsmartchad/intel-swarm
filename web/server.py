@@ -10,11 +10,11 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ── RESEARCHER REGISTRY ──────────────────────────────────────────────────────
 # To add a researcher: append a dict here. No other code changes needed.
 RESEARCHERS = [
+    {"id": "war",         "emoji": "⚔️", "name": "War",          "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
     {"id": "culture",     "emoji": "🎭", "name": "Culture",      "zh": "文化",     "colors": "#7c3aed,#a855f7"},
     {"id": "emerging",    "emoji": "🌍", "name": "Emerging",     "zh": "新興市場", "colors": "#065f46,#10b981"},
     {"id": "ai-agents",   "emoji": "🤖", "name": "AI Agents",    "zh": "AI 代理",  "colors": "#1e40af,#3b82f6"},
     {"id": "crypto",      "emoji": "🪙", "name": "Crypto",       "zh": "加密貨幣", "colors": "#92400e,#f59e0b"},
-    {"id": "war",         "emoji": "⚔️", "name": "War",          "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
     {"id": "macro",       "emoji": "📊", "name": "Macro",        "zh": "宏觀",     "colors": "#164e63,#06b6d4"},
     {"id": "singularity", "emoji": "🧠", "name": "Singularity",  "zh": "奇點",     "colors": "#4c1d95,#8b5cf6"},
     {"id": "quant",       "emoji": "📈", "name": "Quant",        "zh": "量化",     "colors": "#713f12,#eab308"},
@@ -228,8 +228,6 @@ def _pack_cols(n):
         cols[-1] += 12 - leftover
     return cols
 
-PINNED_HERO = "war"  # always hero slot regardless of score
-
 def assign_layout(domains, date):
     """
     Assign editorial card sizes. All rows sum to exactly 12 cols — no gaps.
@@ -238,22 +236,19 @@ def assign_layout(domains, date):
     Rows 2+: remaining domains packed by _pack_cols()
              higher-scoring domains get span-4 (wider), lower get span-3
 
-    PINNED_HERO domain always gets the hero slot.
-    Featured = highest scorer among the rest.
+    Most significant domain (highest score) always gets hero slot.
+    Domains are reordered: hero → featured → rest (score-descending).
     """
     N = len(domains)
     if N == 0:
         return domains
 
-    # Find pinned hero index, fallback to top scorer
-    pinned = next((i for i, d in enumerate(domains) if d["id"] == PINNED_HERO), None)
     by_score = sorted(range(N), key=lambda i: domains[i]["score"], reverse=True)
-    hero_i = pinned if pinned is not None else by_score[0]
 
-    # Featured = top scorer excluding hero
-    remaining_by_score = [i for i in by_score if i != hero_i]
-    feat_i = remaining_by_score[0] if remaining_by_score else hero_i
-    rest   = remaining_by_score[1:]  # score-sorted, wide → narrow
+    # Hero = #1 scorer, featured = #2 scorer — deterministic, score-driven
+    hero_i = by_score[0]
+    feat_i = by_score[1] if N > 1 else by_score[0]
+    rest   = by_score[2:]  # already score-sorted, wide → narrow
 
     col_map = {hero_i: 7, feat_i: 5}
     for domain_i, cols in zip(rest, _pack_cols(len(rest))):
