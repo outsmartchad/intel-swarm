@@ -101,7 +101,7 @@ def score(headline, question):
     has_causal = any(re.search(r'\b' + re.escape(cw) + r'\b', h) for cw in causal)
     return overlap * 2 + (2 if has_causal and overlap > 0 else 0)
 
-def parse_market(m, chart_tokens=None, event_image=None):
+def parse_market(m, chart_tokens=None, event_image=None, event_slug=None):
     outcomes_raw = m.get("outcomes", "[]")
     try: outcomes_list = json.loads(outcomes_raw) if isinstance(outcomes_raw, str) else outcomes_raw
     except: outcomes_list = []
@@ -121,7 +121,7 @@ def parse_market(m, chart_tokens=None, event_image=None):
     return {
         "question": m.get("question", m.get("groupItemTitle", "")),
         "outcomes": outcomes[:3],
-        "url": f"https://polymarket.com/event/{m.get('slug', '')}",
+        "url": f"https://polymarket.com/event/{event_slug or m.get('slug', '')}",
         "chart_tokens": chart_tokens or [],
         "event_image": event_image or "",
     }
@@ -171,7 +171,7 @@ def find_market(title, domain):
                 except: tokens = []
                 chart_tokens.extend(tokens[:2])
 
-            parsed = parse_market(best_market, chart_tokens=chart_tokens, event_image=event.get("image",""))
+            parsed = parse_market(best_market, chart_tokens=chart_tokens, event_image=event.get("image",""), event_slug=event.get("slug",""))
             if parsed and parsed["outcomes"]:
                 vol = market_volume(best_market)
                 vol_bonus = 3 if vol > 10000 else (1 if vol > 1000 else 0)

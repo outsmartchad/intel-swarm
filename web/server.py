@@ -504,28 +504,28 @@ def _pm_set(key, data):
 # Format: list of (tag_slug, seed_keyword_for_search) tuples
 # seed_keyword biases the event search toward relevant markets first
 _PM_DOMAIN_TAGS = {
-    "war":        [("geopolitics","iran"), ("geopolitics","ukraine"), ("geopolitics","war")],
-    "commodities":[("economics","oil"), ("economics","commodity"), ("economics","gold")],
-    "russia":     [("geopolitics","russia"), ("geopolitics","ukraine"), ("geopolitics","ceasefire")],
-    "china":      [("geopolitics","china"), ("geopolitics","taiwan"), ("geopolitics","xi")],
-    "north-korea":[("geopolitics","north korea"), ("geopolitics","kim"), ("geopolitics","nuclear")],
-    "macro":      [("economics","fed"), ("economics","interest rate"), ("economics","recession")],
-    "crypto":     [("crypto","bitcoin"), ("crypto","ethereum"), ("crypto","solana")],
-    "ai-agents":  [("technology","ai"), ("technology","openai"), ("technology","nvidia")],
-    "health":     [("science","fda"), ("science","health"), ("politics","vaccine")],
-    "religion":   [("politics","israel"), ("geopolitics","religion"), ("politics","trump")],
-    "culture":    [("entertainment","oscars"), ("entertainment","celebrity"), ("sports","culture")],
-    "emerging":   [("economics","emerging"), ("geopolitics","africa"), ("economics","developing")],
-    "singularity":[("technology","agi"), ("technology","ai"), ("technology","openai")],
-    "quant":      [("economics","stock"), ("economics","market"), ("economics","inflation")],
-    "westeast":   [("geopolitics","china"), ("geopolitics","us"), ("economics","trade")],
-    "blackbudget":[("geopolitics","military"), ("politics","pentagon"), ("geopolitics","defense")],
-    "conspiracy": [("politics","trump"), ("politics","us"), ("politics","government")],
-    "epstein":    [("politics","trump"), ("politics","us"), ("politics","justice")],
+    "war":        [("geopolitics","iran"), ("world","iran"), ("politics","iran")],
+    "commodities":[("economics","oil"), ("finance","commodity"), ("business","gold")],
+    "russia":     [("geopolitics","russia"), ("world","russia"), ("politics","russia")],
+    "china":      [("geopolitics","china"), ("world","china"), ("politics","china")],
+    "north-korea":[("geopolitics","north-korea"), ("world","north-korea"), ("politics","nuclear")],
+    "macro":      [("economics","fed"), ("finance","recession"), ("business","inflation")],
+    "crypto":     [("crypto","bitcoin"), ("crypto","ethereum"), ("finance","crypto")],
+    "ai-agents":  [("technology","openai"), ("technology","nvidia"), ("technology","ai")],
+    "health":     [("health","fda"), ("health","drug"), ("science","vaccine")],
+    "religion":   [("politics","israel"), ("geopolitics","israel"), ("world","religion")],
+    "culture":    [("entertainment","oscar"), ("entertainment","celebrity"), ("sports","culture")],
+    "emerging":   [("economics","emerging"), ("world","africa"), ("finance","developing")],
+    "singularity":[("technology","agi"), ("technology","openai"), ("science","ai")],
+    "quant":      [("finance","stock"), ("economics","recession"), ("business","market")],
+    "westeast":   [("geopolitics","china"), ("economics","trade"), ("politics","tariff")],
+    "blackbudget":[("geopolitics","military"), ("politics","pentagon"), ("world","defense")],
+    "conspiracy": [("politics","trump"), ("world","government"), ("politics","doge")],
+    "epstein":    [("politics","trump"), ("politics","justice"), ("world","justice")],
     "sports":     [("sports","nfl"), ("sports","nba"), ("sports","soccer")],
 }
 
-def _pm_parse_market(m, chart_tokens=None, event_image=None):
+def _pm_parse_market(m, chart_tokens=None, event_image=None, event_slug=None):
     """Parse a Gamma market dict into our response format.
     chart_tokens: list of token_ids from high-volume sibling markets for chart data.
     """
@@ -559,7 +559,7 @@ def _pm_parse_market(m, chart_tokens=None, event_image=None):
         "question": m.get("question", m.get("groupItemTitle", "")),
         "outcomes": outcomes[:3],
         "end_date_iso": m.get("endDate", m.get("endDateIso", "")),
-        "url": f"https://polymarket.com/event/{m.get('slug', '')}",
+        "url": f"https://polymarket.com/event/{event_slug or m.get('slug', '')}",
         # chart_tokens: high-volume sibling tokens to use for real price history
         "chart_tokens": chart_tokens or [],
         # Polymarket event image (S3 hosted) for overlay background
@@ -627,7 +627,7 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market7:{domain}:{q}"
+    cache_key = f"pm_market8:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
@@ -696,7 +696,8 @@ def pm_market():
                     top_chart_tokens.extend(tokens[:2])
 
                 ev_image = event.get("image", "")
-                parsed = _pm_parse_market(best_candidate_market, chart_tokens=top_chart_tokens, event_image=ev_image)
+                ev_slug = event.get("slug", "")
+                parsed = _pm_parse_market(best_candidate_market, chart_tokens=top_chart_tokens, event_image=ev_image, event_slug=ev_slug)
                 if parsed and parsed["outcomes"]:
                     vol = _pm_volume(best_candidate_market)
                     vol_bonus = 3 if vol > 10000 else (1 if vol > 1000 else 0)
