@@ -46,7 +46,7 @@ Each morning:
 ## Stack
 
 - **Agents:** [OpenClaw](https://openclaw.ai) — AI agent platform running cron jobs
-- **Models:** Claude Sonnet 4.6 for research, Claude Haiku for translation
+- **Models:** Claude Opus 4.6 for synthesis & chief analysis, Claude Sonnet 4.6 for domain research, Claude Haiku for translation
 - **Web:** Python / Flask, deployed on Vercel
 - **Images:** OG image scraping from source URLs
 - **Languages:** English + Traditional Chinese (繁體中文)
