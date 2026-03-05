@@ -4,29 +4,7 @@
 
 {% block body %}
 <style>
-/* ── SYNTHESIS STRIP ── */
-.syn-hero { margin-bottom: 20px; }
-
-/* ── SEARCH BAR ── */
-.search-bar-wrap {
-  position: relative; margin-bottom: 16px;
-}
-.search-input {
-  width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 8px; padding: 10px 14px 10px 38px;
-  color: var(--text); font-size: 13px; outline: none;
-  transition: border .15s, background .15s;
-}
-.search-input::placeholder { color: var(--muted); }
-.search-input:focus { border-color: rgba(200,169,110,.5); background: rgba(255,255,255,.06); }
-.search-icon {
-  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-  color: var(--muted); pointer-events: none;
-}
-.search-count {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  font-size: 11px; color: var(--muted); font-family: var(--mono);
-}
+/* Search bar lives in base.html global-search-bar */
 
 /* ── VIEW TOGGLE ── */
 .view-toolbar {
@@ -235,17 +213,6 @@
 
 <div class="wrap">
 
-  {# ── SYNTHESIS ── #}
-  {% if synthesis_html %}
-  <div class="syn-hero">
-    <div class="syn-tag">🔮 SYNTHESIS &nbsp; {{ date }}</div>
-    <div class="syn-headline">{{ syn_headline or "Intelligence Synthesis" }}</div>
-    {% if chief_action %}
-    <div class="chief-call">🧑🔬 <strong>Chief:</strong> {{ chief_action[:360] }}</div>
-    {% endif %}
-  </div>
-  {% endif %}
-
   {# ── HERO BANNER — top domain (Apple Daily style) ── #}
   {% set hero = domains[0] %}
   {% set hero_col1 = hero.colors.split(',')[0] %}
@@ -270,27 +237,16 @@
     </div>
   </a>
 
-  {# ── TOOLBAR: search + view toggle ── #}
-  <div style="margin-top:16px">
-    <div class="search-bar-wrap">
-      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input class="search-input" type="text" id="search-input"
-        placeholder="{% if (lang|default('en')) == 'zh' %}搜尋領域或標題…{% else %}Search domains or headlines…{% endif %}"
-        oninput="filterCards(this.value)" autocomplete="off" />
-      <span class="search-count" id="search-count"></span>
-    </div>
-    <div class="view-toolbar">
-      <span class="view-label">{% if (lang|default('en')) == 'zh' %}{{ domains|length }} 個領域{% else %}{{ domains|length }} domains{% endif %}</span>
-      <div class="view-btns">
-        <button class="view-btn active" id="btn-grid" onclick="setView('grid')" title="Grid view">
-          ⊞ {% if (lang|default('en')) == 'zh' %}格狀{% else %}Grid{% endif %}
-        </button>
-        <button class="view-btn" id="btn-feed" onclick="setView('feed')" title="Feed view">
-          ≡ {% if (lang|default('en')) == 'zh' %}列表{% else %}Feed{% endif %}
-        </button>
-      </div>
+  {# ── VIEW TOOLBAR ── #}
+  <div class="view-toolbar">
+    <span class="view-label">{% if (lang|default('en')) == 'zh' %}{{ domains|length }} 個領域{% else %}{{ domains|length }} domains{% endif %}</span>
+    <div class="view-btns">
+      <button class="view-btn active" id="btn-grid" onclick="setView('grid')" title="Grid view">
+        ⊞ {% if (lang|default('en')) == 'zh' %}格狀{% else %}Grid{% endif %}
+      </button>
+      <button class="view-btn" id="btn-feed" onclick="setView('feed')" title="Feed view">
+        ≡ {% if (lang|default('en')) == 'zh' %}列表{% else %}Feed{% endif %}
+      </button>
     </div>
   </div>
 
@@ -430,6 +386,9 @@ function filterCards(q) {
 (function() {
   const saved = localStorage.getItem('intel-view');
   if (saved === 'feed') setView('feed');
+  // Wire global search input (lives in base.html)
+  const gs = document.getElementById('global-search');
+  if (gs) gs.addEventListener('input', e => filterCards(e.target.value));
 })();
 </script>
 {% endblock %}

@@ -137,8 +137,25 @@
     .lang-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,.05); }
 
     /* ── DOMAIN NAV ── */
+    .global-search-bar {
+      position: sticky; top: 54px; z-index: 98;
+      background: rgba(8,11,16,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 7px 20px;
+    }
+    .global-search-inner { position: relative; max-width: 480px; }
+    .gsearch-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,.3); pointer-events: none; }
+    .gsearch-input {
+      width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09);
+      border-radius: 6px; padding: 6px 60px 6px 30px;
+      color: var(--text); font-size: 12px; outline: none;
+      transition: border .15s, background .15s;
+    }
+    .gsearch-input::placeholder { color: rgba(255,255,255,.25); }
+    .gsearch-input:focus { border-color: rgba(200,169,110,.45); background: rgba(255,255,255,.07); }
+    .gsearch-count { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 10px; color: rgba(255,255,255,.3); font-family: var(--mono); white-space: nowrap; }
     .domain-nav {
-      position: sticky; top: 54px; z-index: 99;
+      position: sticky; top: 92px; z-index: 97;
       background: rgba(8,11,16,0.75);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
@@ -359,6 +376,18 @@
     </a>
   </div>
 </header>
+
+<div class="global-search-bar">
+  <div class="global-search-inner">
+    <svg class="gsearch-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input class="gsearch-input" id="global-search" type="text" autocomplete="off"
+      placeholder="{% if (lang|default('en')) == 'zh' %}搜尋領域或標題…{% else %}Search domains or headlines…{% endif %}"
+      />
+    <span class="gsearch-count" id="search-count"></span>
+  </div>
+</div>
 
 <nav class="domain-nav">
   <a href="/?lang={{ lang|default('en') }}" {% block nav_home %}{% endblock %}>
