@@ -590,16 +590,19 @@ def _pm_score(headline, question):
     stop = {"the","a","an","and","or","but","in","on","at","to","for","of","is","are",
             "was","were","has","have","had","with","from","by","as","its","it","this",
             "that","no","not","will","would","could","should","can","do","does","did"}
-    h_words = {w for w in re.findall(r'\w+', h) if len(w) > 3 and w not in stop}
-    q_words = {w for w in re.findall(r'\w+', q) if len(w) > 3 and w not in stop}
+    h_words = {w for w in re.findall(r'\b\w+\b', h) if len(w) > 3 and w not in stop}
+    q_words = {w for w in re.findall(r'\b\w+\b', q) if len(w) > 3 and w not in stop}
     overlap = len(h_words & q_words)
-    causal = {"attack","strike","war","bomb","invade","sanction","ban","crash",
-              "collapse","surge","elect","resign","arrest","kill","fire","hack",
-              "approve","reject","deploy","test","default","fail","win","lose",
-              "withdraw","escalat","negoti","threat","seize","block","tariff",
-              "restrict","cut","raise","plunge","soar","deal","peace","ceasefire"}
-    has_causal = any(cw in h for cw in causal)
-    score = overlap * 2 + (3 if has_causal else 0)
+    causal = {"attack","strikes","strike","struck","wars","bomb","invade","invaded",
+              "sanction","ban","crash","collapse","surges","surge","elect","resign",
+              "arrest","kill","hack","approve","reject","deploy","deployed","test",
+              "default","lose","withdraw","escalate","negotiate","threat","seize",
+              "block","tariff","restrict","plunge","soar","deal","peace","ceasefire",
+              "military","offensive","invasion","conflict","crisis","nuclear"}
+    # Use word-boundary matching — "warfare" must NOT match "war"
+    has_causal = any(re.search(r'\b' + re.escape(cw) + r'\b', h) for cw in causal)
+    # Causal bonus only counts when there's also keyword overlap (prevents false positives)
+    score = overlap * 2 + (2 if has_causal and overlap > 0 else 0)
     return score
 
 @app.route("/api/polymarket/market")
@@ -608,7 +611,7 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market4:{domain}:{q}"
+    cache_key = f"pm_market5:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
@@ -618,19 +621,22 @@ def pm_market():
         best_score = 3  # Raised threshold — require meaningful causal overlap
 
         seen_event_ids = set()
+        # Collect all candidate (score, result) pairs across all tag searches, pick global best
+        candidates = []
         for tag, seed in tag_seeds:
-            params = {"limit": 25, "order": "volume", "ascending": "false",
+            params = {"limit": 50, "order": "volume", "ascending": "false",
                       "tag_slug": tag, "active": "true"}
-            if seed:
-                params["search"] = seed
-            resp = http_requests.get(
-                "https://gamma-api.polymarket.com/events",
-                params=params,
-                headers=_PM_HEADERS,
-                timeout=6,
-            )
-            resp.raise_for_status()
-            events = resp.json()
+            try:
+                resp = http_requests.get(
+                    "https://gamma-api.polymarket.com/events",
+                    params=params,
+                    headers=_PM_HEADERS,
+                    timeout=6,
+                )
+                resp.raise_for_status()
+                events = resp.json()
+            except Exception:
+                continue
             if not isinstance(events, list):
                 continue
 
@@ -641,15 +647,25 @@ def pm_market():
                 seen_event_ids.add(eid)
                 ev_title = event.get("title", "")
                 ev_score = _pm_score(q, ev_title)
-                if ev_score < 2:
-                    continue
 
                 all_markets = event.get("markets", [])
-                # Sort all markets by volume — the top ones have the richest chart history
                 all_markets_sorted = sorted(all_markets, key=_pm_volume, reverse=True)
                 active_markets = [m for m in all_markets_sorted if _pm_is_active_market(m)]
 
-                # Collect top chart tokens from high-volume sibling markets (resolved OK)
+                # Also score individual active markets vs the headline
+                best_market_score = ev_score
+                best_candidate_market = active_markets[0] if active_markets else (all_markets_sorted[0] if all_markets_sorted else None)
+                for m in active_markets[:8]:
+                    mq = m.get("question", m.get("groupItemTitle", ev_title))
+                    ms = max(_pm_score(q, mq), ev_score)
+                    if ms > best_market_score:
+                        best_market_score = ms
+                        best_candidate_market = m
+
+                if best_market_score < 3 or not best_candidate_market:
+                    continue
+
+                # Collect chart tokens from high-volume siblings
                 top_chart_tokens = []
                 for m in all_markets_sorted[:5]:
                     t_raw = m.get("clobTokenIds", "[]")
@@ -657,22 +673,18 @@ def pm_market():
                     except: tokens = []
                     top_chart_tokens.extend(tokens[:2])
 
-                # Show the ACTIVE market (live odds) but use sibling tokens for chart
-                candidate = active_markets[0] if active_markets else (all_markets_sorted[0] if all_markets_sorted else None)
-                if not candidate:
-                    continue
-                mq = candidate.get("question", candidate.get("groupItemTitle", ev_title))
-                ms = max(_pm_score(q, mq), ev_score)
-                if ms >= best_score:
-                    parsed = _pm_parse_market(candidate, chart_tokens=top_chart_tokens)
-                    if parsed and parsed["outcomes"]:
-                        vol = _pm_volume(candidate)
-                        vol_bonus = 4 if vol > 10000 else (2 if vol > 1000 else 1)
-                        live_bonus = 2 if _pm_is_active_market(candidate) else 0
-                        total = ms + live_bonus + vol_bonus
-                        if total > best_score:
-                            best_score = total
-                            best_result = parsed
+                parsed = _pm_parse_market(best_candidate_market, chart_tokens=top_chart_tokens)
+                if parsed and parsed["outcomes"]:
+                    vol = _pm_volume(best_candidate_market)
+                    vol_bonus = 3 if vol > 10000 else (1 if vol > 1000 else 0)
+                    live_bonus = 2 if _pm_is_active_market(best_candidate_market) else 0
+                    total = best_market_score + live_bonus + vol_bonus
+                    candidates.append((total, parsed))
+
+        # Pick the globally highest-scoring candidate
+        if candidates:
+            candidates.sort(key=lambda x: x[0], reverse=True)
+            best_result = candidates[0][1]
 
         if best_result:
             _pm_set(cache_key, best_result)
