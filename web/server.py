@@ -304,7 +304,9 @@ def home(date):
         # show China's findings on the homepage card
         display_id = "china" if subs else r["id"]
         data = get_researcher_data(display_id, date, lang)
-        en_findings = extract_findings(read_file(f"{BASE}/researchers/{display_id}/findings/{date}.md", "en")) if lang != "en" else data["findings"]
+        en_raw = read_file(f"{BASE}/researchers/{display_id}/findings/{date}.md", "en") if lang != "en" else data["raw"]
+        en_findings = extract_findings(en_raw) if lang != "en" else data["findings"]
+        en_headline = extract_headline(en_raw) if lang != "en" else data["headline"]
         # Link card to first sub by default
         card_url = f"/domain/communist/{date}?sub=china" if subs else None
         domains.append({
@@ -314,6 +316,7 @@ def home(date):
             "colors":   r["colors"],
             "score":    top_score(en_findings),
             "card_url": card_url,
+            "en_headline": en_headline,   # always English, for Polymarket matching
             **data,
         })
 

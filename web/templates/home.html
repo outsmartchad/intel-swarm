@@ -233,7 +233,7 @@
   {% set hero_col1 = hero.colors.split(',')[0] %}
   {% set hero_col2 = hero.colors.split(',')[1] %}
   <a href="{{ hero.card_url or ('/domain/' + hero.id + '?lang=' + (lang|default('en'))) }}"
-     class="hero-banner" data-search="{{ hero.name }} {{ hero.headline or '' }}" id="hero-card">
+     class="hero-banner" data-search="{{ hero.en_headline or hero.headline or '' }}" id="hero-card">
     {% if hero.cover_image %}
     <div class="ecard-bg" style="background-image:url('{{ hero.cover_image }}')"></div>
     {% else %}
@@ -272,7 +272,7 @@
     {% set col2 = d.colors.split(',')[1] %}
     {% set cols = d.cols | default(4) %}
     <a href="{{ d.card_url or ('/domain/' + d.id + '?lang=' + (lang|default('en'))) }}"
-       class="ecard span-{{ cols }}" data-search="{{ d.name }} {{ d.headline or '' }}">
+       class="ecard span-{{ cols }}" data-domain="{{ d.id }}" data-search="{{ d.en_headline or d.headline or '' }}">
       {% if d.cover_image %}
       <div class="ecard-bg" style="background-image:url('{{ d.cover_image }}')"></div>
       {% else %}
@@ -304,7 +304,7 @@
     {% set col1 = d.colors.split(',')[0] %}
     {% set col2 = d.colors.split(',')[1] %}
     <a href="{{ d.card_url or ('/domain/' + d.id + '?lang=' + (lang|default('en'))) }}"
-       class="fcard" data-search="{{ d.name }} {{ d.headline or '' }}">
+       class="fcard" data-domain="{{ d.id }}" data-search="{{ d.en_headline or d.headline or '' }}">
       {% if d.cover_image %}
       <div class="fcard-img" style="background-image:url('{{ d.cover_image }}')"></div>
       {% else %}

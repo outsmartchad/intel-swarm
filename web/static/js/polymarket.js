@@ -81,12 +81,9 @@
   }
 
   function fetchMarket(card, terms, headline) {
-    // Extract domain from card's category badge (e.g. "war", "crypto")
-    var badge = card.querySelector('.ecard-cat, .fcard-cat, [class*="cat"], [class*="badge"]');
-    var rawDomain = badge ? badge.textContent.trim().toLowerCase() : '';
-    // Strip emoji and spaces, keep letters+hyphens
-    var domain = rawDomain.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
-    // Use full headline for better scoring (not just 4 words)
+    // Use data-domain attribute (always English id like "war", "crypto")
+    var domain = card.getAttribute('data-domain') || '';
+    // Use full headline for better scoring (always English via data-search)
     var q = headline || terms;
     var url = '/api/polymarket/market?q=' + encodeURIComponent(q) + '&domain=' + encodeURIComponent(domain);
     fetch(url)
