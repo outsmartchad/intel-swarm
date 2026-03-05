@@ -1,39 +1,44 @@
 # Threads — culture Researcher
-_Last updated: 2026-03-05_
+_Last updated: 2026-03-06_
 
 ## Active Threads
 
-### Chinamaxxing — Gen Z Institutional Rejection Going Mainstream
-- **First seen:** 2026-03-04
-- **Status:** escalating → peak saturation
-- **Summary:** Guardian, CNA, Asia Times all ran pieces this week. Hitting mainstream media wall-to-wall = peak signal, trend nearing cultural saturation. Brand/corporate responses still absent — watch for those as the final decay marker.
-- **Watch for:** First major brand attempt to co-opt it (signals death of organic trend), corporate backlash or government response from China
+### Nepal Discord Revolution — First Ballot Test
+- **First seen:** 2026-03-05
+- **Status:** escalating — LIVE
+- **Summary:** Nepal general election voting concluded March 5. Results due within 24h. Rapper-turned-mayor Balendra Shah (social media native, Discord generation's candidate) is a key contender. 36% turnout in Kathmandu Valley. This is the first test of Discord politics → ballot box translation globally.
+- **Watch for:** Election results (within 24h of this report), whether Balendra Shah / Gen Z-aligned candidates win seats, how Western governments and Discord's IPO process respond to platform's role in toppling governments
+
+### "2026 is the New 2016" — Anti-AI Nostalgia Wave
+- **First seen:** 2026-03-06
+- **Status:** developing
+- **Summary:** "Great Meme Reset" movement driving mass TikTok nostalgia for 2016 aesthetics (Snapchat filters, Vine, flower crowns). Core emotional driver: mourning the pre-AI, pre-misinformation internet. #BringBack2016 trending. This is Gen Z expressing a desire for authentic/unmanipulated internet experiences.
+- **Watch for:** Whether this nostalgia crystallizes into product demand (anti-AI feed apps, "human-only" social platforms), brand attempts to co-opt it, whether the movement becomes explicitly anti-AI rather than just nostalgic
 
 ### Boy Kibble — Austerity Hardening as Identity
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** No new development today. Smellmaxxing trend contradicts/complements it — same demographic cutting food costs while spending on identity signals (scent). The austerity-but-signal-spending pattern is the update.
-- **Watch for:** Mainstream adoption data, whether girls develop equivalent trend, Gen Z consumer spending data confirming the austerity/identity-signal split
-
-### Therian Identity Collapse — LatAm Epicenter
-- **First seen:** 2026-03-04
-- **Status:** escalating → mainstream peak
-- **Summary:** AP News covered Buenos Aires gatherings this week. Full mainstream pickup = peak signal. No geographic spread to US/Europe yet.
-- **Watch for:** US school system response, whether it spreads outside LatAm, academic/psychological community response
-
-### Nepal Discord Revolution — Global Gen Z Uprising Template
-- **First seen:** 2026-03-05
-- **Status:** developing
-- **Summary:** Nepal's Discord + TikTok + One Piece anime flag coordination toppled government Sept 2025. Now confirmed as global template — Madagascar, Morocco, Peru, Bulgaria followed. Nepal election upcoming will test whether Discord politics = real votes.
-- **Watch for:** Nepal election results (first test of Discord-to-ballot translation), next country to use this template, whether Western governments start monitoring Discord servers for protest coordination
+- **Summary:** Gen Z men eating ultra-cheap protein meals as identity/austerity signal. Smellmaxxing trend contradicts/complements it — same cohort cutting food costs while spending on scent as identity. The austerity-on-commodities + spending-on-identity-signals pattern is the real behavioral update.
+- **Watch for:** Whether girls develop an equivalent trend, mainstream consumer spending data confirming the split, whether it extends to other austerity categories
 
 ### Smellmaxxing — Identity Spending in Full Austerity Mode
 - **First seen:** 2026-03-05
 - **Status:** developing
-- **Summary:** Gen Z men cutting food costs (boy kibble) while aggressively spending on premium cologne as identity signal. IFF restructuring product lines around this cohort. Major fragrance brands adapting.
-- **Watch for:** Whether this extends to other identity-signal categories (watches, accessories), whether it shows up in consumer spending data as a category, female equivalent trend
+- **Summary:** Gen Z men aggressively spending on premium cologne while cutting food costs. IFF restructuring product lines around this cohort. The pattern: slash commodity spend to zero, concentrate remaining spend on high-identity-signal items.
+- **Watch for:** Whether this extends beyond fragrance to other identity-signal categories (watches, accessories), whether it shows up in consumer spending data, female equivalent
+
+### Therian Identity Collapse — LatAm Epicenter
+- **First seen:** 2026-03-04
+- **Status:** stale — approaching resolution
+- **Summary:** AP News + WaPo + Euronews covered Buenos Aires therian gatherings. Full mainstream pickup complete = trend at saturation. No new geographic spread or institutional response detected in 48h.
+- **Watch for:** US school system response or psychological community statement (would be the last significant development before full resolution)
 
 ## Resolved Threads
+
+### Chinamaxxing — Gen Z Institutional Rejection Going Mainstream
+- **Resolved:** 2026-03-06
+- Guardian, CNA, Asia Times all ran mainstream pieces. Reached full saturation. No new organic development. Documented the pattern: Gen Z aestheticizing a rival civilization as protest against Western institutional failure.
+
 ### Gen Z Founder Persona Formula — Anti-Serious Wins VC
 - **Resolved:** 2026-03-05
-- Resolved due to no new development in 2 days and insufficient signal for continued tracking. Pattern (Cluely/Roy Lee irony + vibe-coding) documented — watch passively for copycats but no active thread needed.
+- No new development. Pattern (Cluely/Roy Lee irony + vibe-coding) documented — watch passively for copycats but no active thread needed.

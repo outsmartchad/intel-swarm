@@ -18,3 +18,7 @@ _Track which sources are consistently high-signal_
 - https://10xcrew.com/gen-z-is-fueling-the-mens-fragrance-hype-on-tiktok/ | used: 2026-03-05 | quality: medium | notes: Niche men's culture blog, solid trend coverage but not primary research
 - https://www.personalcareinsights.com/special-reports/iff-axe-dove-fragrance-innovation-ai-sustainability-trends.html | used: 2026-03-05 | quality: high | notes: Industry trade press, IFF exec quotes = primary signal that smellmaxxing is being taken seriously by major players
 - https://fortune.com/2026/02/25/gen-z-millennial-optimism-conference-board-confidence-survey-february/ | used: 2026-03-05 | quality: high | notes: Conference Board primary survey data, reliable macro consumer sentiment
+- https://www.hindustantimes.com/world-news/nepal-election-2026-live-updates | used: 2026-03-06 | quality: high | notes: Live election coverage, solid primary journalism on Nepal Gen Z election
+- https://en.wikipedia.org/wiki/2026_is_the_new_2016 | used: 2026-03-06 | quality: medium | notes: Wikipedia summary of trend, useful for framing but not primary source
+- https://archive.is/0gssc | used: 2026-03-06 | quality: high | notes: Axios/Gallup Gen Z office work preference data — counterintuitive, citable survey
+- https://en.wikipedia.org/wiki/Discord | used: 2026-03-06 | quality: medium | notes: Discord IPO Jan 2026 footnote — confirms Goldman/JPMorgan involvement
