@@ -1046,6 +1046,9 @@ _TICKER_MAP = {
     "NVDA":  ["nvidia","cuda","gpu","ai chip","semiconductor","tsmc"],
     "TSLA":  ["tesla","elon","spacex"],
     "DEFENSE":["defense","raytheon","lockheed","northrop","military contract","pentagon budget"],
+    "$HYPE": ["hyperliquid","hype","perps","perpetual dex","onchain perps"],
+    "$ZEC":  ["zcash","zec","privacy coin","zero-knowledge coin","shielded"],
+    "$PUMP": ["pump.fun","pump fun","meme launch","token launch","fair launch","pumpfun"],
 }
 
 def _tag_tickers(text):
