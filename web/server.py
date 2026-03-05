@@ -5,6 +5,7 @@ import os, glob, re, json, time
 from flask import Flask, render_template, abort, request, jsonify as flask_jsonify
 import markdown as md_lib
 import requests as http_requests
+import time
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -431,7 +432,7 @@ def api_search():
                         "title":        title,
                         "snippet":      body[:120],
                         "image":        f.get("image"),
-                        "url":          f"/domain/{r['id']}/{date}?lang={lang}",
+                        "url":          f"/domain/{r['id']}/{date}?lang={lang}#finding-{i}",
                         "finding_idx":  i,
                     })
             # Also search headline
@@ -445,7 +446,7 @@ def api_search():
                     "title":        hl,
                     "snippet":      "",
                     "image":        data.get("cover_image"),
-                    "url":          f"/domain/{r['id']}/{date}?lang={lang}",
+                    "url":          f"/domain/{r['id']}/{date}?lang={lang}#finding-0",
                     "finding_idx":  0,
                 })
 
@@ -775,6 +776,88 @@ def pm_chart():
         return flask_jsonify(result)
     except Exception:
         return flask_jsonify({"points": []})
+
+# ── CONFLICT MAP ──────────────────────────────────────────────────────────────
+
+# GDELT event type classification keywords
+_GDELT_CONFLICT_WORDS  = {"attack","bomb","kill","shoot","clash","explos","fight","strike","missile","rocket","assault","ambush","mortar","idf","war","troops","military","shelling","siege","hostage","gunfir","casualt"}
+_GDELT_PROTEST_WORDS   = {"protest","demonstrat","riot","march","rally","strike","blockade","activist","unrest","uprising","crowd","marche"}
+_GDELT_POLITICAL_WORDS = {"sanction","diplomat","election","coup","summit","president","minister","parliament","ceasefire","treaty","negotiat","resign","arrest","indict"}
+
+_CONFLICT_CACHE = {}
+
+def _gdelt_event_type(title):
+    t = title.lower()
+    for w in _GDELT_CONFLICT_WORDS:
+        if w in t: return "CONFLICT"
+    for w in _GDELT_PROTEST_WORDS:
+        if w in t: return "PROTEST"
+    for w in _GDELT_POLITICAL_WORDS:
+        if w in t: return "POLITICAL"
+    return "OTHER"
+
+@app.route("/conflict")
+def conflict_page():
+    lang = get_lang()
+    return render_template("conflict.html", lang=lang, researchers=RESEARCHERS)
+
+@app.route("/api/conflict/events")
+def conflict_events():
+    cache_key = "gdelt_events"
+    cached = _CONFLICT_CACHE.get(cache_key)
+    if cached and (time.time() - cached["ts"] < 900):   # 15 min TTL
+        return flask_jsonify(cached["data"])
+
+    events = []
+    try:
+        # GDELT GEO 2.0 — last 24h geolocated articles, conflict/crisis tone filter
+        gdelt_url = "https://api.gdeltproject.org/api/v2/geo/geo"
+        params = {
+            "query": "(conflict OR war OR attack OR bomb OR protest OR sanction OR military) sourcelang:english",
+            "mode": "PointData",
+            "maxrecords": 250,
+            "timespan": "1d",
+            "format": "json",
+        }
+        resp = http_requests.get(gdelt_url, params=params, timeout=12,
+                                 headers={"User-Agent": "intel-swarm/1.0"})
+        resp.raise_for_status()
+        raw = resp.json()
+        features = raw.get("features") or []
+        seen = set()
+        for feat in features:
+            props = feat.get("properties", {})
+            geo_coords = feat.get("geometry", {}).get("coordinates") or []
+            title = props.get("name") or props.get("title") or ""
+            url   = props.get("url") or props.get("sourceurl") or ""
+            tone  = float(props.get("tone") or 0)
+            date  = props.get("dateadded") or props.get("date") or ""
+            country = props.get("countryname") or props.get("country") or ""
+            geo_name = props.get("fullname") or props.get("geo") or country or ""
+            lat = float(geo_coords[1]) if len(geo_coords) >= 2 else None
+            lng = float(geo_coords[0]) if len(geo_coords) >= 2 else None
+            if not title or url in seen:
+                continue
+            seen.add(url)
+            events.append({
+                "title":   title,
+                "url":     url,
+                "tone":    round(tone, 2),
+                "date":    date[:10] if date else "",
+                "country": country,
+                "geo":     geo_name,
+                "lat":     lat,
+                "lng":     lng,
+                "type":    _gdelt_event_type(title),
+            })
+        # Sort by most negative tone first (most intense conflict)
+        events.sort(key=lambda e: e["tone"])
+    except Exception as ex:
+        print(f"[conflict] GDELT fetch error: {ex}")
+
+    result = {"events": events, "count": len(events)}
+    _CONFLICT_CACHE[cache_key] = {"ts": time.time(), "data": result}
+    return flask_jsonify(result)
 
 # ── ENTRYPOINT ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":

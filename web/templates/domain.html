@@ -216,9 +216,9 @@
 
         {# Wrap in <a> if source URL available #}
         {% if f.url %}
-        <a href="{{ f.url }}" target="_blank" rel="noopener" class="fcard {{ fsize }}" data-domain="{{ rid }}" data-search="{{ f.en_title or f.title or '' }}">
+        <a href="{{ f.url }}" target="_blank" rel="noopener" id="finding-{{ loop.index0 }}" class="fcard {{ fsize }}" data-domain="{{ rid }}" data-search="{{ f.en_title or f.title or '' }}">
         {% else %}
-        <div class="fcard {{ fsize }}" data-domain="{{ rid }}" data-search="{{ f.en_title or f.title or '' }}">
+        <div id="finding-{{ loop.index0 }}" class="fcard {{ fsize }}" data-domain="{{ rid }}" data-search="{{ f.en_title or f.title or '' }}">
         {% endif %}
 
           {% if f.image %}
@@ -288,4 +288,21 @@
   </div>
 
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+(function() {
+  var hash = window.location.hash;
+  if (!hash || !hash.startsWith('#finding-')) return;
+  var el = document.querySelector(hash);
+  if (!el) return;
+  setTimeout(function() {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.style.transition = 'outline .3s ease, box-shadow .3s ease';
+    el.style.outline = '2px solid var(--accent)';
+    el.style.boxShadow = '0 0 0 6px var(--accent-glow)';
+    setTimeout(function() { el.style.outline = ''; el.style.boxShadow = ''; }, 2500);
+  }, 350);
+})();
+</script>
 {% endblock %}

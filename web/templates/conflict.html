@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %} · Conflict Map{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<style>
+  .conflict-wrap { max-width: 1400px; margin: 0 auto; padding: 24px 20px; }
+  .conflict-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+  .conflict-title { font-size: 22px; font-weight: 800; letter-spacing: -.03em; }
+  .conflict-sub   { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+  .conflict-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cbadge {
+    font-size: 10px; font-family: var(--mono); font-weight: 700; letter-spacing: .04em;
+    padding: 3px 8px; border-radius: 20px; border: 1px solid;
+    cursor: pointer; transition: all .15s;
+  }
+  .cbadge.active { background: var(--accent); border-color: var(--accent); color: #000; }
+  .cbadge:not(.active) { border-color: var(--border); color: var(--muted); }
+  .cbadge:not(.active):hover { border-color: var(--accent); color: var(--accent); }
+  .conflict-stats { display: flex; gap: 20px; margin-bottom: 14px; flex-wrap: wrap; }
+  .cstat { font-family: var(--mono); }
+  .cstat-val { font-size: 20px; font-weight: 900; color: var(--accent); }
+  .cstat-lbl { font-size: 10px; color: var(--muted); letter-spacing: .05em; }
+  #conflict-map {
+    width: 100%; height: 560px; border-radius: 10px;
+    border: 1px solid var(--border); background: #0a0d12;
+  }
+  .conflict-legend {
+    display: flex; align-items: center; gap: 16px; margin-top: 12px;
+    font-size: 11px; font-family: var(--mono); color: var(--muted);
+  }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .conflict-feed { margin-top: 28px; }
+  .feed-title { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px; }
+  .cevent-list { display: flex; flex-direction: column; gap: 8px; }
+  .cevent {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 14px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 13px; transition: border-color .15s;
+  }
+  .cevent:hover { border-color: var(--border-hover); }
+  .cevent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .cevent-body { flex: 1; }
+  .cevent-title { font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
+  .cevent-meta  { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+  .cevent-geo   { font-size: 11px; color: var(--accent); font-family: var(--mono); margin-top: 2px; }
+  .map-loading  { text-align: center; padding: 80px 0; color: var(--muted); font-family: var(--mono); font-size: 13px; }
+  @media(max-width:600px){ #conflict-map { height: 340px; } }
+</style>
+
+<div class="conflict-wrap">
+  <div class="conflict-header">
+    <div>
+      <div class="conflict-title">🌍 Global Conflict Monitor</div>
+      <div class="conflict-sub">Live data via GDELT · updates every 15 min · last 24h events</div>
+    </div>
+    <div class="conflict-badges">
+      <button class="cbadge active" data-type="all" onclick="filterType('all')">ALL</button>
+      <button class="cbadge" data-type="CONFLICT" onclick="filterType('CONFLICT')">⚔️ CONFLICT</button>
+      <button class="cbadge" data-type="PROTEST" onclick="filterType('PROTEST')">✊ PROTEST</button>
+      <button class="cbadge" data-type="POLITICAL" onclick="filterType('POLITICAL')">🏛 POLITICAL</button>
+    </div>
+  </div>
+
+  <div class="conflict-stats">
+    <div class="cstat"><div class="cstat-val" id="stat-total">—</div><div class="cstat-lbl">EVENTS</div></div>
+    <div class="cstat"><div class="cstat-val" id="stat-countries">—</div><div class="cstat-lbl">COUNTRIES</div></div>
+    <div class="cstat"><div class="cstat-val" id="stat-hottest">—</div><div class="cstat-lbl">HOTTEST ZONE</div></div>
+  </div>
+
+  <div id="conflict-map"><div class="map-loading">Loading conflict data…</div></div>
+
+  <div class="conflict-legend">
+    <span><span class="legend-dot" style="background:#ff4444"></span>High intensity</span>
+    <span><span class="legend-dot" style="background:#ff8c00"></span>Medium</span>
+    <span><span class="legend-dot" style="background:#ffd700"></span>Low intensity</span>
+    <span style="margin-left:auto">Source: GDELT Project · Real-time open data</span>
+  </div>
+
+  <div class="conflict-feed">
+    <div class="feed-title">LATEST EVENTS</div>
+    <div class="cevent-list" id="event-feed"></div>
+  </div>
+</div>
+
+<script>
+var _map, _heatLayer, _markersLayer, _allEvents = [], _activeType = 'all';
+
+function initMap() {
+  _map = L.map('conflict-map', {
+    center: [20, 10], zoom: 2,
+    zoomControl: true,
+    attributionControl: false
+  });
+
+  // Dark tile layer
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19, subdomains: 'abcd'
+  }).addTo(_map);
+
+  L.control.attribution({ prefix: false })
+    .addAttribution('© <a href="https://carto.com">CARTO</a> | <a href="https://www.gdeltproject.org">GDELT</a>')
+    .addTo(_map);
+
+  _heatLayer   = L.heatLayer([], { radius: 28, blur: 22, maxZoom: 10,
+    gradient: {0.2:'#ffd700', 0.5:'#ff8c00', 0.8:'#ff4444', 1.0:'#cc0000'} }).addTo(_map);
+  _markersLayer = L.layerGroup().addTo(_map);
+
+  loadEvents();
+}
+
+function loadEvents() {
+  fetch('/api/conflict/events')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      _allEvents = data.events || [];
+      renderMap(_allEvents);
+      renderFeed(_allEvents.slice(0,20));
+      updateStats(_allEvents);
+    })
+    .catch(function(e){ console.error('Conflict load error', e); });
+}
+
+function filterType(t) {
+  _activeType = t;
+  document.querySelectorAll('.cbadge').forEach(function(b){
+    b.classList.toggle('active', b.dataset.type === t);
+  });
+  var filtered = t === 'all' ? _allEvents : _allEvents.filter(function(e){ return e.type === t; });
+  renderMap(filtered);
+  renderFeed(filtered.slice(0,20));
+  updateStats(filtered);
+}
+
+function renderMap(events) {
+  _heatLayer.setLatLngs([]);
+  _markersLayer.clearLayers();
+  var pts = [];
+  events.forEach(function(e) {
+    if (!e.lat || !e.lng) return;
+    var intensity = e.tone < -5 ? 1.0 : e.tone < -2 ? 0.6 : 0.3;
+    pts.push([e.lat, e.lng, intensity]);
+  });
+  _heatLayer.setLatLngs(pts);
+}
+
+function renderFeed(events) {
+  var feed = document.getElementById('event-feed');
+  if (!events.length) { feed.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px">No events found.</div>'; return; }
+  feed.innerHTML = events.map(function(e) {
+    var col = e.tone < -5 ? '#ff4444' : e.tone < -2 ? '#ff8c00' : '#ffd700';
+    var typeLabel = e.type || 'EVENT';
+    return '<a class="cevent" href="' + (e.url||'#') + '" target="_blank" rel="noopener">' +
+      '<div class="cevent-dot" style="background:' + col + '"></div>' +
+      '<div class="cevent-body">' +
+        '<div class="cevent-title">' + escHtml(e.title||'Untitled') + '</div>' +
+        '<div class="cevent-meta">' + typeLabel + ' · Tone: ' + (e.tone||0).toFixed(1) + ' · ' + (e.date||'') + '</div>' +
+        (e.geo ? '<div class="cevent-geo">📍 ' + escHtml(e.geo) + '</div>' : '') +
+      '</div></a>';
+  }).join('');
+}
+
+function updateStats(events) {
+  document.getElementById('stat-total').textContent = events.length;
+  var countries = new Set(events.map(function(e){ return e.country||''; }).filter(Boolean));
+  document.getElementById('stat-countries').textContent = countries.size;
+  // Find hottest country by negative tone
+  var byCountry = {};
+  events.forEach(function(e){
+    if (!e.country) return;
+    if (!byCountry[e.country]) byCountry[e.country] = 0;
+    byCountry[e.country] += Math.abs(e.tone||0);
+  });
+  var hottest = Object.entries(byCountry).sort(function(a,b){return b[1]-a[1];})[0];
+  document.getElementById('stat-hottest').textContent = hottest ? hottest[0] : '—';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.addEventListener('DOMContentLoaded', initMap);
+</script>
+{% endblock %}

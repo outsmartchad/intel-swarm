@@ -564,6 +564,10 @@
     {{ r.emoji }} {% if (lang|default('en')) == 'zh' %}{{ r.zh }}{% else %}{{ r.name }}{% endif %}
   </a>
   {% endfor %}
+  <div class="nav-sep"></div>
+  <a href="/conflict" {% if request.path == '/conflict' %}data-active="true"{% endif %}>
+    🌍 {% if (lang|default('en')) == 'zh' %}衝突地圖{% else %}Conflict Map{% endif %}
+  </a>
 </nav>
 
 {% block body %}{% endblock %}
@@ -760,5 +764,6 @@ function toggleTheme() {
 })();
 </script>
 <script src="/static/js/polymarket.js"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>
