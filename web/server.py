@@ -627,7 +627,7 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market8:{domain}:{q}"
+    cache_key = f"pm_market9:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
@@ -682,9 +682,27 @@ def pm_market():
                 if best_market_score < 2 or not best_candidate_market:
                     continue
                 if not _pm_is_active_market(best_candidate_market):
-                    # Try to find any active market in this event instead
                     best_candidate_market = active_markets[0] if active_markets else None
                     if not best_candidate_market:
+                        continue
+
+                # Domain-specific anti-false-positive guard
+                # Require at least one domain keyword to appear in event title or market question
+                _DOMAIN_REQUIRED = {
+                    "health":     ["health","fda","drug","vaccine","medical","disease","cancer","clinical"],
+                    "sports":     ["nfl","nba","soccer","football","basketball","baseball","tennis","ufc","sport"],
+                    "crypto":     ["bitcoin","btc","ethereum","eth","solana","sol","crypto","token","defi","nft"],
+                    "ai-agents":  ["ai","openai","gpt","claude","gemini","nvidia","llm","deepseek","model"],
+                    "culture":    ["oscar","emmy","grammy","celebrity","movie","film","music","pop","taylor"],
+                    "religion":   ["israel","iran","muslim","christian","pope","church","faith","temple","god","jesus"],
+                    "macro":      ["fed","rate","inflation","recession","gdp","treasury","bond","dollar","euro"],
+                    "singularity":["agi","openai","gpt","intelligence","robot","automation","llm","deepseek"],
+                    "epstein":    ["epstein","maxwell","trial","abuse","sex","victim","court"],
+                    "conspiracy": ["trump","government","cia","doge","elon","deep state","fbi","whistleblower"],
+                }
+                if domain in _DOMAIN_REQUIRED:
+                    combined = (ev_title + " " + best_candidate_market.get("question","")).lower()
+                    if not any(kw in combined for kw in _DOMAIN_REQUIRED[domain]):
                         continue
 
                 # Collect chart tokens from high-volume siblings (resolved OK for chart data)
