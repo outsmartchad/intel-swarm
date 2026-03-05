@@ -7,9 +7,9 @@ SCRAPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scrape-image
 date = sys.argv[1] if len(sys.argv) > 1 else __import__('datetime').date.today().isoformat()
 
 RESEARCHERS = [
-    "culture","emerging","ai-agents","crypto","war","macro",
-    "singularity","quant","westeast","regulatory","power",
-    "psyops","blackbudget","conspiracy"
+    "war","commodities","religion","culture","emerging","ai-agents",
+    "crypto","macro","singularity","quant","westeast","power",
+    "blackbudget","conspiracy","sports","epstein",
 ]
 
 procs = []
