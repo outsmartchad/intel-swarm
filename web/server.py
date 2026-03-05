@@ -876,20 +876,31 @@ def conflict_page():
         subs = r.get("subs")
         ids  = [(s["id"], s) for s in subs] if subs else [(r["id"], r)]
         for rid, meta in ids:
-            data = get_researcher_data(rid, date, "en")
-            for i, f in enumerate(data.get("findings") or []):
-                title = f.get("title") or ""
-                body  = f.get("body")  or ""
+            data_loc = get_researcher_data(rid, date, lang)
+            data_en  = get_researcher_data(rid, date, "en") if lang != "en" else data_loc
+            findings_loc = data_loc.get("findings") or []
+            findings_en  = data_en.get("findings")  or []
+            domain_name  = (meta.get("zh") or r.get("zh") or meta.get("name") or r.get("name") or rid) if lang == "zh" \
+                           else (meta.get("name") or r.get("name") or rid)
+            for i, f in enumerate(findings_loc):
+                title    = f.get("title") or ""
+                body     = f.get("body")  or ""
+                # Always geocode from English text for accuracy
+                en_f     = findings_en[i] if i < len(findings_en) else f
+                en_title = en_f.get("title") or title
+                en_body  = en_f.get("body")  or body
                 if not title: continue
-                lat, lng, geo = _geocode_finding(title, body, rid)
+                lat, lng, geo = _geocode_finding(en_title, en_body, rid)
+                # Translate geo label if zh
+                geo_display = geo
                 intel_events.append({
                     "title":       title,
-                    "geo":         geo,
+                    "geo":         geo_display,
                     "lat":         lat,
                     "lng":         lng,
                     "category":    rid,
-                    "domain_name": meta.get("name") or r.get("name") or rid,
-                    "domain_url":  f"/domain/{r['id']}/{date}?lang=en#finding-{i}",
+                    "domain_name": domain_name,
+                    "domain_url":  f"/domain/{r['id']}/{date}?lang={lang}#finding-{i}",
                     "date":        date,
                     "url":         f.get("url") or "",
                     "colors":      r.get("colors","#888,#aaa"),
@@ -910,7 +921,8 @@ def conflict_page():
     return render_template("conflict.html",
         lang=lang, researchers=RESEARCHERS,
         intel_events=intel_events,
-        heat_data=heat_data[:2000])
+        heat_data=heat_data[:2000],
+        date=date)
 
 _COUNTRY_COORDS = {
     "iran": (32.4, 53.7), "ukraine": (49.0, 32.0), "russia": (61.5, 105.3),

@@ -108,19 +108,19 @@
   <!-- Top bar -->
   <div class="cm-bar">
     <div class="cm-title">
-      🌍 Global Conflict Monitor
+      🌍 {% if lang == 'zh' %}全球衝突監測{% else %}Global Conflict Monitor{% endif %}
       <div class="cm-live"><div class="cm-live-dot"></div>GDELT · LIVE</div>
     </div>
     <div class="cm-filters">
-      <button class="cmf on"  data-f="all"      onclick="setFilter('all')">ALL</button>
-      <button class="cmf"     data-f="war"       onclick="setFilter('war')">⚔️ WAR</button>
-      <button class="cmf"     data-f="political" onclick="setFilter('political')">🏛 POLITICAL</button>
-      <button class="cmf"     data-f="intel"     onclick="setFilter('intel')">📡 INTEL</button>
+      <button class="cmf on"  data-f="all"      onclick="setFilter('all')">{% if lang == 'zh' %}全部{% else %}ALL{% endif %}</button>
+      <button class="cmf"     data-f="war"       onclick="setFilter('war')">⚔️ {% if lang == 'zh' %}戰爭{% else %}WAR{% endif %}</button>
+      <button class="cmf"     data-f="political" onclick="setFilter('political')">🏛 {% if lang == 'zh' %}政治{% else %}POLITICAL{% endif %}</button>
+      <button class="cmf"     data-f="intel"     onclick="setFilter('intel')">📡 {% if lang == 'zh' %}情報{% else %}INTEL{% endif %}</button>
     </div>
     <div class="cm-stats">
-      <div class="cm-stat"><div class="cm-stat-v" id="s-events">—</div><div class="cm-stat-l">EVENTS</div></div>
-      <div class="cm-stat"><div class="cm-stat-v" id="s-zones">—</div><div class="cm-stat-l">HOT ZONES</div></div>
-      <div class="cm-stat"><div class="cm-stat-v" id="s-updated">—</div><div class="cm-stat-l">UPDATED</div></div>
+      <div class="cm-stat"><div class="cm-stat-v" id="s-events">—</div><div class="cm-stat-l">{% if lang == 'zh' %}事件{% else %}EVENTS{% endif %}</div></div>
+      <div class="cm-stat"><div class="cm-stat-v" id="s-zones">—</div><div class="cm-stat-l">{% if lang == 'zh' %}熱點{% else %}HOT ZONES{% endif %}</div></div>
+      <div class="cm-stat"><div class="cm-stat-v" id="s-updated">—</div><div class="cm-stat-l">{% if lang == 'zh' %}更新{% else %}UPDATED{% endif %}</div></div>
     </div>
   </div>
 
@@ -128,16 +128,16 @@
   <div class="cm-body">
     <div id="cmap" style="position:relative">
       <div class="cm-legend">
-        <div style="font-weight:700;margin-bottom:3px;color:rgba(255,255,255,.5)">INTENSITY</div>
-        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#ff3030"></div>Active conflict</div>
-        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#ff8c00"></div>Escalation risk</div>
-        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#c8a96e"></div>Intel finding</div>
-        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#5b9cf6"></div>Political</div>
+        <div style="font-weight:700;margin-bottom:3px;color:rgba(255,255,255,.5)">{% if lang == 'zh' %}強度{% else %}INTENSITY{% endif %}</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#ff3030"></div>{% if lang == 'zh' %}活躍衝突{% else %}Active conflict{% endif %}</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#ff8c00"></div>{% if lang == 'zh' %}升級風險{% else %}Escalation risk{% endif %}</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#c8a96e"></div>{% if lang == 'zh' %}情報發現{% else %}Intel finding{% endif %}</div>
+        <div class="cm-legend-row"><div class="cm-legend-dot" style="background:#5b9cf6"></div>{% if lang == 'zh' %}政治事件{% else %}Political{% endif %}</div>
       </div>
     </div>
 
     <div class="cm-side">
-      <div class="cm-side-hdr">ACTIVE INTELLIGENCE FEED</div>
+      <div class="cm-side-hdr">{% if lang == 'zh' %}即時情報動態{% else %}ACTIVE INTELLIGENCE FEED{% endif %}</div>
       <div id="cm-feed"></div>
     </div>
   </div>
