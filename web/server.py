@@ -12,7 +12,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESEARCHERS = [
     {"id": "war",           "emoji": "⚔️",  "name": "War",                "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
     {"id": "commodities",  "emoji": "🛢️",  "name": "Commodities",         "zh": "大宗商品", "colors": "#78350f,#d97706"},
-    {"id": "authoritarian","emoji": "🔴",  "name": "Authoritarian States","zh": "獨裁國家", "colors": "#3b0000,#dc2626",
+    {"id": "authoritarian","emoji": "🔴",  "name": "Communist States","zh": "共產國家", "colors": "#3b0000,#dc2626",
      "subs": [
          {"id": "russia",      "emoji": "🇷🇺", "name": "Russia",      "zh": "俄羅斯"},
          {"id": "china",       "emoji": "🇨🇳", "name": "China",       "zh": "中國"},
