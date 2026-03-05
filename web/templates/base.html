@@ -522,8 +522,6 @@ function navigateDate(d){
   }
 
   window.globalSearch = function(q) {
-    // Also drive homepage card filter if available
-    if (typeof filterCards === 'function') filterCards(q);
 
     clearTimeout(_timer);
     var drop = document.getElementById('search-dropdown');

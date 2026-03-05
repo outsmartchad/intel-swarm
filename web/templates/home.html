@@ -339,7 +339,6 @@ function setView(v) {
   document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
   document.getElementById('btn-feed').classList.toggle('active', v === 'feed');
   localStorage.setItem('intel-view', v);
-  const si = document.getElementById('global-search'); filterCards(si ? si.value : '');
 }
 
 function filterCards(q) {
@@ -386,9 +385,7 @@ function filterCards(q) {
 (function() {
   const saved = localStorage.getItem('intel-view');
   if (saved === 'feed') setView('feed');
-  // Wire global search input (lives in base.html)
-  const gs = document.getElementById('global-search');
-  if (gs) gs.addEventListener('input', e => filterCards(e.target.value));
+
 })();
 </script>
 {% endblock %}
