@@ -33,4 +33,20 @@ for name, p in procs:
     p.wait()
     print(f"  {'✓' if p.returncode == 0 else '✗'} {name}")
 
+# Retry pass — recover any images missed in the first pass
+RETRY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scrape-images-retry.py")
+retry_procs = []
+for r in RESEARCHERS:
+    f = f"{BASE}/researchers/{r}/findings/{date}.md"
+    if os.path.exists(f):
+        p = subprocess.Popen(["python3", RETRY, f])
+        retry_procs.append((r, p))
+for name in ["synthesis", "chief"]:
+    f = f"{BASE}/{name}/findings/{date}.md"
+    if os.path.exists(f):
+        p = subprocess.Popen(["python3", RETRY, f])
+        retry_procs.append((name, p))
+for name, p in retry_procs:
+    p.wait()
+
 print(f"Done — {date}")
