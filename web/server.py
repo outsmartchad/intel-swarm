@@ -10,8 +10,14 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ── RESEARCHER REGISTRY ──────────────────────────────────────────────────────
 # To add a researcher: append a dict here. No other code changes needed.
 RESEARCHERS = [
-    {"id": "war",         "emoji": "⚔️", "name": "War",          "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
-    {"id": "commodities", "emoji": "🛢️", "name": "Commodities",  "zh": "大宗商品", "colors": "#78350f,#d97706"},
+    {"id": "war",           "emoji": "⚔️",  "name": "War",                "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
+    {"id": "commodities",  "emoji": "🛢️",  "name": "Commodities",         "zh": "大宗商品", "colors": "#78350f,#d97706"},
+    {"id": "authoritarian","emoji": "🔴",  "name": "Authoritarian States","zh": "獨裁國家", "colors": "#3b0000,#dc2626",
+     "subs": [
+         {"id": "russia",      "emoji": "🇷🇺", "name": "Russia",      "zh": "俄羅斯"},
+         {"id": "china",       "emoji": "🇨🇳", "name": "China",       "zh": "中國"},
+         {"id": "north-korea", "emoji": "🇰🇵", "name": "North Korea", "zh": "北韓"},
+     ]},
     {"id": "religion",    "emoji": "✝️", "name": "Religion",     "zh": "宗教",     "colors": "#1c1917,#a8a29e"},
     {"id": "culture",     "emoji": "🎭", "name": "Culture",      "zh": "文化",     "colors": "#7c3aed,#a855f7"},
     {"id": "emerging",    "emoji": "🌍", "name": "Emerging",     "zh": "新興市場", "colors": "#065f46,#10b981"},
@@ -343,9 +349,37 @@ def domain_date(rid, date):
         abort(404)
     r    = RESEARCHER_INDEX[rid]
     lang = get_lang()
+    subs = r.get("subs")
+
+    if subs:
+        # Authoritarian-style: load data for each sub-researcher
+        active_sub = request.args.get("sub", subs[0]["id"])
+        sub_data = {}
+        for s in subs:
+            sub_data[s["id"]] = get_researcher_data(s["id"], date, lang)
+        data = sub_data.get(active_sub) or sub_data[subs[0]["id"]]
+        all_dates = sorted({
+            os.path.basename(f).replace(".md", "")
+            for s in subs
+            for f in glob.glob(f"{BASE}/researchers/{s['id']}/findings/2026-*.md")
+            if not f.endswith(".zh.md")
+        }, reverse=True)
+        return render_template("domain.html",
+            rid=rid,
+            emoji=r["emoji"],
+            name=r["zh"] if lang == "zh" else r["name"],
+            colors=r["colors"],
+            date=date,
+            dates=get_dates(),
+            lang=lang,
+            all_dates=all_dates,
+            researchers=RESEARCHERS,
+            subs=subs,
+            active_sub=active_sub,
+            **data,
+        )
 
     data = get_researcher_data(rid, date, lang)
-
     all_dates = sorted({
         os.path.basename(f).replace(".md", "")
         for f in glob.glob(f"{BASE}/researchers/{rid}/findings/2026-*.md")
@@ -362,6 +396,8 @@ def domain_date(rid, date):
         lang=lang,
         all_dates=all_dates,
         researchers=RESEARCHERS,
+        subs=None,
+        active_sub=None,
         **data,
     )
 

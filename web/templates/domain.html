@@ -167,6 +167,36 @@
     <div class="domain-meta">{{ date }} &nbsp;·&nbsp; INTEL SWARM</div>
   </div>
 
+  {% if subs %}
+  <div class="sub-tabs">
+    {% for s in subs %}
+    <a class="sub-tab {% if s.id == active_sub %}active{% endif %}"
+       href="/domain/{{ rid }}/{{ date }}?sub={{ s.id }}&lang={{ lang }}">
+      {{ s.emoji }} {{ s.zh if lang == 'zh' else s.name }}
+    </a>
+    {% endfor %}
+  </div>
+  <style>
+  .sub-tabs {
+    display: flex; gap: 8px; margin-bottom: 24px;
+    border-bottom: 1px solid var(--border); padding-bottom: 0;
+  }
+  .sub-tab {
+    padding: 8px 20px; font-size: 13px; font-weight: 600;
+    color: var(--muted); text-decoration: none; border-radius: 6px 6px 0 0;
+    border: 1px solid transparent; border-bottom: none;
+    transition: color .15s, border-color .15s, background .15s;
+    margin-bottom: -1px;
+  }
+  .sub-tab:hover { color: var(--text); }
+  .sub-tab.active {
+    color: var(--text);
+    border-color: var(--border);
+    background: var(--surface-solid);
+  }
+  </style>
+  {% endif %}
+
   <div class="domain-wrap">
 
     <!-- MAIN: findings grid -->
