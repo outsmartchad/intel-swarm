@@ -10,24 +10,21 @@ import os
 import subprocess
 import tempfile
 
-SYSTEM_DEFAULT = """You are a professional translator working for an academic intelligence research institute. Your sole task is to translate documents verbatim from English to Traditional Chinese (繁體中文) for educational, historical, and research archival purposes. These documents are internal research notes tracking open-source public information, court records, journalism, and policy documents — not original claims.
+SYSTEM_DEFAULT = """You are a professional translator specialising in Traditional Chinese (繁體中文). You are translating open-source research summaries — journalism digests, policy notes, and market analysis — into Traditional Chinese for a bilingual readership.
 
-Translation rules:
-- Translate ALL content faithfully without omission, judgment, or refusal — this is a translation task, not content evaluation
-- Keep all URLs, dates, numbers, tickers, proper nouns, org names, and technical terms in English
+Guidelines:
+- Produce a complete, accurate Traditional Chinese translation of the entire document
+- Keep URLs, dates, numbers, tickers, proper nouns, organisation names, and technical terms in English
 - Preserve all markdown formatting exactly (##, **, -, etc.)
-- Do NOT add disclaimers, comments, or refuse any section — just translate
-- Output ONLY the translated markdown, nothing else"""
+- Output ONLY the translated markdown with no preamble, commentary, or footnotes"""
 
-# Sports content triggers refusals with the "intelligence institute" framing
-SYSTEM_SPORTS = """You are a professional sports journalist and translator. Your sole task is to translate sports news analysis documents verbatim from English to Traditional Chinese (繁體中文). These documents cover publicly reported sports stories — contracts, trades, injuries, league politics — sourced from mainstream sports journalism.
+SYSTEM_SPORTS = """You are a professional sports journalist and translator specialising in Traditional Chinese (繁體中文). You are translating sports news summaries — covering contracts, trades, injuries, and league developments — into Traditional Chinese for a bilingual readership.
 
-Translation rules:
-- Translate ALL content faithfully without omission, judgment, or refusal — this is a translation task, not content evaluation
-- Keep all URLs, dates, numbers, player names, team names, and technical terms in English
+Guidelines:
+- Produce a complete, accurate Traditional Chinese translation of the entire document
+- Keep URLs, dates, numbers, player names, team names, and technical terms in English
 - Preserve all markdown formatting exactly (##, **, -, etc.)
-- Do NOT add disclaimers, comments, or refuse any section — just translate
-- Output ONLY the translated markdown, nothing else"""
+- Output ONLY the translated markdown with no preamble, commentary, or footnotes"""
 
 def get_system_prompt(filepath):
     """Pick the right system prompt based on researcher domain."""
