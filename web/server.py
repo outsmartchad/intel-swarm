@@ -19,6 +19,7 @@ RESEARCHERS = [
          {"id": "north-korea", "emoji": "🇰🇵", "name": "North Korea", "zh": "北韓"},
      ]},
     {"id": "religion",    "emoji": "✝️", "name": "Religion",     "zh": "宗教",     "colors": "#1c1917,#a8a29e"},
+    {"id": "health",      "emoji": "🧬", "name": "Health",        "zh": "健康",     "colors": "#064e3b,#10b981"},
     {"id": "culture",     "emoji": "🎭", "name": "Culture",      "zh": "文化",     "colors": "#7c3aed,#a855f7"},
     {"id": "emerging",    "emoji": "🌍", "name": "Emerging",     "zh": "新興市場", "colors": "#065f46,#10b981"},
     {"id": "ai-agents",   "emoji": "🤖", "name": "AI Agents",    "zh": "AI 代理",  "colors": "#1e40af,#3b82f6"},
