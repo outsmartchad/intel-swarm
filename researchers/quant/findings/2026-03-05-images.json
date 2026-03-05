@@ -5,6 +5,12 @@
     "image_path": "/static/images/2026-03-05/quant/1663ccde0d2d.jpeg"
   },
   {
+    "finding_idx": 1,
+    "source_url": "https://www.reuters.com/world/china/global-markets-wrapup-1-wrapup-1-pix-2026-03-03/",
+    "image_path": "/static/images/2026-03-05/quant/216db76e25da.png",
+    "via": "retry"
+  },
+  {
     "finding_idx": 2,
     "source_url": "https://ambcrypto.com/bitcoin-funding-slips-negative-as-btc-consolidates-near-68k/",
     "image_path": "/static/images/2026-03-05/quant/b9b83c3f3813.png"

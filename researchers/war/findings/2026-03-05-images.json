@@ -18,5 +18,11 @@
     "finding_idx": 3,
     "source_url": "https://understandingwar.org/research/china-taiwan/china-taiwan-update-march-1-2026/",
     "image_path": "/static/images/2026-03-05/war/c6c44f57ace3.webp"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://ukrainetoday.org/zelensky-trades-drone-know-how-for-ceasefire-help/",
+    "image_path": "/static/images/2026-03-05/war/8be4831365b1.png",
+    "via": "retry"
   }
 ]

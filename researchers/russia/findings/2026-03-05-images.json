@@ -5,6 +5,12 @@
     "image_path": "/static/images/2026-03-05/russia/b564a320ebda.webp"
   },
   {
+    "finding_idx": 1,
+    "source_url": "https://www.reuters.com/world/ukraine-crisis/",
+    "image_path": "/static/images/2026-03-05/russia/2ac95bdcc0ee.jpg",
+    "via": "retry"
+  },
+  {
     "finding_idx": 2,
     "source_url": "https://www.elliptic.co/blog/russia-linked-cryptocurrency-services-and-sanctions-evasion",
     "image_path": "/static/images/2026-03-05/russia/987bfb257367.png"

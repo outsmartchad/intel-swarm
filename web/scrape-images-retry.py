@@ -114,10 +114,10 @@ def try_homepage(url):
                 return img
     return None
 
-def brave_image_search(query):
-    """Search Brave Images API for a relevant image URL."""
+def brave_image_results(query):
+    """Search Brave Images API and return raw result list."""
     if not BRAVE_API_KEY:
-        return None
+        return []
     try:
         r = requests.get(
             "https://api.search.brave.com/res/v1/images/search",
@@ -126,21 +126,21 @@ def brave_image_search(query):
                 "Accept-Encoding": "gzip",
                 "X-Subscription-Token": BRAVE_API_KEY,
             },
-            params={"q": query, "count": 5, "safesearch": "off"},
+            params={"q": query, "count": 10, "safesearch": "off"},
             timeout=10,
         )
         if r.status_code != 200:
-            return None
-        data = r.json()
-        results = data.get("results", [])
-        for result in results:
-            img_url = result.get("thumbnail", {}).get("src") or result.get("url")
-            # Prefer full-size source over thumbnail
-            src = result.get("properties", {}).get("url") or img_url
-            if src and src.startswith("http") and is_usable(src):
-                return src
+            return []
+        return r.json().get("results", [])
     except Exception:
-        pass
+        return []
+
+def brave_image_search(query):
+    """Search Brave Images API for a relevant image URL (single best result)."""
+    for res in brave_image_results(query):
+        src = res.get("properties", {}).get("url") or res.get("thumbnail", {}).get("src")
+        if src and src.startswith("http") and is_usable(src):
+            return src
     return None
 
 def extract_title_from_block(block):
@@ -156,7 +156,7 @@ def extract_title_from_block(block):
     return None
 
 def find_image(url, title=None):
-    """Try all strategies in order. Return first image URL found."""
+    """Try source-page strategies 1-6. Brave (strategy 7) is handled by caller."""
     # Strategy 1-4: different User-Agents on the original URL
     for ua in USER_AGENTS:
         html = fetch_with_ua(url, ua)
@@ -177,14 +177,6 @@ def find_image(url, title=None):
     if img:
         print(f"    ✓ Domain homepage fallback")
         return img
-
-    # Strategy 7: Brave Image Search — find relevant image by title
-    if title:
-        query = re.sub(r"[^\w\s]", " ", title)[:100].strip()
-        img = brave_image_search(query)
-        if img:
-            print(f"    ✓ Brave Image Search: '{query[:50]}'")
-            return img
 
     return None
 
@@ -260,13 +252,30 @@ def main(findings_path):
 
     for idx, url, title in missing:
         print(f"  [{idx}] {url[:70]}")
-        img_url = find_image(url, title=title)
-        if not img_url:
-            print(f"    ✗ No image found")
-            continue
-        local_path = download_image(img_url, img_dir)
+        local_path = None
+
+        # Try all source-page strategies first
+        img_url = find_image(url, title=None)  # no Brave yet
+        if img_url:
+            local_path = download_image(img_url, img_dir)
+            if not local_path:
+                print(f"    ✗ Download failed — falling through to Brave")
+
+        # Brave Image Search as guaranteed final fallback
+        if not local_path and title:
+            query = re.sub(r"[^\w\s]", " ", title)[:100].strip()
+            results = brave_image_results(query)
+            for res in results:
+                img_url = res.get("properties", {}).get("url") or res.get("thumbnail", {}).get("src")
+                if not img_url or not img_url.startswith("http"):
+                    continue
+                local_path = download_image(img_url, img_dir)
+                if local_path:
+                    print(f"    ✓ Brave Image Search: '{query[:50]}'")
+                    break
+
         if not local_path:
-            print(f"    ✗ Download failed")
+            print(f"    ✗ No image found")
             continue
         existing[idx] = {
             "finding_idx": idx,

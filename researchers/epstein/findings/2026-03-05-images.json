@@ -18,5 +18,11 @@
     "finding_idx": 3,
     "source_url": "https://www.thedailybeast.com/jeffrey-epsteins-creepy-medical-cabal-unmasked-in-doj-files-bombshell/",
     "image_path": "/static/images/2026-03-05/epstein/83b1a4adfb3a.jpg"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://en.wikipedia.org/wiki/Epstein_files",
+    "image_path": "/static/images/2026-03-05/epstein/448a01ea9644.jpg",
+    "via": "retry"
   }
 ]

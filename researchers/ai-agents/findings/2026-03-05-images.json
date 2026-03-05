@@ -1,5 +1,11 @@
 [
   {
+    "finding_idx": 0,
+    "source_url": "https://www.marktechpost.com/2026/03/02/meet-nullclaw-the-678-kb-zig-ai-agent-framework-running-on-1-mb-ram-and-booting-in-two-milliseconds/",
+    "image_path": "/static/images/2026-03-05/ai-agents/acb487d5eda7.png",
+    "via": "retry"
+  },
+  {
     "finding_idx": 1,
     "source_url": "https://techcrunch.com/2026/03/03/claude-code-rolls-out-a-voice-mode-capability/",
     "image_path": "/static/images/2026-03-05/ai-agents/de01df80c84b.jpeg"
