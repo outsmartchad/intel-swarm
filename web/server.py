@@ -611,7 +611,7 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market6:{domain}:{q}"
+    cache_key = f"pm_market7:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
@@ -662,10 +662,16 @@ def pm_market():
                         best_market_score = ms
                         best_candidate_market = m
 
+                # Skip if no live candidate (never return resolved 0%/100% markets)
                 if best_market_score < 2 or not best_candidate_market:
                     continue
+                if not _pm_is_active_market(best_candidate_market):
+                    # Try to find any active market in this event instead
+                    best_candidate_market = active_markets[0] if active_markets else None
+                    if not best_candidate_market:
+                        continue
 
-                # Collect chart tokens from high-volume siblings
+                # Collect chart tokens from high-volume siblings (resolved OK for chart data)
                 top_chart_tokens = []
                 for m in all_markets_sorted[:5]:
                     t_raw = m.get("clobTokenIds", "[]")
@@ -677,7 +683,7 @@ def pm_market():
                 if parsed and parsed["outcomes"]:
                     vol = _pm_volume(best_candidate_market)
                     vol_bonus = 3 if vol > 10000 else (1 if vol > 1000 else 0)
-                    live_bonus = 2 if _pm_is_active_market(best_candidate_market) else 0
+                    live_bonus = 2  # already confirmed active above
                     total = best_market_score + live_bonus + vol_bonus
                     candidates.append((total, parsed))
 
