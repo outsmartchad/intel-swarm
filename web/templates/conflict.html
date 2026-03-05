@@ -116,17 +116,15 @@
       <button class="cmf"     data-f="war"       onclick="setFilter('war')">⚔️ {% if lang == 'zh' %}戰爭{% else %}WAR{% endif %}</button>
       <button class="cmf"     data-f="political" onclick="setFilter('political')">🏛 {% if lang == 'zh' %}政治{% else %}POLITICAL{% endif %}</button>
       <button class="cmf"     data-f="intel"     onclick="setFilter('intel')">📡 {% if lang == 'zh' %}情報{% else %}INTEL{% endif %}</button>
-      <button class="cmf on" id="f-quakes" onclick="toggleFilter(this,'quakes')">🔴 Quakes</button>
-      <button class="cmf on" id="f-eonet" onclick="toggleFilter(this,'eonet')">🌋 EONET</button>
-</div>
-      <button class="cmf on" id="f-acled" onclick="toggleFilter(this,'acled')">🔴 ACLED</button>
-      <button class="cmf" id="f-fires" onclick="toggleFilter(this,'fires')">🔥 Fires</button>
-
+      <button class="cmf on" id="f-quakes" onclick="toggleFilter(this,'quakes')">🔴 {% if lang=='zh' %}地震{% else %}Quakes{% endif %}</button>
+      <button class="cmf on" id="f-eonet" onclick="toggleFilter(this,'eonet')">🌋 {% if lang=='zh' %}自然災害{% else %}EONET{% endif %}</button>
+      <button class="cmf on" id="f-acled" onclick="toggleFilter(this,'acled')">⚔️ {% if lang=='zh' %}武裝衝突{% else %}ACLED{% endif %}</button>
+      <button class="cmf" id="f-fires" onclick="toggleFilter(this,'fires')">🔥 {% if lang=='zh' %}火災{% else %}Fires{% endif %}</button>
+    </div>
     <div class="cm-stats">
       <div class="cm-stat"><div class="cm-stat-v" id="s-events">—</div><div class="cm-stat-l">{% if lang == 'zh' %}事件{% else %}EVENTS{% endif %}</div></div>
-      <div class="cm-stat"><div class="cm-stat-v" id="stat-quakes">–</div><div class="cm-stat-l">QUAKES</div>
+      <div class="cm-stat"><div class="cm-stat-v" id="stat-quakes">–</div><div class="cm-stat-l">{% if lang == 'zh' %}地震{% else %}QUAKES{% endif %}</div></div>
       <div class="cm-stat"><div class="cm-stat-v" id="stat-acled">–</div><div class="cm-stat-l">ACLED</div></div>
-</div>
       <div class="cm-stat"><div class="cm-stat-v" id="s-zones">—</div><div class="cm-stat-l">{% if lang == 'zh' %}熱點{% else %}HOT ZONES{% endif %}</div></div>
       <div class="cm-stat"><div class="cm-stat-v" id="s-updated">—</div><div class="cm-stat-l">{% if lang == 'zh' %}更新{% else %}UPDATED{% endif %}</div></div>
     </div>
@@ -194,6 +192,94 @@ function initMap() {
   renderMarkers(INTEL_EVENTS);
   renderFeed(INTEL_EVENTS);
   updateStats(INTEL_EVENTS);
+
+  // ── Live event layers (USGS earthquakes + NASA EONET) ─────────────────────
+  var quakeLayer = L.layerGroup().addTo(_map);
+  var eonetLayer = L.layerGroup().addTo(_map);
+  var acledLayer = L.layerGroup().addTo(_map);
+  var firesLayer = L.layerGroup();  // off by default
+
+  var _eonetColors = {"Wildfires":"#ef4444","Volcanoes":"#f97316","Severe Storms":"#60a5fa","Storms":"#a78bfa","Sea and Lake Ice":"#7dd3fc","Snow":"#e0f2fe"};
+  var _ACLED_COLORS = {"Battles":"#ef4444","Explosions/Remote violence":"#f97316","Violence against civilians":"#a78bfa","Riots":"#facc15","Protests":"#60a5fa"};
+
+  fetch('/api/live/events').then(function(r){return r.json();}).then(function(d){
+    (d.earthquakes||[]).forEach(function(eq){
+      var radius = Math.max(5, Math.min(16, (eq.mag - 3.5) * 2.8));
+      var color  = eq.mag >= 7 ? '#ef4444' : eq.mag >= 6 ? '#fb923c' : '#fbbf24';
+      L.circleMarker([eq.lat, eq.lng], {
+        radius: radius, color: color, fillColor: color,
+        fillOpacity: 0.65, weight: 1.5, opacity: 0.9
+      }).bindPopup('<b>M' + eq.mag + ' Earthquake</b><br>' + eq.place + '<br>Depth: ' + eq.depth + ' km').addTo(quakeLayer);
+    });
+    var qstat = document.getElementById('stat-quakes');
+    if(qstat) qstat.textContent = (d.earthquakes||[]).length;
+    (d.eonet||[]).forEach(function(ev){
+      var color = _eonetColors[ev.category] || '#94a3b8';
+      L.circleMarker([ev.lat, ev.lng], {
+        radius: 7, color: color, fillColor: color,
+        fillOpacity: 0.7, weight: 1.5, dashArray: '4,3'
+      }).bindPopup('<b>' + ev.title + '</b><br><em>' + ev.category + '</em><br>' + ev.date).addTo(eonetLayer);
+    });
+  }).catch(function(e){ console.error('Live events fetch error', e); });
+
+  fetch('/api/live/acled').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key') { console.log('ACLED: set ACLED_ACCESS_TOKEN env var'); return; }
+    (d.events||[]).forEach(function(ev){
+      var color = _ACLED_COLORS[ev.type] || '#94a3b8';
+      var radius = Math.max(5, Math.min(14, 5 + Math.sqrt(ev.fatalities || 1)));
+      L.circleMarker([ev.lat, ev.lng], {
+        radius: radius, color: color, fillColor: color,
+        fillOpacity: 0.7, weight: 1.5, opacity: 0.9
+      }).bindPopup(
+        '<b>' + ev.type + '</b><br>' +
+        (ev.actor1 ? ev.actor1 : '') + (ev.actor2 ? ' vs ' + ev.actor2 : '') + '<br>' +
+        ev.country + ' — ' + ev.date + '<br>' +
+        (ev.fatalities > 0 ? '<span style="color:#f87171">⚔️ ' + ev.fatalities + ' fatalities</span><br>' : '') +
+        '<small>' + (ev.notes||'') + '</small>'
+      ).addTo(acledLayer);
+    });
+    var astat = document.getElementById('stat-acled');
+    if(astat) astat.textContent = (d.events||[]).length;
+  }).catch(function(e){ console.error('ACLED err', e); });
+
+  fetch('/api/live/fires').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key') { console.log('FIRMS: set NASA_FIRMS_API_KEY env var'); return; }
+    (d.fires||[]).forEach(function(f){
+      var intensity = Math.min(1, (f.brightness - 300) / 100);
+      var color = 'rgba(255,' + Math.round(100 - intensity*80) + ',0,0.7)';
+      L.circleMarker([f.lat, f.lng], {
+        radius: 4, color: color, fillColor: color,
+        fillOpacity: 0.8, weight: 0.5
+      }).bindPopup('<b>🔥 Active Fire</b><br>' + f.date + '<br>Confidence: ' + f.confidence).addTo(firesLayer);
+    });
+  }).catch(function(e){ console.error('FIRMS err', e); });
+
+  // Toggle handler for live layers
+  window.toggleFilter = (function(orig){
+    return function(btn, type) {
+      if(type === 'quakes'){
+        btn.classList.toggle('on');
+        if(_map.hasLayer(quakeLayer)) _map.removeLayer(quakeLayer); else quakeLayer.addTo(_map);
+        return;
+      }
+      if(type === 'eonet'){
+        btn.classList.toggle('on');
+        if(_map.hasLayer(eonetLayer)) _map.removeLayer(eonetLayer); else eonetLayer.addTo(_map);
+        return;
+      }
+      if(type === 'acled'){
+        btn.classList.toggle('on');
+        if(_map.hasLayer(acledLayer)) _map.removeLayer(acledLayer); else acledLayer.addTo(_map);
+        return;
+      }
+      if(type === 'fires'){
+        btn.classList.toggle('on');
+        if(_map.hasLayer(firesLayer)) _map.removeLayer(firesLayer); else firesLayer.addTo(_map);
+        return;
+      }
+      if(orig) orig(btn, type);
+    };
+  })(window.toggleFilter);
 }
 
 // Color by event category
@@ -307,115 +393,5 @@ function escHtml(s) {
 }
 
 document.addEventListener('DOMContentLoaded', initMap);
-
-  // ── Live event layers (USGS + NASA EONET) ────────────────────────────────
-  var quakeLayer = L.layerGroup().addTo(map);
-  var eonetLayer = L.layerGroup().addTo(map);
-  var _eonetColors = {"Wildfires":"#ef4444","Volcanoes":"#f97316","Severe Storms":"#60a5fa","Storms":"#a78bfa","Sea and Lake Ice":"#7dd3fc","Snow":"#e0f2fe"};
-
-  fetch('/api/live/events').then(function(r){return r.json();}).then(function(d){
-    (d.earthquakes||[]).forEach(function(eq){
-      var radius = Math.max(5, Math.min(16, (eq.mag - 3.5) * 2.8));
-      var color  = eq.mag >= 7 ? '#ef4444' : eq.mag >= 6 ? '#fb923c' : '#fbbf24';
-      L.circleMarker([eq.lat, eq.lng], {
-        radius: radius, color: color, fillColor: color,
-        fillOpacity: 0.65, weight: 1.5, opacity: 0.9
-      }).bindPopup('<b>M' + eq.mag + ' Earthquake</b><br>' + eq.place + '<br>Depth: ' + eq.depth + ' km').addTo(quakeLayer);
-    });
-    var qstat = document.getElementById('stat-quakes');
-    if(qstat) qstat.textContent = (d.earthquakes||[]).length;
-    (d.eonet||[]).forEach(function(ev){
-      var color = _eonetColors[ev.category] || '#94a3b8';
-      L.circleMarker([ev.lat, ev.lng], {
-        radius: 7, color: color, fillColor: color,
-        fillOpacity: 0.7, weight: 1.5, dashArray: '4,3'
-      }).bindPopup('<b>' + ev.title + '</b><br><em>' + ev.category + '</em><br>' + ev.date).addTo(eonetLayer);
-    });
-  }).catch(function(e){ console.error('Events fetch error', e); });
-
-  // Patch toggleFilter for new layer types
-  var _tmOrigConflict = window.toggleFilter;
-  window.toggleFilter = function(btn, type){
-    if(type === 'quakes'){
-      btn.classList.toggle('on');
-      if(map.hasLayer(quakeLayer)) map.removeLayer(quakeLayer); else quakeLayer.addTo(map);
-      return;
-    }
-    if(type === 'eonet'){
-      btn.classList.toggle('on');
-      if(map.hasLayer(eonetLayer)) map.removeLayer(eonetLayer); else eonetLayer.addTo(map);
-      return;
-    }
-    if(_tmOrigConflict) _tmOrigConflict(btn, type);
-  };
-
-  // ── ACLED real conflict events ────────────────────────────────────────────
-  var acledLayer = L.layerGroup().addTo(map);
-  var firesLayer = L.layerGroup();  // FIRMS fires — off by default
-
-  var _ACLED_COLORS = {
-    "Battles": "#ef4444",
-    "Explosions/Remote violence": "#f97316",
-    "Violence against civilians": "#a78bfa",
-    "Riots": "#facc15",
-    "Protests": "#60a5fa",
-  };
-
-  fetch('/api/live/acled').then(function(r){return r.json();}).then(function(d){
-    if(d.status === 'no_key') {
-      console.log('ACLED: no key configured — set ACLED_ACCESS_TOKEN env var');
-      return;
-    }
-    (d.events||[]).forEach(function(ev){
-      var color = _ACLED_COLORS[ev.type] || '#94a3b8';
-      var radius = Math.max(5, Math.min(14, 5 + Math.sqrt(ev.fatalities || 1)));
-      L.circleMarker([ev.lat, ev.lng], {
-        radius: radius, color: color, fillColor: color,
-        fillOpacity: 0.7, weight: 1.5, opacity: 0.9
-      }).bindPopup(
-        '<b>' + ev.type + '</b><br>' +
-        (ev.actor1 ? ev.actor1 : '') + (ev.actor2 ? ' vs ' + ev.actor2 : '') + '<br>' +
-        ev.country + ' — ' + ev.date + '<br>' +
-        (ev.fatalities > 0 ? '<span style="color:#f87171">⚔️ ' + ev.fatalities + ' fatalities</span><br>' : '') +
-        '<small>' + ev.notes + '</small>'
-      ).addTo(acledLayer);
-    });
-    var astat = document.getElementById('stat-acled');
-    if(astat) astat.textContent = (d.events||[]).length;
-    console.log('ACLED: loaded ' + (d.events||[]).length + ' events');
-  }).catch(function(e){ console.error('ACLED err', e); });
-
-  // FIRMS active fires
-  fetch('/api/live/fires').then(function(r){return r.json();}).then(function(d){
-    if(d.status === 'no_key') {
-      console.log('FIRMS: no key configured — set NASA_FIRMS_API_KEY env var');
-      return;
-    }
-    (d.fires||[]).forEach(function(f){
-      var intensity = Math.min(1, (f.brightness - 300) / 100);
-      var color = 'rgba(' + Math.round(255) + ',' + Math.round(100 - intensity*80) + ',0,0.7)';
-      L.circleMarker([f.lat, f.lng], {
-        radius: 4, color: color, fillColor: color,
-        fillOpacity: 0.8, weight: 0.5
-      }).bindPopup('<b>🔥 Active Fire</b><br>' + f.date + '<br>Confidence: ' + f.confidence).addTo(firesLayer);
-    });
-    console.log('FIRMS: loaded ' + (d.fires||[]).length + ' fire detections');
-  }).catch(function(e){ console.error('FIRMS err', e); });
-
-  // Patch toggleFilter for ACLED + fires
-  var _origToggleP2 = window.toggleFilter;
-  window.toggleFilter = function(btn, type){
-    if(type === 'acled'){
-      btn.classList.toggle('on');
-      if(map.hasLayer(acledLayer)) map.removeLayer(acledLayer); else acledLayer.addTo(map);
-      return;
-    }
-    if(type === 'fires'){
-      btn.classList.toggle('on');
-      if(map.hasLayer(firesLayer)) map.removeLayer(firesLayer); else firesLayer.addTo(map);
-      return;
-    }
-    if(_origToggleP2) _origToggleP2(btn, type);
-  };
 </script>
 {% endblock %}
