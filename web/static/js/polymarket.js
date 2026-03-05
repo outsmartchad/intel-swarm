@@ -102,23 +102,19 @@
           return;
         }
         injectOverlay(card, data);
-        // Fetch chart — try each outcome token until we get data
+        // Pass ALL token_ids comma-separated — server tries each until it finds history
         var outcomes = data.outcomes || [];
-        for (var i = 0; i < outcomes.length; i++) {
-          if (outcomes[i].token_id) {
-            fetchChart(card, outcomes[i].token_id);
-            break;
-          }
-        }
+        var tokenIds = outcomes.map(function(o) { return o.token_id; }).filter(Boolean).join(',');
+        if (tokenIds) fetchChart(card, tokenIds);
       })
       .catch(function () { injectNoMarket(card); });
   }
 
-  function fetchChart(card, tokenId) {
-    fetch('/api/polymarket/chart?token_id=' + encodeURIComponent(tokenId))
+  function fetchChart(card, tokenIds) {
+    fetch('/api/polymarket/chart?token_id=' + encodeURIComponent(tokenIds))
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        if (!data.points || !data.points.length) return;
+        if (!data.points || data.points.length < 3) return; // Skip if not enough history
         var svg = card.querySelector('.pm-chart');
         if (svg) drawSparkline(svg, data.points);
       })
@@ -164,7 +160,7 @@
     var html =
       '<div class="pm-question">\uD83D\uDCCA This finding may affect:</div>' +
       '<div class="pm-question" style="margin-top:1px;opacity:1;font-weight:600">' + escHtml(question) + '</div>' +
-      '<svg class="pm-chart" viewBox="0 0 80 28" preserveAspectRatio="none"></svg>' +
+      '<svg class="pm-chart" viewBox="0 0 80 32" preserveAspectRatio="none"></svg>' +
       '<div class="pm-outcomes">' + outcomesHtml + '</div>' +
       '<div class="pm-live-dot"></div>';
 
@@ -192,7 +188,7 @@
 
   function drawSparkline(svg, points) {
     if (!points.length) return;
-    var W = 80, H = 28;
+    var W = 80, H = 32;
     var prices = points.map(function (p) { return p.p; });
     var min = Math.min.apply(null, prices);
     var max = Math.max.apply(null, prices);
@@ -205,15 +201,16 @@
     });
 
     var polyline = coords.join(' ');
-    // Fill area
-    var fillCoords = '0,' + H + ' ' + polyline + ' ' + W + ',' + H;
     var last = coords[coords.length - 1].split(',');
+    // Determine trend colour: green if price went up, soft red if down
+    var firstP = points[0].p, lastP = points[points.length - 1].p;
+    var lineColor = lastP >= firstP ? 'rgba(160,210,160,0.75)' : 'rgba(210,160,160,0.75)';
 
+    // Clean line only — no fill polygon, transparent background
     svg.innerHTML =
-      '<polygon points="' + fillCoords + '" fill="rgba(255,255,255,0.08)" />' +
-      '<polyline points="' + polyline + '" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" />' +
-      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2" fill="#4ade80" opacity="0.9">' +
-        '<animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite" />' +
+      '<polyline points="' + polyline + '" fill="none" stroke="' + lineColor + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.5" fill="' + lineColor + '" opacity="0.95">' +
+        '<animate attributeName="opacity" values="0.95;0.4;0.95" dur="2s" repeatCount="indefinite" />' +
       '</circle>';
   }
 

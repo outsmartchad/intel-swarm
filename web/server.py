@@ -555,6 +555,15 @@ def _pm_is_active_market(m):
     except Exception:
         return False
 
+def _pm_volume(m):
+    """Return best available volume number for sorting."""
+    for key in ("volume1wk", "volume1mo", "volumeNum", "volume"):
+        v = m.get(key)
+        if v:
+            try: return float(v)
+            except: pass
+    return 0.0
+
 def _pm_score(headline, question):
     """Score causal relevance between headline and market question (0–10)."""
     h = headline.lower()
@@ -606,9 +615,12 @@ def pm_market():
                 ev_title = event.get("title", "")
                 ev_score = _pm_score(q, ev_title)
 
-                # Scan all markets in this event, prefer active (live odds) ones
-                active_markets = [m for m in event.get("markets", []) if _pm_is_active_market(m)]
-                candidate_markets = active_markets[:10] if active_markets else event.get("markets", [])[:5]
+                # Prefer active markets with real trading volume (rich chart history)
+                all_markets = event.get("markets", [])
+                active_markets = [m for m in all_markets if _pm_is_active_market(m)]
+                # Sort by volume descending so we get the most-traded / most chart data
+                active_markets.sort(key=_pm_volume, reverse=True)
+                candidate_markets = active_markets[:10] if active_markets else all_markets[:5]
 
                 for m in candidate_markets:
                     mq = m.get("question", m.get("groupItemTitle", ev_title))
@@ -616,10 +628,12 @@ def pm_market():
                     if ms >= best_score:
                         parsed = _pm_parse_market(m)
                         if parsed and parsed["outcomes"]:
-                            # Boost score if market has live odds
+                            # Heavily boost score for high-volume markets (good chart data)
+                            vol = _pm_volume(m)
+                            vol_bonus = 4 if vol > 10000 else (2 if vol > 1000 else (1 if vol > 100 else 0))
                             live_bonus = 2 if _pm_is_active_market(m) else 0
-                            total = ms + live_bonus
-                            if total > best_score or (total == best_score and _pm_is_active_market(m)):
+                            total = ms + live_bonus + vol_bonus
+                            if total > best_score:
                                 best_score = total
                                 best_result = parsed
 
@@ -633,30 +647,39 @@ def pm_market():
 
 @app.route("/api/polymarket/chart")
 def pm_chart():
-    token_id = request.args.get("token_id", "").strip()
-    if not token_id:
+    # Accept comma-separated token_ids — try each until we get data
+    raw_ids = request.args.get("token_id", "").strip()
+    if not raw_ids:
         return flask_jsonify({"points": []})
-    cache_key = f"pm_chart:{token_id}"
-    cached = _pm_cached(cache_key, 60)
+    token_ids = [t.strip() for t in raw_ids.split(",") if t.strip()]
+    cache_key = f"pm_chart3:{raw_ids[:80]}"
+    cached = _pm_cached(cache_key, 120)
     if cached is not None:
         return flask_jsonify(cached)
     try:
-        resp = http_requests.get(
-            "https://clob.polymarket.com/prices-history",
-            params={"market": token_id, "interval": "max"},
-            headers=_PM_HEADERS,
-            timeout=5,
-        )
-        resp.raise_for_status()
-        raw = resp.json()
-        points = []
-        history = raw.get("history", raw) if isinstance(raw, dict) else raw
-        if isinstance(history, list):
-            for pt in history:
-                t = pt.get("t", 0)
-                p = float(pt.get("p", 0))
-                points.append({"t": t, "p": p})
-        result = {"points": points}
+        for token_id in token_ids:
+            resp = http_requests.get(
+                "https://clob.polymarket.com/prices-history",
+                params={"market": token_id, "interval": "max"},
+                headers=_PM_HEADERS,
+                timeout=5,
+            )
+            resp.raise_for_status()
+            raw = resp.json()
+            history = raw.get("history", []) if isinstance(raw, dict) else []
+            if len(history) >= 3:
+                # Downsample to max 60 points for sparkline
+                step = max(1, len(history) // 60)
+                points = [{"t": pt["t"], "p": round(float(pt["p"]), 4)}
+                          for pt in history[::step]]
+                # Always include the last point
+                last = history[-1]
+                if points[-1]["t"] != last["t"]:
+                    points.append({"t": last["t"], "p": round(float(last["p"]), 4)})
+                result = {"points": points}
+                _pm_set(cache_key, result)
+                return flask_jsonify(result)
+        result = {"points": []}
         _pm_set(cache_key, result)
         return flask_jsonify(result)
     except Exception:
