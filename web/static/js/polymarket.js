@@ -102,10 +102,11 @@
           return;
         }
         injectOverlay(card, data);
-        // Pass ALL token_ids comma-separated — server tries each until it finds history
-        var outcomes = data.outcomes || [];
-        var tokenIds = outcomes.map(function(o) { return o.token_id; }).filter(Boolean).join(',');
-        if (tokenIds) fetchChart(card, tokenIds);
+        // Use chart_tokens (high-vol siblings) first, then fall back to outcome tokens
+        var chartTokens = (data.chart_tokens || []).filter(Boolean);
+        var outcomeTokens = (data.outcomes || []).map(function(o) { return o.token_id; }).filter(Boolean);
+        var allTokens = chartTokens.concat(outcomeTokens);
+        if (allTokens.length) fetchChart(card, allTokens.slice(0, 6).join(','));
       })
       .catch(function () { injectNoMarket(card); });
   }

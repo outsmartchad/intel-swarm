@@ -510,8 +510,10 @@ _PM_DOMAIN_TAGS = {
     "sports":     ["sports"],
 }
 
-def _pm_parse_market(m):
-    """Parse a Gamma market dict into our response format."""
+def _pm_parse_market(m, chart_tokens=None):
+    """Parse a Gamma market dict into our response format.
+    chart_tokens: list of token_ids from high-volume sibling markets for chart data.
+    """
     outcomes_raw = m.get("outcomes", "[]")
     if isinstance(outcomes_raw, str):
         try: outcomes_list = json.loads(outcomes_raw)
@@ -543,6 +545,8 @@ def _pm_parse_market(m):
         "outcomes": outcomes[:3],
         "end_date_iso": m.get("endDate", m.get("endDateIso", "")),
         "url": f"https://polymarket.com/event/{m.get('slug', '')}",
+        # chart_tokens: high-volume sibling tokens to use for real price history
+        "chart_tokens": chart_tokens or [],
     }
 
 def _pm_is_active_market(m):
@@ -614,28 +618,38 @@ def pm_market():
             for event in events:
                 ev_title = event.get("title", "")
                 ev_score = _pm_score(q, ev_title)
+                if ev_score < 1:
+                    continue
 
-                # Prefer active markets with real trading volume (rich chart history)
                 all_markets = event.get("markets", [])
-                active_markets = [m for m in all_markets if _pm_is_active_market(m)]
-                # Sort by volume descending so we get the most-traded / most chart data
-                active_markets.sort(key=_pm_volume, reverse=True)
-                candidate_markets = active_markets[:10] if active_markets else all_markets[:5]
+                # Sort all markets by volume — the top ones have the richest chart history
+                all_markets_sorted = sorted(all_markets, key=_pm_volume, reverse=True)
+                active_markets = [m for m in all_markets_sorted if _pm_is_active_market(m)]
 
-                for m in candidate_markets:
-                    mq = m.get("question", m.get("groupItemTitle", ev_title))
-                    ms = max(_pm_score(q, mq), ev_score)
-                    if ms >= best_score:
-                        parsed = _pm_parse_market(m)
-                        if parsed and parsed["outcomes"]:
-                            # Heavily boost score for high-volume markets (good chart data)
-                            vol = _pm_volume(m)
-                            vol_bonus = 4 if vol > 10000 else (2 if vol > 1000 else (1 if vol > 100 else 0))
-                            live_bonus = 2 if _pm_is_active_market(m) else 0
-                            total = ms + live_bonus + vol_bonus
-                            if total > best_score:
-                                best_score = total
-                                best_result = parsed
+                # Collect top chart tokens from high-volume sibling markets (resolved OK)
+                top_chart_tokens = []
+                for m in all_markets_sorted[:5]:
+                    t_raw = m.get("clobTokenIds", "[]")
+                    try: tokens = json.loads(t_raw) if isinstance(t_raw, str) else t_raw
+                    except: tokens = []
+                    top_chart_tokens.extend(tokens[:2])
+
+                # Show the ACTIVE market (live odds) but use sibling tokens for chart
+                candidate = active_markets[0] if active_markets else (all_markets_sorted[0] if all_markets_sorted else None)
+                if not candidate:
+                    continue
+                mq = candidate.get("question", candidate.get("groupItemTitle", ev_title))
+                ms = max(_pm_score(q, mq), ev_score)
+                if ms >= best_score:
+                    parsed = _pm_parse_market(candidate, chart_tokens=top_chart_tokens)
+                    if parsed and parsed["outcomes"]:
+                        vol = _pm_volume(candidate)
+                        vol_bonus = 4 if vol > 10000 else (2 if vol > 1000 else 1)
+                        live_bonus = 2 if _pm_is_active_market(candidate) else 0
+                        total = ms + live_bonus + vol_bonus
+                        if total > best_score:
+                            best_score = total
+                            best_result = parsed
 
         if best_result:
             _pm_set(cache_key, best_result)
