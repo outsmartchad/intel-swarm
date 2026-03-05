@@ -221,19 +221,16 @@ def attach_images(findings, rid, date):
 # ── LAYOUT ENGINE ─────────────────────────────────────────────────────────────
 def _pack_cols(n):
     """
-    Return list of column widths (3 or 4) for n domains that fill
-    12-column rows with zero remainder. Wider slots go first (higher scores).
-    Solves: a×3 + b×4 = n  where rows-of-3 use span-4, rows-of-4 use span-3.
+    Return list of column widths for n domains filling 12-column rows.
+    All secondary cards use span-6 (2 per row) for maximum readability.
+    Odd count: last card gets span-12 (full width).
     """
-    for a in range(n // 3 + 1):
-        rem = n - a * 3
-        if rem >= 0 and rem % 4 == 0:
-            return [4] * (a * 3) + [3] * rem
-    # Fallback: widen last card to consume leftover columns
-    cols = [4] * n
-    leftover = sum(cols) % 12
+    if n == 0:
+        return []
+    cols = [6] * n
+    leftover = (sum(cols)) % 12
     if leftover:
-        cols[-1] += 12 - leftover
+        cols[-1] += 12 - leftover  # last card fills remainder (span-6→12 if odd)
     return cols
 
 def assign_layout(domains, date):

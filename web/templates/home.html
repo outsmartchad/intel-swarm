@@ -64,130 +64,155 @@
 .editorial {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: clamp(120px, 13vw, 220px);
-  gap: 0;
+  grid-auto-rows: clamp(140px, 14vw, 240px);
+  gap: 3px;
   margin-bottom: 48px;
-  border: 1px solid rgba(255,255,255,.06);
 }
 
 /* Base card */
 .ecard {
   position: relative; overflow: hidden;
-  background: #0d1117;
+  background: #0d1117; border-radius: 6px;
   text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
-  border-right: 1px solid rgba(255,255,255,.06);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  transition: z-index 0s;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 .ecard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.7), 0 0 0 1px rgba(200,169,110,.3);
   z-index: 10;
-  box-shadow: 0 0 0 2px rgba(200,169,110,.6), 0 8px 48px rgba(0,0,0,.8);
-  transform: scale(1.01);
-  transition: box-shadow .15s, transform .2s;
 }
+
+.span-12 { grid-column: span 12; }
 .span-7  { grid-column: span 7; }
 .span-6  { grid-column: span 6; }
 .span-5  { grid-column: span 5; }
 .span-4  { grid-column: span 4; }
 .span-3  { grid-column: span 3; }
-/* Heights driven by grid-auto-rows × row span */
-.span-7, .span-5, .span-6 { grid-row: span 2; }  /* 2 × base row = tall hero cards */
-.span-4, .span-3           { grid-row: span 1; }  /* 1 × base row = short cards */
+
+/* Tall hero cards span 2 rows, secondary span 1 */
+.span-7, .span-5 { grid-row: span 2; }
+.span-6, .span-4, .span-3, .span-12 { grid-row: span 1; }
+
+/* Background image */
 .ecard-bg {
   position: absolute; inset: 0;
-  background-size: cover; background-position: center;
+  background-size: cover; background-position: center top;
   transition: transform .6s ease;
 }
-.ecard:hover .ecard-bg { transform: scale(1.06); }
+.ecard:hover .ecard-bg { transform: scale(1.04); }
 .ecard-grad { position: absolute; inset: 0; }
+
+/* Strong gradient overlay — always readable */
 .ecard-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(5,7,10,.98) 0%, rgba(5,7,10,.55) 50%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(5,7,10,1) 0%,
+    rgba(5,7,10,.88) 35%,
+    rgba(5,7,10,.4) 65%,
+    rgba(5,7,10,.08) 100%
+  );
 }
 .span-7 .ecard-overlay, .span-5 .ecard-overlay {
-  background: linear-gradient(to top, rgba(5,7,10,1) 0%, rgba(5,7,10,.7) 40%, rgba(5,7,10,.05) 100%);
+  background: linear-gradient(
+    to top,
+    rgba(5,7,10,1) 0%,
+    rgba(5,7,10,.85) 40%,
+    rgba(5,7,10,.2) 75%,
+    transparent 100%
+  );
 }
+
+/* Card content */
 .ecard-inner {
   position: relative; z-index: 2;
   height: 100%; padding: 14px 16px;
   display: flex; flex-direction: column;
-  justify-content: space-between; gap: 8px;
+  justify-content: space-between;
 }
+
+/* Category badge — colored pill */
 .ecard-cat {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: 10px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase; width: fit-content;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 10px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 4px;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  width: fit-content;
 }
-.ecard-cat-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* Text stack */
 .ecard-body-wrap { display: flex; flex-direction: column; gap: 6px; }
+
 .ecard-headline {
-  font-weight: 700; color: #fff; line-height: 1.3;
-  text-shadow: 0 1px 6px rgba(0,0,0,.9);
+  font-weight: 700; color: #fff; line-height: 1.35;
+  text-shadow: 0 1px 8px rgba(0,0,0,1);
   display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
 }
-.span-7 .ecard-headline { font-size: clamp(14px, 1.5vw, 22px); -webkit-line-clamp: 3; }
-.span-5 .ecard-headline { font-size: clamp(13px, 1.3vw, 19px); -webkit-line-clamp: 3; }
-.span-4 .ecard-headline { font-size: clamp(12px, 1.1vw, 15px); -webkit-line-clamp: 2; }
-.span-3 .ecard-headline { font-size: clamp(11px, 0.9vw, 13px); -webkit-line-clamp: 2; }
+.span-7 .ecard-headline  { font-size: clamp(16px, 1.6vw, 24px); -webkit-line-clamp: 3; }
+.span-5 .ecard-headline  { font-size: clamp(14px, 1.4vw, 20px); -webkit-line-clamp: 3; }
+.span-6 .ecard-headline  { font-size: clamp(15px, 1.4vw, 20px); -webkit-line-clamp: 2; }
+.span-4 .ecard-headline  { font-size: clamp(13px, 1.2vw, 17px); -webkit-line-clamp: 2; }
+.span-12 .ecard-headline { font-size: clamp(15px, 1.4vw, 20px); -webkit-line-clamp: 2; }
+
 .ecard-preview {
-  font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.55;
+  font-size: clamp(11px, 1vw, 13px); color: rgba(255,255,255,.65); line-height: 1.55;
   display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
-  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  text-shadow: 0 1px 4px rgba(0,0,0,.9);
 }
-.span-7 .ecard-preview { -webkit-line-clamp: 2; }
-.span-5 .ecard-preview { -webkit-line-clamp: 1; }
-.span-4 .ecard-preview { -webkit-line-clamp: 1; }
-.span-3 .ecard-preview { display: none; }
-.ecard-foot {
-  display: flex; align-items: center; justify-content: space-between;
-  font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,.3);
+.span-7 .ecard-preview  { -webkit-line-clamp: 3; }
+.span-5 .ecard-preview  { -webkit-line-clamp: 2; }
+.span-6 .ecard-preview  { -webkit-line-clamp: 2; }
+.span-12 .ecard-preview { -webkit-line-clamp: 2; }
+.span-4 .ecard-preview  { -webkit-line-clamp: 2; }
+
+/* Colored accent bar at bottom instead of pips */
+.ecard-accent {
+  height: 2px; border-radius: 1px; margin-top: 8px;
+  opacity: .7;
 }
-.ecard-pips { display: flex; gap: 2px; }
-.epip { width: 4px; height: 4px; border-radius: 1px; }
-.epip.on { opacity: 1; }
-.epip.off { background: rgba(255,255,255,.12) !important; }
-.ecard-filed { color: #4ade80; }
+
 .ecard { animation: fadeUp .35s ease both; }
 {% for i in range(1, 20) %}
 .ecard:nth-child({{ i }}) { animation-delay: {{ "%.2f"|format(i * 0.04) }}s; }
 {% endfor %}
 
 /* ── FEED VIEW ── */
-.feed-list { display: none; flex-direction: column; gap: 2px; margin-bottom: 48px; }
+.feed-list { display: none; flex-direction: column; gap: 4px; margin-bottom: 48px; }
 .feed-list.active { display: flex; }
 .editorial.feed-hidden { display: none; }
 
 .fcard {
   display: flex; text-decoration: none; color: inherit;
   background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06);
-  border-radius: 6px; overflow: hidden;
-  transition: background .15s, border-color .15s;
+  border-radius: 8px; overflow: hidden;
+  transition: background .15s, border-color .15s, transform .15s;
   animation: fadeUp .3s ease both;
 }
-.fcard:hover { background: rgba(255,255,255,.04); border-color: rgba(200,169,110,.25); }
+.fcard:hover { background: rgba(255,255,255,.05); border-color: rgba(200,169,110,.3); transform: translateX(3px); }
 {% for i in range(1, 20) %}
 .fcard:nth-child({{ i }}) { animation-delay: {{ "%.2f"|format(i * 0.04) }}s; }
 {% endfor %}
 .fcard-img {
-  width: clamp(80px, 14vw, 140px); min-width: clamp(80px, 14vw, 140px);
-  height: clamp(60px, 10vw, 100px);
+  width: clamp(90px, 12vw, 150px); min-width: clamp(90px, 12vw, 150px);
   background-size: cover; background-position: center; flex-shrink: 0;
 }
-.fcard-body { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+.fcard-body { flex: 1; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
 .fcard-cat {
-  font-family: var(--mono); font-size: 10px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 10px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 7px; border-radius: 3px; background: rgba(255,255,255,.08);
+  width: fit-content;
 }
-.fcard-headline { font-size: 14px; font-weight: 700; line-height: 1.35; color: #fff; }
+.fcard-headline { font-size: clamp(13px, 1.2vw, 16px); font-weight: 700; line-height: 1.4; color: #fff; }
 .fcard-preview {
-  font-size: 12px; color: var(--muted); line-height: 1.5;
+  font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.5;
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
-.fcard-pips { display: flex; gap: 2px; margin-top: 2px; }
 @media (max-width: 600px) {
-  .fcard-img { width: 90px; min-width: 90px; height: 70px; }
+  .fcard-img { width: 90px; min-width: 90px; }
   .fcard-preview { display: none; }
 }
 
@@ -196,16 +221,14 @@
 .no-results { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; display: none; }
 
 @media (max-width: 900px) {
-  .editorial { gap: 2px; border: none; grid-auto-rows: 180px; }
-  .ecard { border-radius: 4px; border: none; }
+  .editorial { gap: 3px; grid-auto-rows: 200px; }
   .span-7, .span-5 { grid-column: span 12; grid-row: span 1; }
-  .span-4 { grid-column: span 6; grid-row: span 1; }
-  .span-3 { grid-column: span 6; grid-row: span 1; }
+  .span-6 { grid-column: span 6; }
+  .span-4 { grid-column: span 6; }
 }
 @media (max-width: 600px) {
-  .editorial { grid-auto-rows: 160px; }
-  .span-7, .span-5 { grid-column: span 12; }
-  .span-4, .span-3 { grid-column: span 12; }
+  .editorial { grid-auto-rows: 180px; }
+  .span-7, .span-5, .span-6, .span-4, .span-3, .span-12 { grid-column: span 12; }
   .span-4 .ecard-preview, .span-3 .ecard-preview { display: none; }
 }
 </style>
@@ -264,8 +287,7 @@
       {% endif %}
       <div class="ecard-overlay"></div>
       <div class="ecard-inner">
-        <div class="ecard-cat" style="color:{{ col2 }}">
-          <div class="ecard-cat-dot" style="background:{{ col2 }}"></div>
+        <div class="ecard-cat" style="color:{{ col2 }}; border: 1px solid {{ col2 }}33;">
           {{ d.emoji }} {{ d.name }}
         </div>
         <div class="ecard-body-wrap">
@@ -274,18 +296,9 @@
             {% else %}<span style="opacity:.35">No findings today</span>{% endif %}
           </div>
           {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
-          <div class="ecard-preview">{{ d.findings[0].body[:180] }}</div>
+          <div class="ecard-preview">{{ d.findings[0].body[:200] }}</div>
           {% endif %}
-          <div class="ecard-foot">
-            <div class="ecard-pips">
-              {% set score = d.score | default(3) %}
-              {% for i in range(1, 6) %}
-              <div class="epip {% if i <= score %}on{% else %}off{% endif %}"
-                   style="{% if i <= score %}background:{{ col2 }}{% endif %}"></div>
-              {% endfor %}
-            </div>
-            {% if d.filed %}<span class="ecard-filed">✓</span>{% else %}<span style="opacity:.3">—</span>{% endif %}
-          </div>
+          <div class="ecard-accent" style="background: linear-gradient(to right, {{ col2 }}, {{ col1 }})"></div>
         </div>
       </div>
     </a>
@@ -305,21 +318,14 @@
       <div class="fcard-img" style="background:linear-gradient(135deg,{{ col1 }} 0%,{{ col2 }} 100%)"></div>
       {% endif %}
       <div class="fcard-body">
-        <div class="fcard-cat" style="color:{{ col2 }}">{{ d.emoji }} {{ d.name }}</div>
+        <div class="fcard-cat" style="color:{{ col2 }}; border: 1px solid {{ col2 }}44;">{{ d.emoji }} {{ d.name }}</div>
         <div class="fcard-headline">
           {% if d.headline %}{{ d.headline }}
           {% else %}<span style="opacity:.35">No findings today</span>{% endif %}
         </div>
         {% if d.findings and d.findings|length > 0 and d.findings[0].body %}
-        <div class="fcard-preview">{{ d.findings[0].body[:160] }}</div>
+        <div class="fcard-preview">{{ d.findings[0].body[:180] }}</div>
         {% endif %}
-        <div class="fcard-pips">
-          {% set score = d.score | default(3) %}
-          {% for i in range(1, 6) %}
-          <div class="epip {% if i <= score %}on{% else %}off{% endif %}"
-               style="{% if i <= score %}background:{{ col2 }}; width:4px; height:4px; border-radius:1px{% else %}background:rgba(255,255,255,.12); width:4px; height:4px; border-radius:1px{% endif %}"></div>
-          {% endfor %}
-        </div>
       </div>
     </a>
     {% endfor %}
