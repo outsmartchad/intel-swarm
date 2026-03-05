@@ -69,6 +69,54 @@
 
   function loadAllOverlays() {
     var cards = document.querySelectorAll('.ecard, .fcard, .hero-banner');
+    // Try to load from pre-fetched cache first (much faster, no rate limits)
+    // Extract rid + date from URL path e.g. /domain/war/2026-03-05
+    var pathParts = window.location.pathname.split('/');
+    var rid = '';
+    var dateStr = '';
+    if (pathParts[1] === 'domain' && pathParts[2]) {
+      rid = pathParts[2];
+      dateStr = pathParts[3] || '';
+    }
+    // Also check for sub query param
+    var sub = new URLSearchParams(window.location.search).get('sub') || '';
+    if (sub) rid = sub;
+
+    if (rid && dateStr) {
+      // Domain page — try batch cache
+      fetch('/api/polymarket/cached?rid=' + encodeURIComponent(rid) + '&date=' + encodeURIComponent(dateStr))
+        .then(function(r) { return r.json(); })
+        .then(function(cache) {
+          cards.forEach(function(card, idx) {
+            var cached = cache[String(idx)];
+            if (cached && cached.question) {
+              injectOverlay(card, cached);
+              var tokens = (cached.chart_tokens || []).filter(Boolean);
+              var outcomeTokens = (cached.outcomes || []).map(function(o){ return o.token_id; }).filter(Boolean);
+              var allTokens = tokens.concat(outcomeTokens).slice(0, 6).join(',');
+              if (allTokens) fetchChart(card, allTokens);
+            } else {
+              // Fall back to live API for this card
+              var search = card.getAttribute('data-search') || '';
+              var terms = extractSearchTerms(search);
+              if (terms) fetchMarket(card, terms, search);
+              else injectNoMarket(card);
+            }
+          });
+        })
+        .catch(function() {
+          // Cache unavailable — fall back to live API for all cards
+          cards.forEach(function(card) {
+            var search = card.getAttribute('data-search') || '';
+            var terms = extractSearchTerms(search);
+            if (terms) fetchMarket(card, terms, search);
+            else injectNoMarket(card);
+          });
+        });
+      return;
+    }
+
+    // Homepage — use live API per card
     cards.forEach(function (card) {
       var search = card.getAttribute('data-search') || '';
       var terms = extractSearchTerms(search);

@@ -605,6 +605,20 @@ def _pm_score(headline, question):
     score = overlap * 2 + (2 if has_causal and overlap > 0 else 0)
     return score
 
+@app.route("/api/polymarket/cached")
+def pm_cached_batch():
+    """Return pre-fetched Polymarket cache for a researcher on a date."""
+    rid = request.args.get("rid", "").strip()
+    date = request.args.get("date", get_latest_date()).strip()
+    if not rid:
+        return flask_jsonify({})
+    cache_path = f"{BASE}/researchers/{rid}/findings/{date}-polymarket.json"
+    try:
+        with open(cache_path) as f:
+            return flask_jsonify(json.load(f))
+    except Exception:
+        return flask_jsonify({})
+
 @app.route("/api/polymarket/market")
 def pm_market():
     q = request.args.get("q", "").strip()
