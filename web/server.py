@@ -183,19 +183,20 @@ def extract_headline(raw):
     return None
 
 def extract_edge(raw):
-    """Extract Edge Signal section (EN or ZH headers)."""
+    """Extract Edge Signal section (EN or ZH headers — all translation variants)."""
     if not raw: return None
     m = re.search(
-        r"##\s*(?:Edge Signal|邊緣信號|边缘信号|邊緣訊號)\s*\n(.+?)(?=\n##|\Z)",
+        r"##\s*(?:Edge Signal|邊緣信號|邊際信號|邊界信號|边缘信号|邊緣訊號|邊際訊號|邊界訊號)\s*\n(.+?)(?=\n##|\Z)",
         raw, re.DOTALL,
     )
     return re.sub(r"\s+", " ", m.group(1).strip())[:300] if m else None
 
 def extract_tail_sections(raw):
-    """Extract everything from Edge Signal / Connects To onward."""
+    """Extract everything from Edge Signal / Connects To onward (all ZH variants)."""
     if not raw: return ""
     m = re.search(
-        r"(##\s*(?:Edge Signal|邊緣信號|Connects To|連接到|連結至|相關連結).+)",
+        r"(##\s*(?:Edge Signal|邊緣信號|邊際信號|邊界信號|边缘信号|邊緣訊號"
+        r"|Connects To|連接到|連結到|連結至|關聯到|相關聯繫|相關連結|連接至).+)",
         raw, re.DOTALL | re.IGNORECASE,
     )
     return m.group(1).strip() if m else ""
