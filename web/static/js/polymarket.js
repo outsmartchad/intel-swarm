@@ -81,11 +81,14 @@
   }
 
   function fetchMarket(card, terms, headline) {
-    // Extract domain from card badge text (e.g. "war", "crypto")
-    var badge = card.querySelector('[class*="badge"],[class*="pill"],[class*="domain"]');
-    var domain = (badge ? badge.textContent : (card.getAttribute('data-domain') || '')).toLowerCase()
-      .replace(/[^a-z-]/g, '').trim();
-    var url = '/api/polymarket/market?q=' + encodeURIComponent(terms) + '&domain=' + encodeURIComponent(domain);
+    // Extract domain from card's category badge (e.g. "war", "crypto")
+    var badge = card.querySelector('.ecard-cat, .fcard-cat, [class*="cat"], [class*="badge"]');
+    var rawDomain = badge ? badge.textContent.trim().toLowerCase() : '';
+    // Strip emoji and spaces, keep letters+hyphens
+    var domain = rawDomain.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
+    // Use full headline for better scoring (not just 4 words)
+    var q = headline || terms;
+    var url = '/api/polymarket/market?q=' + encodeURIComponent(q) + '&domain=' + encodeURIComponent(domain);
     fetch(url)
       .then(function (r) { return r.json(); })
       .then(function (data) {
@@ -93,15 +96,19 @@
           injectNoMarket(card);
           return;
         }
-        // Causal relevance check
+        // Light relevance check — trust server scoring
         if (!isCausallyRelevant(headline, data.question)) {
           injectNoMarket(card);
           return;
         }
         injectOverlay(card, data);
-        // Fetch chart for first outcome
-        if (data.outcomes && data.outcomes[0] && data.outcomes[0].token_id) {
-          fetchChart(card, data.outcomes[0].token_id);
+        // Fetch chart — try each outcome token until we get data
+        var outcomes = data.outcomes || [];
+        for (var i = 0; i < outcomes.length; i++) {
+          if (outcomes[i].token_id) {
+            fetchChart(card, outcomes[i].token_id);
+            break;
+          }
         }
       })
       .catch(function () { injectNoMarket(card); });

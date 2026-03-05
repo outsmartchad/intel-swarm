@@ -545,6 +545,16 @@ def _pm_parse_market(m):
         "url": f"https://polymarket.com/event/{m.get('slug', '')}",
     }
 
+def _pm_is_active_market(m):
+    """Return True only if this market has live, non-resolved odds (0.05–0.95)."""
+    prices_raw = m.get("outcomePrices", "[]")
+    try:
+        prices = json.loads(prices_raw) if isinstance(prices_raw, str) else prices_raw
+        yes_p = float(prices[0]) if prices else 0
+        return 0.05 < yes_p < 0.95
+    except Exception:
+        return False
+
 def _pm_score(headline, question):
     """Score causal relevance between headline and market question (0–10)."""
     h = headline.lower()
@@ -570,58 +580,55 @@ def pm_market():
     domain = request.args.get("domain", "").strip()
     if not q:
         return flask_jsonify({})
-    cache_key = f"pm_market2:{domain}:{q}"
+    cache_key = f"pm_market3:{domain}:{q}"
     cached = _pm_cached(cache_key, 300)
     if cached is not None:
         return flask_jsonify(cached)
     try:
-        # Get tag list for this domain (default to geopolitics + politics)
         tags = _PM_DOMAIN_TAGS.get(domain, ["geopolitics", "politics"])
         best_result = None
-        best_score = 3  # Minimum threshold to show an overlay
+        best_score = 1  # Lower threshold — prefer active markets
 
         for tag in tags:
             resp = http_requests.get(
                 "https://gamma-api.polymarket.com/events",
-                params={"limit": 20, "order": "volume", "ascending": "false",
+                params={"limit": 30, "order": "volume", "ascending": "false",
                         "tag_slug": tag, "active": "true"},
                 headers=_PM_HEADERS,
-                timeout=5,
+                timeout=6,
             )
             resp.raise_for_status()
             events = resp.json()
             if not isinstance(events, list):
                 continue
+
             for event in events:
-                # Try matching against event title first
-                ev_question = event.get("title", "")
-                ev_score = _pm_score(q, ev_question)
-                # Also check individual markets inside the event
-                for m in event.get("markets", [])[:5]:
-                    mq = m.get("question", m.get("groupItemTitle", ""))
-                    ms = _pm_score(q, mq)
-                    if ms > ev_score:
-                        ev_score = ms
+                ev_title = event.get("title", "")
+                ev_score = _pm_score(q, ev_title)
+
+                # Scan all markets in this event, prefer active (live odds) ones
+                active_markets = [m for m in event.get("markets", []) if _pm_is_active_market(m)]
+                candidate_markets = active_markets[:10] if active_markets else event.get("markets", [])[:5]
+
+                for m in candidate_markets:
+                    mq = m.get("question", m.get("groupItemTitle", ev_title))
+                    ms = max(_pm_score(q, mq), ev_score)
                     if ms >= best_score:
                         parsed = _pm_parse_market(m)
                         if parsed and parsed["outcomes"]:
-                            best_score = ms
-                            best_result = parsed
-                if ev_score >= best_score and not best_result:
-                    # Use first market from this event
-                    for m in event.get("markets", [])[:3]:
-                        parsed = _pm_parse_market(m)
-                        if parsed and parsed["outcomes"]:
-                            best_result = parsed
-                            best_score = ev_score
-                            break
+                            # Boost score if market has live odds
+                            live_bonus = 2 if _pm_is_active_market(m) else 0
+                            total = ms + live_bonus
+                            if total > best_score or (total == best_score and _pm_is_active_market(m)):
+                                best_score = total
+                                best_result = parsed
 
         if best_result:
             _pm_set(cache_key, best_result)
             return flask_jsonify(best_result)
         _pm_set(cache_key, {})
         return flask_jsonify({})
-    except Exception as e:
+    except Exception:
         return flask_jsonify({})
 
 @app.route("/api/polymarket/chart")
@@ -636,7 +643,7 @@ def pm_chart():
     try:
         resp = http_requests.get(
             "https://clob.polymarket.com/prices-history",
-            params={"market": token_id, "interval": "1d", "fidelity": "60"},
+            params={"market": token_id, "interval": "max"},
             headers=_PM_HEADERS,
             timeout=5,
         )
