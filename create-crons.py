@@ -325,22 +325,32 @@ def create_synthesis_cron():
         print(f"  stderr: {result.stderr[:200]}")
     return None
 
-AUTOPUSH_PROMPT = """INTERNAL_TASK - AUTO PUSH INTEL TO GITHUB AND DEPLOY TO VERCEL
+AUTOPUSH_PROMPT = """INTERNAL_TASK - DAILY INTEL PIPELINE: TRANSLATE + SCRAPE IMAGES + PUSH + DEPLOY
 
-Run these commands in order using the exec tool:
+Run these steps in order using the exec tool:
 
-Step 1 - Commit and push to GitHub:
+Step 1 - Run full translation pipeline for today:
+```
+cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && bash web/translate-all.sh $(date +%Y-%m-%d)
+```
+
+Step 2 - Scrape OG images for all researchers for today:
+```
+cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && python3 web/scrape-all-images.sh $(date +%Y-%m-%d)
+```
+
+Step 3 - Commit and push everything to GitHub:
 ```
 cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main
 ```
 
-Step 2 - Force deploy to Vercel production:
+Step 4 - Deploy to Vercel production:
 ```
 cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && vercel deploy --prod --yes 2>&1 | tail -5
 ```
 
-If both succeed, reply: "✅ Intel pushed to GitHub + deployed to https://intel-swarm.vercel.app/"
-If anything fails, reply with the error."""
+If all steps succeed, reply: "✅ Intel $(date +%Y-%m-%d) pipeline complete — translated, images scraped, pushed to GitHub, deployed to https://intel-swarm.vercel.app/"
+If any step fails, report which step and the error."""
 
 
 def create_autopush_cron():
