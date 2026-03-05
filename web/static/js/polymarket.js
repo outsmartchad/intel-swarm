@@ -234,23 +234,15 @@
 
       // Hover: expand on mouseenter, collapse on mouseleave (unless pinned)
       function expandOverlay() {
-        // Switch to fixed positioning so it escapes card overflow:hidden
-        var cardRect = card.getBoundingClientRect();
-        overlay.style.position = 'fixed';
-        overlay.style.top = (cardRect.top + 8) + 'px';
-        overlay.style.right = (window.innerWidth - cardRect.right + 8) + 'px';
-        overlay.style.left = 'auto';
+        // Allow overflow on card, clip just the bg image so it stays contained
+        card.classList.add('pm-card-expanded');
         overlay.classList.add('pm-expanded');
         var svg = overlay.querySelector('.pm-chart');
         if (svg && svg._pmPoints) setTimeout(function(){ drawSparklineAt(svg, svg._pmPoints, 260, 72); }, 50);
       }
       function collapseOverlay() {
         overlay.classList.remove('pm-expanded');
-        // Restore absolute positioning inside card
-        overlay.style.position = '';
-        overlay.style.top = '';
-        overlay.style.right = '';
-        overlay.style.left = '';
+        card.classList.remove('pm-card-expanded');
         var svg = overlay.querySelector('.pm-chart');
         if (svg && svg._pmPoints) drawSparklineAt(svg, svg._pmPoints, 80, 32);
       }
@@ -258,15 +250,17 @@
       overlay.addEventListener('mouseenter', function () {
         expandOverlay();
       });
-      overlay.addEventListener('mouseleave', function () {
-        if (!overlay._pmPinned) collapseOverlay();
+      overlay.addEventListener('mouseleave', function (e) {
+        // Only collapse if mouse actually left the overlay (not moved to a child)
+        if (!overlay._pmPinned && !overlay.contains(e.relatedTarget)) {
+          collapseOverlay();
+        }
       });
       // Click: toggle pinned (stays expanded even when mouse leaves)
       overlay.addEventListener('click', function (e) {
-        if (e.target.classList.contains('pm-trade-link')) return;
+        if (e.target.tagName === 'A') return;
         overlay._pmPinned = !overlay._pmPinned;
         if (!overlay._pmPinned) collapseOverlay();
-        else expandOverlay();
       });
 
       card.appendChild(overlay);

@@ -21,6 +21,8 @@
 .view-btn.active { background: rgba(200,169,110,.15); border-color: rgba(200,169,110,.4); color: var(--accent); }
 
 /* ── HERO BANNER (Apple Daily style) ── */
+.hero-banner.pm-card-expanded { overflow: visible; z-index: 8; }
+.hero-banner.pm-card-expanded .ecard-bg { clip-path: inset(0 round 6px); }
 .hero-banner {
   position: relative; width: 100%; height: clamp(240px, 38vw, 560px);
   overflow: hidden; border-radius: 6px;
@@ -70,6 +72,8 @@
 }
 
 /* Base card */
+.ecard.pm-card-expanded { overflow: visible; z-index: 8; }
+.ecard.pm-card-expanded .ecard-bg { clip-path: inset(0 round 6px); }
 .ecard {
   position: relative; overflow: hidden;
   background: var(--card-bg); border-radius: 6px;
