@@ -119,9 +119,14 @@
       <button class="cmf on" id="f-quakes" onclick="toggleFilter(this,'quakes')">🔴 Quakes</button>
       <button class="cmf on" id="f-eonet" onclick="toggleFilter(this,'eonet')">🌋 EONET</button>
 </div>
+      <button class="cmf on" id="f-acled" onclick="toggleFilter(this,'acled')">🔴 ACLED</button>
+      <button class="cmf" id="f-fires" onclick="toggleFilter(this,'fires')">🔥 Fires</button>
+
     <div class="cm-stats">
       <div class="cm-stat"><div class="cm-stat-v" id="s-events">—</div><div class="cm-stat-l">{% if lang == 'zh' %}事件{% else %}EVENTS{% endif %}</div></div>
-      <div class="cm-stat"><div class="cm-stat-v" id="stat-quakes">–</div><div class="cm-stat-l">QUAKES</div></div>
+      <div class="cm-stat"><div class="cm-stat-v" id="stat-quakes">–</div><div class="cm-stat-l">QUAKES</div>
+      <div class="cm-stat"><div class="cm-stat-v" id="stat-acled">–</div><div class="cm-stat-l">ACLED</div></div>
+</div>
       <div class="cm-stat"><div class="cm-stat-v" id="s-zones">—</div><div class="cm-stat-l">{% if lang == 'zh' %}熱點{% else %}HOT ZONES{% endif %}</div></div>
       <div class="cm-stat"><div class="cm-stat-v" id="s-updated">—</div><div class="cm-stat-l">{% if lang == 'zh' %}更新{% else %}UPDATED{% endif %}</div></div>
     </div>
@@ -342,6 +347,75 @@ document.addEventListener('DOMContentLoaded', initMap);
       return;
     }
     if(_tmOrigConflict) _tmOrigConflict(btn, type);
+  };
+
+  // ── ACLED real conflict events ────────────────────────────────────────────
+  var acledLayer = L.layerGroup().addTo(map);
+  var firesLayer = L.layerGroup();  // FIRMS fires — off by default
+
+  var _ACLED_COLORS = {
+    "Battles": "#ef4444",
+    "Explosions/Remote violence": "#f97316",
+    "Violence against civilians": "#a78bfa",
+    "Riots": "#facc15",
+    "Protests": "#60a5fa",
+  };
+
+  fetch('/api/live/acled').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key') {
+      console.log('ACLED: no key configured — set ACLED_ACCESS_TOKEN env var');
+      return;
+    }
+    (d.events||[]).forEach(function(ev){
+      var color = _ACLED_COLORS[ev.type] || '#94a3b8';
+      var radius = Math.max(5, Math.min(14, 5 + Math.sqrt(ev.fatalities || 1)));
+      L.circleMarker([ev.lat, ev.lng], {
+        radius: radius, color: color, fillColor: color,
+        fillOpacity: 0.7, weight: 1.5, opacity: 0.9
+      }).bindPopup(
+        '<b>' + ev.type + '</b><br>' +
+        (ev.actor1 ? ev.actor1 : '') + (ev.actor2 ? ' vs ' + ev.actor2 : '') + '<br>' +
+        ev.country + ' — ' + ev.date + '<br>' +
+        (ev.fatalities > 0 ? '<span style="color:#f87171">⚔️ ' + ev.fatalities + ' fatalities</span><br>' : '') +
+        '<small>' + ev.notes + '</small>'
+      ).addTo(acledLayer);
+    });
+    var astat = document.getElementById('stat-acled');
+    if(astat) astat.textContent = (d.events||[]).length;
+    console.log('ACLED: loaded ' + (d.events||[]).length + ' events');
+  }).catch(function(e){ console.error('ACLED err', e); });
+
+  // FIRMS active fires
+  fetch('/api/live/fires').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key') {
+      console.log('FIRMS: no key configured — set NASA_FIRMS_API_KEY env var');
+      return;
+    }
+    (d.fires||[]).forEach(function(f){
+      var intensity = Math.min(1, (f.brightness - 300) / 100);
+      var color = 'rgba(' + Math.round(255) + ',' + Math.round(100 - intensity*80) + ',0,0.7)';
+      L.circleMarker([f.lat, f.lng], {
+        radius: 4, color: color, fillColor: color,
+        fillOpacity: 0.8, weight: 0.5
+      }).bindPopup('<b>🔥 Active Fire</b><br>' + f.date + '<br>Confidence: ' + f.confidence).addTo(firesLayer);
+    });
+    console.log('FIRMS: loaded ' + (d.fires||[]).length + ' fire detections');
+  }).catch(function(e){ console.error('FIRMS err', e); });
+
+  // Patch toggleFilter for ACLED + fires
+  var _origToggleP2 = window.toggleFilter;
+  window.toggleFilter = function(btn, type){
+    if(type === 'acled'){
+      btn.classList.toggle('on');
+      if(map.hasLayer(acledLayer)) map.removeLayer(acledLayer); else acledLayer.addTo(map);
+      return;
+    }
+    if(type === 'fires'){
+      btn.classList.toggle('on');
+      if(map.hasLayer(firesLayer)) map.removeLayer(firesLayer); else firesLayer.addTo(map);
+      return;
+    }
+    if(_origToggleP2) _origToggleP2(btn, type);
   };
 </script>
 {% endblock %}

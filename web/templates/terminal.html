@@ -567,4 +567,58 @@ applyFilters();
   });
 })();
 </script>
+<script>
+// Phase 2: FRED macro + Finnhub stocks + EIA energy
+(function(){
+  var strip = document.getElementById('liveStrip');
+
+  // FRED macro
+  fetch('/api/live/macro').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key' || !d.series || !d.series.length) return;
+    var extra = '<div class="tm-strip-div"></div>';
+    d.series.forEach(function(s){
+      if(s.value === null) return;
+      var chg = s.change||0;
+      var cls = chg>0?'up':chg<0?'dn':'neu';
+      var sign = chg>0?'+':'';
+      extra += '<div class="tm-live-tile"><div class="tm-tile-label">'+s.label+'</div>' +
+        '<div class="tm-tile-value" style="font-size:13px">'+s.value+s.unit+'</div>' +
+        '<div class="tm-tile-sub tm-tile-chg '+cls+'">'+sign+chg+'</div></div>';
+    });
+    if(strip) strip.innerHTML += extra;
+  }).catch(function(){});
+
+  // Finnhub stocks
+  fetch('/api/live/stocks').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key' || !d.quotes || !d.quotes.length) return;
+    var extra = '<div class="tm-strip-div"></div>';
+    d.quotes.forEach(function(q){
+      var chg = q.change_pct||0;
+      var cls = chg>0?'up':chg<0?'dn':'neu';
+      var sign = chg>0?'+':'';
+      extra += '<div class="tm-live-tile"><div class="tm-tile-label">'+q.symbol+'</div>' +
+        '<div class="tm-tile-value">$'+q.price+'</div>' +
+        '<div class="tm-tile-sub tm-tile-chg '+cls+'">'+sign+chg+'%</div></div>';
+    });
+    if(strip) strip.innerHTML += extra;
+  }).catch(function(){});
+
+  // EIA energy
+  fetch('/api/live/energy').then(function(r){return r.json();}).then(function(d){
+    if(d.status === 'no_key' || !d.series || !d.series.length) return;
+    var extra = '<div class="tm-strip-div"></div>';
+    d.series.forEach(function(s){
+      if(!s.value) return;
+      var chg = s.change_pct||0;
+      var cls = chg>0?'up':chg<0?'dn':'neu';
+      var sign = chg>0?'+':'';
+      extra += '<div class="tm-live-tile"><div class="tm-tile-label">'+s.label+'</div>' +
+        '<div class="tm-tile-value">$'+s.value+'</div>' +
+        '<div class="tm-tile-sub tm-tile-chg '+cls+'">'+sign+chg+'%</div></div>';
+    });
+    if(strip) strip.innerHTML += extra;
+  }).catch(function(){});
+})();
+</script>
+
 {% endblock %}

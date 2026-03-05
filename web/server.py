@@ -1410,6 +1410,380 @@ def api_live_events():
     return flask_jsonify(data)
 
 
+# ── PHASE 2: ACLED ───────────────────────────────────────────────────────────
+def _fetch_acled_events():
+    """Real conflict events from ACLED — requires ACLED_ACCESS_TOKEN env var."""
+    key   = os.environ.get("ACLED_ACCESS_TOKEN", "")
+    email = os.environ.get("ACLED_EMAIL", "")
+    if not key or not email:
+        return {"events": [], "status": "no_key", "ts": int(time.time())}
+    from datetime import datetime, timedelta
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+    past  = (datetime.utcnow() - timedelta(days=30)).strftime("%Y-%m-%d")
+    try:
+        r = http_requests.get(
+            "https://acleddata.com/api/acled/read",
+            params={
+                "key": key, "email": email, "limit": 150,
+                "fields": "event_date|event_type|sub_event_type|actor1|actor2|country|latitude|longitude|fatalities|notes|source",
+                "event_date": f"{past}|{today}", "event_date_where": "BETWEEN",
+                "event_type": "Battles:Explosions/Remote violence:Violence against civilians:Riots",
+            },
+            timeout=10
+        )
+        data = r.json().get("data", [])
+        events = []
+        for ev in data:
+            try:
+                lat = float(ev.get("latitude") or 0)
+                lng = float(ev.get("longitude") or 0)
+                if lat == 0 and lng == 0:
+                    continue
+                events.append({
+                    "lat": lat, "lng": lng,
+                    "type": ev.get("event_type", ""),
+                    "sub_type": ev.get("sub_event_type", ""),
+                    "actor1": ev.get("actor1", ""),
+                    "actor2": ev.get("actor2", ""),
+                    "country": ev.get("country", ""),
+                    "fatalities": int(ev.get("fatalities") or 0),
+                    "notes": (ev.get("notes") or "")[:200],
+                    "date": ev.get("event_date", ""),
+                    "source": ev.get("source", ""),
+                })
+            except Exception:
+                continue
+        return {"events": events, "status": "ok", "count": len(events), "ts": int(time.time())}
+    except Exception as e:
+        print(f"ACLED err: {e}")
+        return {"events": [], "status": "error", "ts": int(time.time())}
+
+@app.route("/api/live/acled")
+def api_live_acled():
+    cached = _pm_cached("live_acled", 900)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_acled_events()
+    _pm_set("live_acled", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: FRED MACRO ──────────────────────────────────────────────────────
+_FRED_SERIES = {
+    "DGS2":    {"label": "2Y Yield",     "unit": "%"},
+    "DGS10":   {"label": "10Y Yield",    "unit": "%"},
+    "DGS30":   {"label": "30Y Yield",    "unit": "%"},
+    "CPIAUCSL":{"label": "CPI YoY",      "unit": "%"},
+    "M2SL":    {"label": "M2 Supply",    "unit": "B"},
+    "UNRATE":  {"label": "Unemployment", "unit": "%"},
+    "FEDFUNDS":{"label": "Fed Funds",    "unit": "%"},
+}
+
+def _fetch_fred_macro():
+    key = os.environ.get("FRED_API_KEY", "")
+    if not key:
+        return {"series": [], "status": "no_key", "ts": int(time.time())}
+    series_out = []
+    for sid, meta in _FRED_SERIES.items():
+        try:
+            r = http_requests.get(
+                "https://api.stlouisfed.org/fred/series/observations",
+                params={"series_id": sid, "api_key": key, "file_type": "json",
+                        "limit": 2, "sort_order": "desc"},
+                timeout=8
+            )
+            obs = r.json().get("observations", [])
+            if obs:
+                val  = float(obs[0]["value"]) if obs[0]["value"] != "." else None
+                prev = float(obs[1]["value"]) if len(obs) > 1 and obs[1]["value"] != "." else val
+                chg  = round(val - prev, 3) if val is not None and prev is not None else 0
+                series_out.append({
+                    "id": sid, "label": meta["label"], "unit": meta["unit"],
+                    "value": round(val, 3) if val is not None else None,
+                    "change": chg, "date": obs[0]["date"]
+                })
+        except Exception as e:
+            print(f"FRED {sid} err: {e}")
+    return {"series": series_out, "status": "ok", "ts": int(time.time())}
+
+@app.route("/api/live/macro")
+def api_live_macro():
+    cached = _pm_cached("live_macro", 3600)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_fred_macro()
+    _pm_set("live_macro", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: NASA FIRMS (Active Fires) ───────────────────────────────────────
+def _fetch_firms_fires():
+    key = os.environ.get("NASA_FIRMS_API_KEY", "")
+    if not key:
+        return {"fires": [], "status": "no_key", "ts": int(time.time())}
+    try:
+        r = http_requests.get(
+            f"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/VIIRS_SNPP_NRT/-180,-90,180,90/1",
+            timeout=15
+        )
+        fires = []
+        for line in r.text.strip().split("\n")[1:]:  # skip header
+            parts = line.split(",")
+            if len(parts) < 9:
+                continue
+            try:
+                fires.append({
+                    "lat": float(parts[0]), "lng": float(parts[1]),
+                    "brightness": float(parts[2]) if parts[2] else 0,
+                    "date": parts[5], "confidence": parts[8].strip(),
+                })
+            except (ValueError, IndexError):
+                continue
+        return {"fires": fires[:500], "status": "ok", "count": len(fires), "ts": int(time.time())}
+    except Exception as e:
+        print(f"FIRMS err: {e}")
+        return {"fires": [], "status": "error", "ts": int(time.time())}
+
+@app.route("/api/live/fires")
+def api_live_fires():
+    cached = _pm_cached("live_fires", 1800)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_firms_fires()
+    _pm_set("live_fires", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: CLOUDFLARE RADAR (Internet Outages) ─────────────────────────────
+def _fetch_cf_outages():
+    token = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+    if not token:
+        return {"outages": [], "status": "no_key", "ts": int(time.time())}
+    try:
+        r = http_requests.get(
+            "https://api.cloudflare.com/client/v4/radar/annotations/outages",
+            params={"limit": 25, "dateRange": "7d"},
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            timeout=8
+        )
+        items = r.json().get("result", {}).get("annotations", [])
+        outages = []
+        for item in items:
+            outages.append({
+                "title": item.get("title", ""),
+                "description": item.get("description", ""),
+                "country": item.get("locations", [{}])[0].get("country", "") if item.get("locations") else "",
+                "start": item.get("startDate", ""),
+                "end": item.get("endDate", ""),
+                "type": item.get("type", ""),
+            })
+        return {"outages": outages, "status": "ok", "count": len(outages), "ts": int(time.time())}
+    except Exception as e:
+        print(f"CF Radar err: {e}")
+        return {"outages": [], "status": "error", "ts": int(time.time())}
+
+@app.route("/api/live/outages")
+def api_live_outages():
+    cached = _pm_cached("live_outages", 1800)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_cf_outages()
+    _pm_set("live_outages", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: OTX AlienVault (Cyber Threats) ──────────────────────────────────
+def _fetch_otx_threats():
+    key = os.environ.get("OTX_API_KEY", "")
+    if not key:
+        return {"pulses": [], "status": "no_key", "ts": int(time.time())}
+    try:
+        r = http_requests.get(
+            "https://otx.alienvault.com/api/v1/pulses/subscribed",
+            params={"limit": 20},
+            headers={"X-OTX-API-KEY": key},
+            timeout=8
+        )
+        pulses = []
+        for p in r.json().get("results", []):
+            pulses.append({
+                "name": p.get("name", ""),
+                "description": (p.get("description") or "")[:200],
+                "tags": p.get("tags", [])[:5],
+                "adversary": p.get("adversary", ""),
+                "malware_families": p.get("malware_families", [])[:3],
+                "targeted_countries": p.get("targeted_countries", [])[:5],
+                "indicators_count": p.get("indicators_count", 0),
+                "modified": p.get("modified", ""),
+            })
+        return {"pulses": pulses, "status": "ok", "count": len(pulses), "ts": int(time.time())}
+    except Exception as e:
+        print(f"OTX err: {e}")
+        return {"pulses": [], "status": "error", "ts": int(time.time())}
+
+@app.route("/api/live/cyber")
+def api_live_cyber():
+    cached = _pm_cached("live_cyber", 3600)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_otx_threats()
+    _pm_set("live_cyber", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: FINNHUB (Stock Quotes) ──────────────────────────────────────────
+_FINNHUB_SYMBOLS = {
+    "NVDA": "NVIDIA", "TSLA": "Tesla", "SPY": "S&P 500",
+    "QQQ": "Nasdaq", "LMT": "Lockheed", "RTX": "Raytheon",
+    "GLD": "Gold ETF", "IBIT": "BTC ETF",
+}
+
+def _fetch_finnhub_quotes():
+    key = os.environ.get("FINNHUB_API_KEY", "")
+    if not key:
+        return {"quotes": [], "status": "no_key", "ts": int(time.time())}
+    quotes = []
+    for symbol, name in _FINNHUB_SYMBOLS.items():
+        try:
+            r = http_requests.get(
+                "https://finnhub.io/api/v1/quote",
+                params={"symbol": symbol, "token": key},
+                timeout=6
+            )
+            d = r.json()
+            if d.get("c"):
+                chg_pct = round(((d["c"] - d["pc"]) / d["pc"] * 100) if d.get("pc") else 0, 2)
+                quotes.append({
+                    "symbol": symbol, "name": name,
+                    "price": round(d["c"], 2),
+                    "change_pct": chg_pct,
+                    "high": round(d.get("h", 0), 2),
+                    "low":  round(d.get("l", 0), 2),
+                })
+        except Exception as e:
+            print(f"Finnhub {symbol} err: {e}")
+    return {"quotes": quotes, "status": "ok", "ts": int(time.time())}
+
+@app.route("/api/live/stocks")
+def api_live_stocks():
+    cached = _pm_cached("live_stocks", 300)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_finnhub_quotes()
+    _pm_set("live_stocks", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: EIA (Energy Data) ───────────────────────────────────────────────
+def _fetch_eia_energy():
+    key = os.environ.get("EIA_API_KEY", "")
+    if not key:
+        return {"series": [], "status": "no_key", "ts": int(time.time())}
+    _EIA_SERIES = [
+        ("PET.RWTC.D",  "WTI Crude Oil", "$/bbl"),
+        ("NG.RNGWHHD.D","Henry Hub Gas",  "$/MMBtu"),
+        ("PET.RBRTE.D", "Brent Crude",   "$/bbl"),
+    ]
+    series_out = []
+    for sid, label, unit in _EIA_SERIES:
+        try:
+            r = http_requests.get(
+                "https://api.eia.gov/v2/seriesid/" + sid,
+                params={"api_key": key, "data[]": "value", "sort[0][column]": "period",
+                        "sort[0][direction]": "desc", "length": 2},
+                timeout=8
+            )
+            obs = r.json().get("response", {}).get("data", [])
+            if obs:
+                val  = float(obs[0]["value"]) if obs[0].get("value") not in (None, "") else None
+                prev = float(obs[1]["value"]) if len(obs) > 1 and obs[1].get("value") not in (None, "") else val
+                chg  = round(((val - prev) / prev * 100) if val and prev else 0, 2)
+                series_out.append({"id": sid, "label": label, "unit": unit,
+                                   "value": round(val, 2) if val else None,
+                                   "change_pct": chg, "date": obs[0].get("period","")})
+        except Exception as e:
+            print(f"EIA {sid} err: {e}")
+    return {"series": series_out, "status": "ok", "ts": int(time.time())}
+
+@app.route("/api/live/energy")
+def api_live_energy():
+    cached = _pm_cached("live_energy", 3600)
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_eia_energy()
+    _pm_set("live_energy", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: WTO (Tariff & Trade Data) ───────────────────────────────────────
+def _fetch_wto_tariffs():
+    key = os.environ.get("WTO_API_KEY", "")
+    if not key:
+        return {"tariffs": [], "status": "no_key", "ts": int(time.time())}
+    # MFN applied tariff rates for US(840), China(156), EU(097), UK(826)
+    try:
+        r = http_requests.get(
+            "https://api.wto.org/timeseries/v1/data",
+            params={"i": "TP_A_0020", "r": "840,156,097,826,392",
+                    "p": "000", "ps": "2023,2022", "fmt": "json", "lang": 1, "head": "H"},
+            headers={"Ocp-Apim-Subscription-Key": key},
+            timeout=10
+        )
+        raw = r.json()
+        _COUNTRIES = {"840": "USA", "156": "China", "097": "EU", "826": "UK", "392": "Japan"}
+        tariffs = []
+        for row in raw.get("Dataset", []):
+            rc = str(row.get("ReporterCode", ""))
+            if rc in _COUNTRIES:
+                tariffs.append({
+                    "reporter": _COUNTRIES[rc],
+                    "year": row.get("Year", ""),
+                    "rate": round(float(row.get("Value", 0)), 2),
+                    "product": row.get("ProductOrSectorCode", "All"),
+                })
+        # Keep latest per country
+        seen = {}
+        for t in sorted(tariffs, key=lambda x: x["year"], reverse=True):
+            if t["reporter"] not in seen:
+                seen[t["reporter"]] = t
+        return {"tariffs": list(seen.values()), "status": "ok", "ts": int(time.time())}
+    except Exception as e:
+        print(f"WTO err: {e}")
+        return {"tariffs": [], "status": "error", "ts": int(time.time())}
+
+@app.route("/api/live/tariffs")
+def api_live_tariffs():
+    cached = _pm_cached("live_tariffs", 86400)  # 24h — annual data
+    if cached:
+        return flask_jsonify(cached)
+    data = _fetch_wto_tariffs()
+    _pm_set("live_tariffs", data)
+    return flask_jsonify(data)
+
+
+# ── PHASE 2: STATUS (shows which keys are configured) ────────────────────────
+@app.route("/api/live/status")
+def api_live_status():
+    _KEYS = {
+        "ACLED":       ("ACLED_ACCESS_TOKEN", "acleddata.com/data/data-export-tool"),
+        "FRED":        ("FRED_API_KEY",        "fred.stlouisfed.org/docs/api/api_key.html"),
+        "NASA_FIRMS":  ("NASA_FIRMS_API_KEY",  "firms.modaps.eosdis.nasa.gov/api"),
+        "Cloudflare":  ("CLOUDFLARE_API_TOKEN","dash.cloudflare.com/profile/api-tokens"),
+        "OTX":         ("OTX_API_KEY",         "otx.alienvault.com"),
+        "Finnhub":     ("FINNHUB_API_KEY",     "finnhub.io/dashboard"),
+        "EIA":         ("EIA_API_KEY",         "eia.gov/opendata/register.php"),
+        "WTO":         ("WTO_API_KEY",         "api.wto.org"),
+    }
+    status = {}
+    for name, (env, url) in _KEYS.items():
+        status[name] = {
+            "configured": bool(os.environ.get(env)),
+            "env_var": env,
+            "register_url": f"https://{url}",
+        }
+    return flask_jsonify({"apis": status, "ts": int(time.time())})
+
+
 # ── ENTRYPOINT ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     local_ip = os.popen(
