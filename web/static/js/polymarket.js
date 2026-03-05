@@ -212,11 +212,13 @@
       '<div class="pm-live-dot"></div>';
 
     if (oldOverlay) {
-      // Update in place — preserve expanded state, flash changed pct values
+      // Update in place — preserve expanded/pinned state, flash changed pct values
       var wasExpanded = oldOverlay.classList.contains('pm-expanded');
+      var wasPinned = oldOverlay._pmPinned;
       var oldPcts = oldOverlay.querySelectorAll('.pm-pct');
       oldOverlay.innerHTML = html;
       if (wasExpanded) oldOverlay.classList.add('pm-expanded');
+      oldOverlay._pmPinned = wasPinned;
       var newPcts = oldOverlay.querySelectorAll('.pm-pct');
       newPcts.forEach(function (el, i) {
         var oldVal = oldPcts[i] ? oldPcts[i].getAttribute('data-pct') : '';
@@ -231,23 +233,40 @@
       overlay.innerHTML = html;
 
       // Hover: expand on mouseenter, collapse on mouseleave (unless pinned)
-      overlay.addEventListener('mouseenter', function () {
+      function expandOverlay() {
+        // Switch to fixed positioning so it escapes card overflow:hidden
+        var cardRect = card.getBoundingClientRect();
+        overlay.style.position = 'fixed';
+        overlay.style.top = (cardRect.top + 8) + 'px';
+        overlay.style.right = (window.innerWidth - cardRect.right + 8) + 'px';
+        overlay.style.left = 'auto';
         overlay.classList.add('pm-expanded');
         var svg = overlay.querySelector('.pm-chart');
         if (svg && svg._pmPoints) setTimeout(function(){ drawSparklineAt(svg, svg._pmPoints, 260, 72); }, 50);
+      }
+      function collapseOverlay() {
+        overlay.classList.remove('pm-expanded');
+        // Restore absolute positioning inside card
+        overlay.style.position = '';
+        overlay.style.top = '';
+        overlay.style.right = '';
+        overlay.style.left = '';
+        var svg = overlay.querySelector('.pm-chart');
+        if (svg && svg._pmPoints) drawSparklineAt(svg, svg._pmPoints, 80, 32);
+      }
+
+      overlay.addEventListener('mouseenter', function () {
+        expandOverlay();
       });
       overlay.addEventListener('mouseleave', function () {
-        if (!overlay._pmPinned) {
-          overlay.classList.remove('pm-expanded');
-          var svg = overlay.querySelector('.pm-chart');
-          if (svg && svg._pmPoints) drawSparklineAt(svg, svg._pmPoints, 80, 32);
-        }
+        if (!overlay._pmPinned) collapseOverlay();
       });
       // Click: toggle pinned (stays expanded even when mouse leaves)
       overlay.addEventListener('click', function (e) {
         if (e.target.classList.contains('pm-trade-link')) return;
         overlay._pmPinned = !overlay._pmPinned;
-        if (!overlay._pmPinned) overlay.classList.remove('pm-expanded');
+        if (!overlay._pmPinned) collapseOverlay();
+        else expandOverlay();
       });
 
       card.appendChild(overlay);
