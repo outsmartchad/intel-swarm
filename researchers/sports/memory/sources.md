@@ -26,3 +26,9 @@
 - https://www.nytimes.com/athletic/7086352/2026/03/04/giannis-antetokounmpo-bucks-injury-return/ | used: 2026-03-05 | quality: high | notes: The Athletic, credible reporting on Giannis return and trade context
 - https://www.wrestlinginc.com/2115823/ufc-drops-felipe-bunes-jose-medina-fight-night-268-moreno-kavanagh/ | used: 2026-03-05 | quality: medium | notes: Guilherme Cruz/MMA Fighting as primary, wrestling inc aggregated
 - https://sports.yahoo.com/nfl/article/nfl-franchise-tag-tracker-2026-breece-hall-george-pickens-kyle-pitts-all-tagged-this-offseason-005042577.html | used: 2026-03-05 | quality: high | notes: Yahoo Sports tag tracker, reliable for franchise tag confirmations
+- https://sports.yahoo.com/articles/maxx-crosby-trade-rumor-finally-190224909.html | used: 2026-03-06 | quality: high | notes: Yahoo NFL insider - softening Raiders ask on Crosby
+- https://heavy.com/sports/nfl/chicago-bears/maxx-crosby-trade-new-report-ruin/ | used: 2026-03-06 | quality: medium | notes: Heavy aggregates Silver/Athletic on Crosby behavior concerns
+- https://www.nytimes.com/athletic/7086977/2026/03/04/dak-prescott-contract-ceedee-lamb-cowboys/ | used: 2026-03-06 | quality: high | notes: The Athletic primary source on Cowboys $66M restructure
+- https://www.cbssports.com/nfl/news/aaron-rodgers-retirement-2026-steelers-free-agency/ | used: 2026-03-06 | quality: high | notes: CBS Sports - Rodgers no contract offer confirmation
+- https://sports.yahoo.com/articles/michael-johnson-breaks-silence-over-010427598.html | used: 2026-03-06 | quality: high | notes: Yahoo/MMA Mania - Johnson UFC 324 betting scandal firsthand account
+- https://heavy.com/sports/nba/philadelphia-76ers/kawhi-leonard-trade-deadline-rumors/ | used: 2026-03-06 | quality: high | notes: Heavy/KOC Yahoo Sports - Sixers pre-deadline Kawhi calls confirmed
