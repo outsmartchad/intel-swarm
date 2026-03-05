@@ -831,6 +831,16 @@ def _gdelt_geocode(title):
 
 @app.route("/api/conflict/events")
 def conflict_events():
+    # 1. Try pre-fetched static file (written by prefetch-conflict.py cron)
+    static_path = os.path.join(BASE, "web", "static", "conflict-events.json")
+    if os.path.exists(static_path):
+        try:
+            with open(static_path) as f:
+                return flask_jsonify(json.load(f))
+        except Exception:
+            pass
+
+    # 2. In-memory cache fallback
     cache_key = "gdelt_events"
     cached = _CONFLICT_CACHE.get(cache_key)
     if cached and (time.time() - cached["ts"] < 900):   # 15 min TTL
