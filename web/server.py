@@ -11,6 +11,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # To add a researcher: append a dict here. No other code changes needed.
 RESEARCHERS = [
     {"id": "war",         "emoji": "⚔️", "name": "War",          "zh": "戰爭",     "colors": "#7f1d1d,#ef4444"},
+    {"id": "commodities", "emoji": "🛢️", "name": "Commodities",  "zh": "大宗商品", "colors": "#78350f,#d97706"},
     {"id": "culture",     "emoji": "🎭", "name": "Culture",      "zh": "文化",     "colors": "#7c3aed,#a855f7"},
     {"id": "emerging",    "emoji": "🌍", "name": "Emerging",     "zh": "新興市場", "colors": "#065f46,#10b981"},
     {"id": "ai-agents",   "emoji": "🤖", "name": "AI Agents",    "zh": "AI 代理",  "colors": "#1e40af,#3b82f6"},
