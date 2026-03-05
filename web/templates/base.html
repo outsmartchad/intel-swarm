@@ -123,6 +123,8 @@
       transition: border-color .2s;
     }
     .date-select:hover { border-color: var(--accent); }
+    .masthead-tagline { font-size: 11px; color: var(--muted); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 340px; }
+    @media (max-width: 860px) { .masthead-tagline { display: none; } }
     .gh-link { color: var(--muted); display: flex; align-items: center; transition: color .15s; }
     .gh-link:hover { color: var(--text); }
     .lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
@@ -330,6 +332,7 @@
     <span class="brand-dot"></span>
     INTEL SWARM
   </a>
+  <span class="masthead-tagline">A swarm of AI researchers delivering daily intelligence. Signal over noise.</span>
   <div class="masthead-divider"></div>
   <div class="masthead-meta">
     <div class="live-badge"><span class="live-dot"></span>LIVE</div>
