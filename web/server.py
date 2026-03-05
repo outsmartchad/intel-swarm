@@ -373,6 +373,16 @@ def domain_date(rid, date):
         )
 
     data = get_researcher_data(rid, date, lang)
+    # Always fetch English findings for Polymarket matching (even in ZH mode)
+    if lang != "en":
+        en_raw = read_file(f"{BASE}/researchers/{rid}/findings/{date}.md", "en")
+        en_findings = extract_findings(en_raw) if en_raw else data["findings"]
+    else:
+        en_findings = data["findings"]
+    # Attach English title to each finding so template can use it for data-search
+    for i, f in enumerate(data["findings"]):
+        f["en_title"] = en_findings[i]["title"] if i < len(en_findings) else f["title"]
+
     all_dates = sorted({
         os.path.basename(f).replace(".md", "")
         for f in glob.glob(f"{BASE}/researchers/{rid}/findings/2026-*.md")

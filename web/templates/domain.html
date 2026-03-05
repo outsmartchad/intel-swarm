@@ -214,9 +214,9 @@
 
         {# Wrap in <a> if source URL available #}
         {% if f.url %}
-        <a href="{{ f.url }}" target="_blank" rel="noopener" class="fcard {{ fsize }}">
+        <a href="{{ f.url }}" target="_blank" rel="noopener" class="fcard {{ fsize }}" data-domain="{{ rid }}" data-search="{{ f.en_title or f.title or '' }}">
         {% else %}
-        <div class="fcard {{ fsize }}">
+        <div class="fcard {{ fsize }}" data-domain="{{ rid }}" data-search="{{ f.en_title or f.title or '' }}">
         {% endif %}
 
           {% if f.image %}
