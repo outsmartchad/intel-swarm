@@ -801,6 +801,34 @@ def conflict_page():
     lang = get_lang()
     return render_template("conflict.html", lang=lang, researchers=RESEARCHERS)
 
+_COUNTRY_COORDS = {
+    "iran": (32.4, 53.7), "ukraine": (49.0, 32.0), "russia": (61.5, 105.3),
+    "israel": (31.0, 35.0), "gaza": (31.4, 34.3), "lebanon": (33.9, 35.5),
+    "syria": (34.8, 38.9), "iraq": (33.2, 43.7), "yemen": (15.5, 48.5),
+    "china": (35.9, 104.2), "taiwan": (23.7, 121.0), "north korea": (40.3, 127.5),
+    "south korea": (36.5, 127.9), "japan": (36.2, 138.3), "india": (20.6, 79.0),
+    "pakistan": (30.4, 69.3), "afghanistan": (33.9, 67.7), "myanmar": (19.2, 96.7),
+    "sudan": (12.9, 30.2), "ethiopia": (9.1, 40.5), "somalia": (5.2, 46.2),
+    "mali": (17.6, -2.0), "nigeria": (9.1, 8.7), "congo": (-4.0, 21.8),
+    "libya": (26.3, 17.2), "egypt": (26.8, 30.8), "turkey": (39.0, 35.2),
+    "saudi arabia": (24.7, 45.7), "united states": (37.1, -95.7), "usa": (37.1, -95.7),
+    "mexico": (23.6, -102.6), "venezuela": (6.4, -66.6), "colombia": (4.6, -74.1),
+    "myanmar": (19.2, 96.7), "thailand": (15.9, 100.9), "philippines": (12.9, 121.8),
+    "haiti": (18.9, -72.3), "serbia": (44.0, 21.0), "kosovo": (42.6, 20.9),
+    "georgia": (42.3, 43.4), "armenia": (40.1, 45.0), "azerbaijan": (40.1, 47.6),
+}
+
+def _gdelt_geocode(title):
+    t = title.lower()
+    for name, coords in _COUNTRY_COORDS.items():
+        if name in t:
+            # Jitter slightly so dots don't stack exactly
+            import random
+            lat = coords[0] + random.uniform(-0.8, 0.8)
+            lng = coords[1] + random.uniform(-0.8, 0.8)
+            return lat, lng, name.title()
+    return None, None, ""
+
 @app.route("/api/conflict/events")
 def conflict_events():
     cache_key = "gdelt_events"
@@ -810,48 +838,49 @@ def conflict_events():
 
     events = []
     try:
-        # GDELT GEO 2.0 — last 24h geolocated articles, conflict/crisis tone filter
-        gdelt_url = "https://api.gdeltproject.org/api/v2/geo/geo"
-        params = {
-            "query": "(conflict OR war OR attack OR bomb OR protest OR sanction OR military) sourcelang:english",
-            "mode": "PointData",
-            "maxrecords": 250,
-            "timespan": "1d",
-            "format": "json",
-        }
-        resp = http_requests.get(gdelt_url, params=params, timeout=12,
-                                 headers={"User-Agent": "intel-swarm/1.0"})
+        # GDELT DOC 2.0 ArticleSearch — conflict/war articles last 24h
+        resp = http_requests.get(
+            "https://api.gdeltproject.org/api/v2/doc/doc",
+            params={
+                "query": "(war OR conflict OR attack OR bomb OR strike OR missile OR protest OR sanction OR military OR troops) sourcelang:english",
+                "mode": "ArtList",
+                "maxrecords": 250,
+                "timespan": "1d",
+                "format": "json",
+            },
+            timeout=12,
+            headers={"User-Agent": "intel-swarm/1.0"},
+        )
         resp.raise_for_status()
-        raw = resp.json()
-        features = raw.get("features") or []
+        articles = resp.json().get("articles") or []
         seen = set()
-        for feat in features:
-            props = feat.get("properties", {})
-            geo_coords = feat.get("geometry", {}).get("coordinates") or []
-            title = props.get("name") or props.get("title") or ""
-            url   = props.get("url") or props.get("sourceurl") or ""
-            tone  = float(props.get("tone") or 0)
-            date  = props.get("dateadded") or props.get("date") or ""
-            country = props.get("countryname") or props.get("country") or ""
-            geo_name = props.get("fullname") or props.get("geo") or country or ""
-            lat = float(geo_coords[1]) if len(geo_coords) >= 2 else None
-            lng = float(geo_coords[0]) if len(geo_coords) >= 2 else None
+        for a in articles:
+            title = (a.get("title") or "").strip()
+            url   = a.get("url") or ""
+            date  = (a.get("seendate") or "")[:8]
             if not title or url in seen:
                 continue
             seen.add(url)
+            lat, lng, country = _gdelt_geocode(title)
+            # Assign rough tone from event type
+            evt_type = _gdelt_event_type(title)
+            tone = -8.0 if evt_type == "CONFLICT" else (-4.0 if evt_type == "PROTEST" else -2.0)
+            if date:
+                date = f"{date[:4]}-{date[4:6]}-{date[6:]}"
             events.append({
                 "title":   title,
                 "url":     url,
-                "tone":    round(tone, 2),
-                "date":    date[:10] if date else "",
+                "tone":    tone,
+                "date":    date,
                 "country": country,
-                "geo":     geo_name,
+                "geo":     country,
                 "lat":     lat,
                 "lng":     lng,
-                "type":    _gdelt_event_type(title),
+                "type":    evt_type,
             })
-        # Sort by most negative tone first (most intense conflict)
-        events.sort(key=lambda e: e["tone"])
+        # Sort: conflict first, then protest, then political
+        type_order = {"CONFLICT": 0, "PROTEST": 1, "POLITICAL": 2, "OTHER": 3}
+        events.sort(key=lambda e: type_order.get(e["type"], 3))
     except Exception as ex:
         print(f"[conflict] GDELT fetch error: {ex}")
 
