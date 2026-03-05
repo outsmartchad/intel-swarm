@@ -553,6 +553,113 @@
     .pm-overlay, .pm-no-market { display: none; }
     body.pm-mode .pm-overlay { display: block; }
     body.pm-mode .pm-no-market { display: block; }
+
+    /* ── ARTICLE LAYOUT (brief.html, memory.html) ────────────────────────── */
+    .page {
+      position: relative; z-index: 2;
+      max-width: min(1600px, 96vw); margin: 0 auto;
+      padding: clamp(16px, 3vw, 48px) clamp(12px, 2.5vw, 36px);
+    }
+    .article-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .article-layout { grid-template-columns: 1fr; }
+      .side-panel { display: none; }
+    }
+    .article-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .article-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .article-title {
+      font-size: 32px; font-weight: 800; line-height: 1.15;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 8px; letter-spacing: -.02em;
+    }
+    .article-date {
+      font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .06em;
+    }
+
+    /* Prose — markdown rendered output */
+    .prose { font-size: 14px; color: var(--muted); line-height: 1.8; }
+    .prose h1 { font-size: 20px; font-weight: 700; color: var(--text); margin: 32px 0 12px; line-height: 1.3; }
+    .prose h2 {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+      margin: 28px 0 10px; display: flex; align-items: center; gap: 10px;
+    }
+    .prose h2::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .prose h3 { font-size: 14px; font-weight: 600; color: var(--accent); margin: 20px 0 6px; }
+    .prose p { margin-bottom: 14px; }
+    .prose ul, .prose ol { padding-left: 0; margin-bottom: 16px; list-style: none; }
+    .prose li {
+      margin-bottom: 10px; padding: 12px 16px;
+      background: rgba(255,255,255,.02); border: 1px solid var(--border);
+      border-radius: 7px; transition: all .15s;
+    }
+    .prose li:hover { background: rgba(255,255,255,.04); border-color: rgba(200,169,110,.2); }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose a { color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: 12px; }
+    .prose a:hover { text-decoration: underline; }
+    .prose hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+    .prose blockquote {
+      border-left: 3px solid var(--accent); padding: 12px 16px; margin: 16px 0;
+      background: rgba(200,169,110,.05); border-radius: 0 8px 8px 0; color: var(--text);
+    }
+    html.light .prose li { background: rgba(0,0,0,.02); }
+    html.light .prose li:hover { background: rgba(0,0,0,.04); }
+    html.light .prose blockquote { background: rgba(160,120,46,.06); }
+
+    /* Side panel */
+    .side-panel {
+      position: sticky; top: 116px;
+      max-height: calc(100vh - 140px); overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: #2a2e3a transparent;
+    }
+    .side-panel::-webkit-scrollbar { width: 3px; }
+    .side-panel::-webkit-scrollbar-thumb { background: #2a2e3a; border-radius: 99px; }
+    .side-section { margin-bottom: 32px; }
+    .side-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .side-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .side-prose { font-size: 12px; color: var(--muted); line-height: 1.75; }
+    .side-prose h3 { font-size: 12px; font-weight: 600; color: var(--text); margin: 12px 0 4px; }
+    .side-prose strong { color: var(--text); }
+    .side-prose ul { padding-left: 14px; list-style: disc; }
+    .side-prose li { background: none; border: none; padding: 2px 0; font-size: 12px; }
+    .side-prose li:hover { background: none; border: none; }
+    .side-prose a { color: var(--accent); font-family: var(--mono); font-size: 11px; }
+    .section-label h2 {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+      margin: 32px 0 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-label h2::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* empty state in article pages */
+    .empty {
+      font-family: var(--mono); font-size: 12px; color: var(--dim);
+      padding: 32px 0; text-align: center; letter-spacing: .04em;
+    }
+
+    /* CSS var aliases (backward compat for memory.html) */
+    :root { --card: #0d1117; --border2: rgba(255,255,255,.07); }
+    html.light { --card: #ffffff; --border2: rgba(0,0,0,.08); }
   </style>
 </head>
 <body>

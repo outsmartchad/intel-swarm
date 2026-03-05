@@ -15,7 +15,7 @@
 .view-btns { display: flex; gap: 4px; }
 .view-btn {
   background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
-  color: var(--muted); border-radius: 5px; padding: 4px 9px;
+  color: var(--muted); border-radius: 5px; padding: 4px 8px;
   font-size: 11px; cursor: pointer; transition: all .15s;
 }
 .view-btn.active { background: rgba(200,169,110,.15); border-color: rgba(200,169,110,.4); color: var(--accent); }
@@ -67,7 +67,7 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-auto-rows: clamp(180px, 18vw, 280px);
-  gap: 3px;
+  gap: 4px;
   margin-bottom: 48px;
 }
 
@@ -199,7 +199,7 @@
   width: clamp(90px, 12vw, 150px); min-width: clamp(90px, 12vw, 150px);
   background-size: cover; background-position: center; flex-shrink: 0;
 }
-.fcard-body { flex: 1; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+.fcard-body { flex: 1; padding: 16px 20px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
 .fcard-cat {
   font-family: var(--mono); font-size: 10px; font-weight: 800;
   letter-spacing: .08em; text-transform: uppercase;
