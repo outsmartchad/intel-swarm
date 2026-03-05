@@ -2,198 +2,271 @@
 {% block title %} · Terminal{% endblock %}
 {% block body %}
 <style>
-  /* ── TERMINAL LAYOUT ── */
+  /* ── ROOT LAYOUT ── */
   .tm-wrap {
-    display: flex; flex-direction: column;
-    height: calc(100vh - 80px); min-height: 600px;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    height: calc(100vh - 96px);
+    min-height: 500px;
     font-family: var(--mono);
+    overflow: hidden;
   }
 
-  /* Top bar */
+  /* ── TOP BAR ── */
   .tm-bar {
-    flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 10px;
     padding: 8px 16px; border-bottom: 1px solid var(--border);
     background: var(--masthead-bg); backdrop-filter: blur(10px);
-    flex-wrap: wrap; gap: 8px;
+    flex-wrap: wrap; flex-shrink: 0;
   }
-  .tm-logo { font-size: 11px; font-weight: 900; letter-spacing: .1em; color: var(--accent); white-space: nowrap; }
+  .tm-logo { font-size: 12px; font-weight: 900; letter-spacing: .12em; color: var(--accent); white-space: nowrap; }
   .tm-search-wrap {
-    flex: 1; min-width: 200px; max-width: 380px;
-    display: flex; align-items: center; gap: 0;
+    flex: 1; min-width: 180px; max-width: 340px;
+    display: flex; align-items: center;
     background: rgba(255,255,255,.04); border: 1px solid var(--border);
     border-radius: 6px; overflow: hidden;
   }
-  .tm-search-wrap:focus-within { border-color: var(--accent); }
-  .tm-search-prefix { padding: 0 10px; color: var(--accent); font-size: 13px; font-weight: 700; }
+  .tm-search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+  .tm-search-prefix { padding: 0 10px; color: var(--accent); font-size: 14px; }
   #tm-search {
     flex: 1; background: transparent; border: none; outline: none;
-    color: var(--text); font-family: var(--mono); font-size: 13px;
+    color: var(--text); font-family: var(--mono); font-size: 12px;
     padding: 7px 10px 7px 0;
   }
   #tm-search::placeholder { color: var(--dim); }
-  .tm-ticker-strip {
-    display: flex; gap: 6px; align-items: center; overflow-x: auto;
-    scrollbar-width: none; flex-shrink: 0;
-  }
+  .tm-ticker-strip { display: flex; gap: 5px; align-items: center; overflow-x: auto; scrollbar-width: none; }
   .tm-ticker-strip::-webkit-scrollbar { display: none; }
   .tm-tick {
-    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    font-size: 10px; font-weight: 700; padding: 3px 8px;
     border-radius: 4px; border: 1px solid var(--border);
     cursor: pointer; transition: all .12s; white-space: nowrap;
     color: var(--muted); background: transparent;
   }
-  .tm-tick:hover, .tm-tick.on { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
-  .tm-bar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .tm-tick:hover { border-color: var(--accent); color: var(--accent); }
+  .tm-tick.on { border-color: var(--accent); color: #000; background: var(--accent); }
+  .tm-bar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
   .tm-live { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #4ade80; font-weight: 700; }
   .tm-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 1.5s infinite; }
-  .tm-date { font-size: 10px; color: var(--muted); }
-  .tm-api-link { font-size: 10px; color: var(--accent2); text-decoration: none; border: 1px solid rgba(91,156,246,.3); border-radius: 4px; padding: 3px 8px; }
-  .tm-api-link:hover { background: rgba(91,156,246,.1); }
-
-  /* Body: filters left + feed right */
-  .tm-body { flex: 1; display: flex; overflow: hidden; }
-
-  /* Left filter panel */
-  .tm-filters {
-    width: 160px; flex-shrink: 0; overflow-y: auto;
-    border-right: 1px solid var(--border);
-    padding: 10px 0;
+  .tm-api-btn {
+    font-size: 10px; color: var(--muted); text-decoration: none;
+    border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px;
+    cursor: pointer; background: transparent; font-family: var(--mono);
+    transition: all .15s;
   }
-  .tm-filters::-webkit-scrollbar { width: 2px; }
-  .tm-filter-hdr { font-size: 9px; letter-spacing: .1em; color: var(--dim); padding: 8px 14px 4px; font-weight: 700; }
+  .tm-api-btn:hover { border-color: rgba(91,156,246,.5); color: var(--accent2); }
+
+  /* ── LIVE MARKET STRIP ── */
+  .tm-live-strip {
+    display: flex; align-items: stretch;
+    background: rgba(4,6,10,0.6); border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+    height: 60px;
+  }
+  .tm-live-strip::-webkit-scrollbar { display: none; }
+  .tm-live-tile {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 18px; border-right: 1px solid rgba(255,255,255,0.05);
+    min-width: 90px; flex-shrink: 0; cursor: default;
+    transition: background .15s;
+  }
+  .tm-live-tile:hover { background: rgba(255,255,255,0.03); }
+  .tm-tile-label { font-size: 9px; letter-spacing: .09em; color: var(--dim); font-weight: 700; text-transform: uppercase; margin-bottom: 3px; }
+  .tm-tile-value { font-size: 14px; font-weight: 900; color: var(--text); line-height: 1; }
+  .tm-tile-sub  { font-size: 10px; margin-top: 2px; }
+  .tm-tile-chg.up  { color: #4ade80; }
+  .tm-tile-chg.dn  { color: #f87171; }
+  .tm-tile-chg.neu { color: var(--muted); }
+  .tm-strip-div { width: 1px; background: rgba(255,255,255,0.07); flex-shrink: 0; margin: 10px 4px; }
+  .tm-tile-fg { font-size: 24px; font-weight: 900; line-height: 1; }
+  .tm-tile-fg.extreme-fear  { color: #f87171; }
+  .tm-tile-fg.fear          { color: #fb923c; }
+  .tm-tile-fg.neutral       { color: #facc15; }
+  .tm-tile-fg.greed         { color: #a3e635; }
+  .tm-tile-fg.extreme-greed { color: #4ade80; }
+  .tm-strip-loading { display: flex; align-items: center; padding: 0 24px; font-size: 10px; color: var(--dim); animation: strip-pulse 1.5s ease-in-out infinite; white-space: nowrap; }
+  @keyframes strip-pulse { 0%,100%{opacity:.25} 50%{opacity:.7} }
+
+  /* ── BODY: sidebar + feed ── */
+  .tm-body { display: flex; overflow: hidden; min-height: 0; }
+
+  /* ── SIDEBAR ── */
+  .tm-sidebar {
+    width: 170px; flex-shrink: 0; overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: rgba(4,6,10,0.4);
+    padding: 12px 0 20px;
+  }
+  .tm-sidebar::-webkit-scrollbar { width: 2px; }
+  .tm-sidebar::-webkit-scrollbar-thumb { background: var(--dim); }
+  .tm-filter-hdr {
+    font-size: 9px; letter-spacing: .12em; color: var(--dim);
+    padding: 10px 16px 6px; font-weight: 700;
+  }
   .tm-filter-item {
     display: flex; align-items: center; gap: 8px;
-    padding: 6px 14px; cursor: pointer; transition: background .1s;
+    padding: 7px 16px; cursor: pointer; transition: all .12s;
     font-size: 11px; color: var(--muted); user-select: none;
+    border-left: 2px solid transparent;
   }
-  .tm-filter-item:hover { background: var(--surface-hover); color: var(--text); }
-  .tm-filter-item.on { color: var(--text); }
-  .tm-filter-check {
-    width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
-    border: 1px solid var(--border); display: flex; align-items: center;
-    justify-content: center; font-size: 9px;
-    transition: all .12s;
+  .tm-filter-item:hover { background: rgba(255,255,255,.04); color: var(--text); }
+  .tm-filter-item.on { color: var(--text); border-left-color: var(--accent); background: rgba(200,169,110,.05); }
+  .tm-filter-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .tm-filter-count {
+    margin-left: auto; font-size: 9px; color: var(--dim);
+    background: rgba(255,255,255,.06); padding: 1px 5px; border-radius: 10px;
   }
-  .tm-filter-item.on .tm-filter-check { background: var(--accent); border-color: var(--accent); color: #000; }
-  .tm-filter-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .tm-filter-item.on .tm-filter-count { background: rgba(200,169,110,.15); color: var(--accent); }
 
-  /* Feed */
-  .tm-feed { flex: 1; overflow-y: auto; }
-  .tm-feed::-webkit-scrollbar { width: 3px; }
-  .tm-feed::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 99px; }
+  /* ── FEED ── */
+  .tm-feed { flex: 1; min-width: 0; overflow-y: auto; background: var(--bg); }
+  .tm-feed::-webkit-scrollbar { width: 4px; }
+  .tm-feed::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 99px; }
 
-  /* Feed header row */
-  .tm-feed-hdr {
+  /* Sort/count bar */
+  .tm-feed-meta {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 16px; border-bottom: 1px solid var(--border);
+    font-size: 10px; color: var(--muted); position: sticky; top: 0;
+    background: rgba(8,11,16,.9); backdrop-filter: blur(8px); z-index: 5;
+  }
+  .tm-feed-count { color: var(--accent); font-weight: 700; }
+  .tm-feed-domains { color: var(--dim); }
+  .tm-sort-btns { display: flex; gap: 4px; margin-left: auto; }
+  .tm-sort-btn {
+    font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 3px;
+    border: 1px solid var(--border); cursor: pointer; color: var(--dim);
+    background: transparent; font-family: var(--mono); transition: all .12s;
+    letter-spacing: .04em;
+  }
+  .tm-sort-btn.on { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,.08); }
+
+  /* Card grid */
+  .tm-cards {
     display: grid;
-    grid-template-columns: 90px 1fr 140px 80px 90px;
-    gap: 0; font-size: 9px; letter-spacing: .08em; font-weight: 700;
-    color: var(--dim); border-bottom: 1px solid var(--border);
-    padding: 6px 16px; position: sticky; top: 0;
-    background: var(--bg); z-index: 2;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
   }
 
-  /* Finding row */
-  .tm-row {
-    display: grid;
-    grid-template-columns: 90px 1fr 140px 80px 90px;
-    gap: 0; align-items: start;
-    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.04);
-    cursor: pointer; transition: background .1s; text-decoration: none; color: inherit;
+  /* Individual card */
+  .tm-card {
+    display: flex; flex-direction: column;
+    background: var(--bg); text-decoration: none; color: inherit;
+    transition: background .15s; overflow: hidden;
+    position: relative;
   }
-  .tm-row:hover { background: var(--surface); }
-  .tm-row.breaking { border-left: 2px solid var(--red); padding-left: 14px; }
-  .tm-row.breaking .tm-row-source { color: var(--red); }
+  .tm-card:hover { background: rgba(255,255,255,.025); }
 
-  .tm-row-domain { display: flex; flex-direction: column; gap: 3px; }
-  .tm-row-domain-pill {
-    font-size: 9px; font-weight: 700; letter-spacing: .05em;
-    padding: 2px 7px; border-radius: 3px; display: inline-block;
-    color: #000; white-space: nowrap; overflow: hidden;
-    text-overflow: ellipsis; max-width: 80px;
-  }
-  .tm-row-breaking-badge {
-    font-size: 8px; font-weight: 900; color: var(--red);
-    letter-spacing: .08em; animation: blink 1s step-start infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
+  /* Domain color strip at top of card */
+  .tm-card-stripe { height: 3px; flex-shrink: 0; }
 
-  .tm-row-main { padding-right: 16px; }
-  .tm-row-title {
-    font-size: 13px; font-weight: 600; line-height: 1.4;
-    margin-bottom: 4px; font-family: var(--sans);
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden;
+  /* Card image */
+  .tm-card-img {
+    width: 100%; height: 130px; object-fit: cover;
+    display: block; flex-shrink: 0;
+    background: var(--surface);
   }
-  .tm-row-body {
-    font-size: 11px; color: var(--muted); line-height: 1.4;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden; font-family: var(--sans);
-  }
+  .tm-card-no-img { height: 0; }
 
-  .tm-row-tickers { display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start; }
-  .tm-tick-tag {
-    font-size: 9px; font-weight: 800; padding: 2px 6px;
-    border-radius: 3px; background: var(--accent-glow);
-    border: 1px solid rgba(200,169,110,.3); color: var(--accent);
-    white-space: nowrap;
-  }
+  /* Card body */
+  .tm-card-body { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
 
-  .tm-row-score { display: flex; gap: 2px; align-items: center; flex-wrap: wrap; }
-  .tm-pip { width: 6px; height: 6px; border-radius: 1px; }
+  /* Top row: domain pill + signal */
+  .tm-card-top { display: flex; align-items: center; gap: 8px; }
+  .tm-card-domain {
+    font-size: 9px; font-weight: 800; letter-spacing: .06em;
+    padding: 3px 8px; border-radius: 3px; color: #000;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;
+  }
+  .tm-card-signal { display: flex; gap: 2px; align-items: center; margin-left: auto; flex-shrink: 0; }
+  .tm-pip { width: 5px; height: 12px; border-radius: 2px; }
   .tm-pip.on { background: var(--accent); }
-  .tm-pip.off { background: var(--dim); }
+  .tm-pip.off { background: rgba(255,255,255,.1); }
 
-  .tm-row-source { font-size: 10px; color: var(--muted); }
-  .tm-row-source a { color: var(--accent2); text-decoration: none; font-size: 10px; }
-  .tm-row-source a:hover { text-decoration: underline; }
-
-  /* Empty state */
-  .tm-empty { padding: 60px 24px; text-align: center; color: var(--muted); font-size: 13px; }
-  .tm-empty-icon { font-size: 32px; margin-bottom: 12px; }
-
-  /* Stats bar */
-  .tm-stats {
-    flex-shrink: 0; display: flex; gap: 24px; align-items: center;
-    padding: 6px 16px; border-top: 1px solid var(--border);
-    background: var(--masthead-bg); font-size: 10px; color: var(--muted);
+  /* Title */
+  .tm-card-title {
+    font-size: 13px; font-weight: 700; line-height: 1.45;
+    color: var(--text); font-family: var(--sans);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .tm-stat-item { display: flex; gap: 6px; align-items: center; }
-  .tm-stat-val { color: var(--accent); font-weight: 700; }
 
-  /* API docs panel */
+  /* Snippet */
+  .tm-card-snip {
+    font-size: 11px; color: var(--muted); line-height: 1.5;
+    font-family: var(--sans);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    flex: 1;
+  }
+
+  /* Footer: tickers + source */
+  .tm-card-footer { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 4px; }
+  .tm-tick-tag {
+    font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+    background: rgba(200,169,110,.1); border: 1px solid rgba(200,169,110,.25);
+    color: var(--accent); white-space: nowrap;
+  }
+  .tm-card-src {
+    margin-left: auto; font-size: 9px; color: var(--dim);
+    white-space: nowrap; text-decoration: none;
+  }
+  .tm-card-src:hover { color: var(--accent2); }
+
+  /* Empty */
+  .tm-empty { padding: 80px 24px; text-align: center; color: var(--muted); font-size: 13px; font-family: var(--sans); grid-column: 1/-1; }
+  .tm-empty-icon { font-size: 40px; margin-bottom: 14px; }
+
+  /* ── STATS BAR ── */
+  .tm-stats {
+    display: flex; gap: 20px; align-items: center;
+    padding: 7px 16px; border-top: 1px solid var(--border);
+    background: rgba(4,6,10,0.6); font-size: 10px; color: var(--muted);
+    flex-shrink: 0;
+  }
+  .tm-stat-val { color: var(--accent); font-weight: 700; }
+  .tm-stats a { color: var(--accent2); text-decoration: none; }
+  .tm-stats a:hover { text-decoration: underline; }
+
+  /* ── API PANEL ── */
   .tm-api-panel {
-    display: none; position: fixed; inset: 0; z-index: 100;
-    background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.75); backdrop-filter: blur(8px);
     align-items: center; justify-content: center;
   }
   .tm-api-panel.open { display: flex; }
   .tm-api-box {
-    background: var(--surface-solid); border: 1px solid var(--border);
-    border-radius: 12px; padding: 28px 32px; max-width: 640px; width: 90vw;
-    max-height: 80vh; overflow-y: auto;
+    background: #0d1117; border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 32px; max-width: 640px; width: 92vw;
+    max-height: 82vh; overflow-y: auto;
   }
-  .tm-api-box h2 { font-size: 16px; font-weight: 800; margin-bottom: 16px; }
+  .tm-api-box h2 { font-size: 16px; font-weight: 800; margin: 0 0 8px; }
   .tm-api-endpoint { margin-bottom: 16px; }
   .tm-api-endpoint code {
     display: block; background: var(--surface); border: 1px solid var(--border);
     border-radius: 6px; padding: 8px 12px; font-size: 12px;
     color: var(--accent2); margin: 6px 0; cursor: pointer;
+    transition: border-color .15s;
   }
   .tm-api-endpoint code:hover { border-color: var(--accent); }
-  .tm-api-desc { font-size: 12px; color: var(--muted); font-family: var(--sans); }
-  .tm-api-close { float: right; cursor: pointer; color: var(--muted); font-size: 18px; margin-top: -4px; }
+  .tm-api-desc { font-size: 11px; color: var(--muted); font-family: var(--sans); line-height: 1.5; }
+  .tm-api-close { float: right; cursor: pointer; color: var(--muted); font-size: 20px; margin-top: -4px; line-height: 1; }
+  .tm-api-close:hover { color: var(--text); }
 
-  @media(max-width: 900px) {
-    .tm-filters { display: none; }
-    .tm-feed-hdr { grid-template-columns: 80px 1fr 80px; }
-    .tm-row       { grid-template-columns: 80px 1fr 80px; }
-    .tm-row-score, .tm-row-source { display: none; }
+  /* ── RESPONSIVE ── */
+  @media(max-width: 860px) {
+    .tm-sidebar { display: none; }
+    .tm-cards { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
   }
-  @media(max-width: 600px) {
-    .tm-feed-hdr { grid-template-columns: 70px 1fr; }
-    .tm-row       { grid-template-columns: 70px 1fr; }
-    .tm-row-tickers { display: none; }
+  @media(max-width: 540px) {
+    .tm-cards { grid-template-columns: 1fr; }
+    .tm-bar { padding: 6px 12px; }
+    .tm-ticker-strip { display: none; }
+    .tm-live-strip { height: 52px; }
+    .tm-tile-fg { font-size: 18px; }
+    .tm-tile-value { font-size: 12px; }
   }
+
+  /* highlight */
+  mark.hl { background: rgba(200,169,110,.3); color: var(--text); border-radius: 2px; padding: 0 1px; }
 </style>
 
 <!-- API docs panel -->
@@ -201,196 +274,224 @@
   <div class="tm-api-box">
     <span class="tm-api-close" onclick="toggleApi()">✕</span>
     <h2>📡 Intel Swarm Public API</h2>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:20px;font-family:var(--sans)">
-      Free to use. No auth required. All responses are JSON.
-      Base URL: <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:11px">https://intel-swarm.vercel.app</code>
-    </p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px;font-family:var(--sans)">Free to use. No auth. All responses JSON.<br>Base: <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:11px">https://intel-swarm.vercel.app</code></p>
+    {% for ep in [
+      ("/api/v1/findings?date=2026-03-05&domain=war", "All findings", "Params: date, domain, lang, limit"),
+      ("/api/v1/findings?ticker=BTC", "Ticker filter", "Works with BTC, ETH, SOL, OIL, GOLD, DXY, SPX…"),
+      ("/api/v1/feed", "Full feed (score-sorted)", "All domains, best signals first"),
+      ("/api/v1/brief", "Daily brief", "AI synthesis as plain text"),
+      ("/api/v1/search?q=iran+oil", "Search", "Full-text search across all findings"),
+      ("/api/v1/domains", "Domain list", "All 19 domains with metadata"),
+      ("/rss", "RSS feed", "Global RSS. Domain: /rss/war, /rss/crypto…"),
+    ] %}
     <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">All findings for a date</div>
-      <code onclick="copyCode(this)">/api/v1/findings?date=2026-03-05&amp;domain=war</code>
-      <div class="tm-api-desc">Params: <b>date</b> (YYYY-MM-DD), <b>domain</b> (e.g. war, crypto), <b>lang</b> (en/zh), <b>limit</b> (max 500)</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px">{{ ep[1] }}</div>
+      <code onclick="copyCode(this)">{{ ep[0] }}</code>
+      <div class="tm-api-desc">{{ ep[2] }}</div>
     </div>
-    <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Ticker-filtered findings</div>
-      <code onclick="copyCode(this)">/api/v1/findings?ticker=BTC</code>
-      <div class="tm-api-desc">Returns all findings where BTC is a relevant asset tag. Works with: BTC, ETH, SOL, OIL, GOLD, DXY, SPX, NVDA…</div>
-    </div>
-    <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Full feed (score-sorted)</div>
-      <code onclick="copyCode(this)">/api/v1/feed</code>
-      <div class="tm-api-desc">All findings across all domains, sorted by intelligence score. Ideal for trading dashboards.</div>
-    </div>
-    <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Daily brief</div>
-      <code onclick="copyCode(this)">/api/v1/brief</code>
-      <div class="tm-api-desc">AI synthesis + chief-of-staff brief as plain text. Good for summarization pipelines.</div>
-    </div>
-    <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Search</div>
-      <code onclick="copyCode(this)">/api/v1/search?q=iran+oil</code>
-      <div class="tm-api-desc">Full-text search across all findings. Returns matching items with domain, tickers, score.</div>
-    </div>
-    <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Domain list</div>
-      <code onclick="copyCode(this)">/api/v1/domains</code>
-      <div class="tm-api-desc">All 19 research domains with metadata.</div>
-    </div>
-    <div class="tm-api-endpoint">
-      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">RSS feed</div>
-      <code onclick="copyCode(this)">/rss</code>
-      <div class="tm-api-desc">Global RSS feed. Domain-specific: <b>/rss/war</b>, <b>/rss/crypto</b>, etc.</div>
-    </div>
-    <div style="font-size:11px;color:var(--muted);margin-top:16px;font-family:var(--sans)">
-      🔔 Want push alerts? Set up <b>TG_PUSH_BOT_TOKEN</b> + <b>TG_PUSH_CHANNEL_ID</b> env vars for Telegram channel push.
-    </div>
+    {% endfor %}
   </div>
 </div>
 
 <div class="tm-wrap">
-  <!-- Top bar -->
+
+  <!-- ── TOP BAR ── -->
   <div class="tm-bar">
     <div class="tm-logo">⚡ INTEL TERMINAL</div>
-
     <div class="tm-search-wrap">
       <div class="tm-search-prefix">⌕</div>
-      <input id="tm-search" type="text" placeholder="Search findings, tickers, keywords…" oninput="onSearch(this.value)" autocomplete="off"/>
+      <input id="tm-search" type="text"
+        placeholder="{% if lang=='zh' %}搜尋情報、代號、關鍵詞…{% else %}Search findings, tickers, keywords…{% endif %}"
+        oninput="onSearch(this.value)" autocomplete="off"/>
     </div>
-
     <div class="tm-ticker-strip" id="ticker-strip">
       {% for t in top_tickers %}
       <button class="tm-tick" data-ticker="{{ t }}" onclick="tickerFilter('{{ t }}')">{{ t }}</button>
       {% endfor %}
     </div>
-
     <div class="tm-bar-right">
       <div class="tm-live"><div class="tm-live-dot"></div>{{ date }}</div>
-      <button class="tm-api-link" onclick="toggleApi()" style="cursor:pointer;font-family:var(--mono)">API docs</button>
+      <button class="tm-api-btn" onclick="toggleApi()">API</button>
     </div>
   </div>
 
+  <!-- ── LIVE MARKET STRIP ── -->
   <div class="tm-live-strip" id="liveStrip">
-  <div class="tm-strip-loading">&#9679; &nbsp;LOADING MARKET DATA…</div>
-</div>
-<div class="tm-body">
-    <!-- Domain filters -->
-    <div class="tm-filters" id="tm-filters">
-      <div class="tm-filter-hdr">DOMAINS</div>
+    <div class="tm-strip-loading">⬤ &nbsp;{% if lang=='zh' %}載入市場數據…{% else %}LOADING MARKET DATA…{% endif %}</div>
+  </div>
+
+  <!-- ── BODY ── -->
+  <div class="tm-body">
+
+    <!-- Sidebar -->
+    <div class="tm-sidebar" id="tm-sidebar">
+      <div class="tm-filter-hdr">{% if lang=='zh' %}領域{% else %}DOMAINS{% endif %}</div>
       <div class="tm-filter-item on" data-domain="all" onclick="domainFilter('all')">
-        <div class="tm-filter-check">✓</div>
-        <span>All</span>
+        <div class="tm-filter-dot" style="background:var(--accent)"></div>
+        <span>{% if lang=='zh' %}全部{% else %}All{% endif %}</span>
+        <span class="tm-filter-count" id="cnt-all">{{ all_findings|length }}</span>
       </div>
       {% for r in researchers %}
+      {% set domain_id = r.id %}
+      {% set cnt = all_findings|selectattr('domain','equalto',domain_id)|list|length %}
+      {% if r.subs %}
+        {% for s in r.subs %}
+        {% set scnt = all_findings|selectattr('domain','equalto',s.id)|list|length %}
+        {% if scnt > 0 %}
+        <div class="tm-filter-item" data-domain="{{ s.id }}" onclick="domainFilter('{{ s.id }}')">
+          <div class="tm-filter-dot" style="background:{{ r.colors.split(',')[0] if ',' in r.colors else '#888' }}"></div>
+          <span>{{ s.emoji }} {{ s.zh if lang=='zh' else s.name }}</span>
+          <span class="tm-filter-count">{{ scnt }}</span>
+        </div>
+        {% endif %}
+        {% endfor %}
+      {% else %}
+      {% if cnt > 0 %}
       <div class="tm-filter-item" data-domain="{{ r.id }}" onclick="domainFilter('{{ r.id }}')">
-        <div class="tm-filter-check"></div>
         <div class="tm-filter-dot" style="background:{{ r.colors.split(',')[0] if ',' in r.colors else '#888' }}"></div>
-        <span>{{ r.emoji }} {{ r.zh if lang == 'zh' else r.name }}</span>
+        <span>{{ r.emoji }} {{ r.zh if lang=='zh' else r.name }}</span>
+        <span class="tm-filter-count">{{ cnt }}</span>
       </div>
+      {% endif %}
+      {% endif %}
       {% endfor %}
     </div>
 
     <!-- Feed -->
     <div class="tm-feed" id="tm-feed">
-      <div class="tm-feed-hdr">
-        <div>DOMAIN</div>
-        <div>FINDING</div>
-        <div>TICKERS</div>
-        <div>SIGNAL</div>
-        <div>SOURCE</div>
+      <div class="tm-feed-meta">
+        <span><span class="tm-feed-count" id="st-count">{{ all_findings|length }}</span>&nbsp;{% if lang=='zh' %}條情報{% else %}findings{% endif %}</span>
+        <span class="tm-feed-domains" id="st-domains"></span>
+        <div class="tm-sort-btns">
+          <button class="tm-sort-btn on" id="sort-score" onclick="setSort('score')">{% if lang=='zh' %}評分{% else %}SCORE{% endif %}</button>
+          <button class="tm-sort-btn" id="sort-domain" onclick="setSort('domain')">{% if lang=='zh' %}領域{% else %}DOMAIN{% endif %}</button>
+        </div>
       </div>
-      <div id="tm-rows"></div>
+      <div class="tm-cards" id="tm-cards"></div>
     </div>
+
   </div>
 
-  <!-- Stats bar -->
+  <!-- ── STATS BAR ── -->
   <div class="tm-stats">
-    <div class="tm-stat-item"><span class="tm-stat-val" id="st-count">0</span> findings</div>
-    <div class="tm-stat-item"><span class="tm-stat-val" id="st-domains">0</span> domains</div>
-    <div class="tm-stat-item" style="margin-left:auto">
-      <a href="/rss" style="color:var(--accent2);text-decoration:none;font-size:10px">📡 RSS</a>
-    </div>
-    <div class="tm-stat-item">
-      <a href="/api/v1/feed" style="color:var(--accent2);text-decoration:none;font-size:10px">{ } JSON API</a>
-    </div>
+    <span><span class="tm-stat-val" id="st-count2">{{ all_findings|length }}</span>&nbsp;{% if lang=='zh' %}條情報{% else %}findings{% endif %}</span>
+    <span style="color:var(--dim)">19 {% if lang=='zh' %}個領域{% else %}domains{% endif %}</span>
+    <span style="margin-left:auto;display:flex;gap:16px">
+      <a href="/rss">📡 RSS</a>
+      <a href="/api/v1/feed">{ } API</a>
+    </span>
   </div>
+
 </div>
 
 <script>
 var ALL_FINDINGS = {{ all_findings | tojson }};
-var _filtered = ALL_FINDINGS.slice();
-var _domainFilter = 'all';
-var _tickerFilter = '';
-var _searchQuery  = '';
+var _domain = 'all';
+var _ticker = '';
+var _query  = '';
+var _sort   = 'score';
 
-function render(findings) {
-  var container = document.getElementById('tm-rows');
+// Pre-compute domain counts
+var _domainCounts = {};
+ALL_FINDINGS.forEach(function(f){ _domainCounts[f.domain] = (_domainCounts[f.domain]||0)+1; });
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function highlight(text, q) {
+  if (!text||!q) return escHtml(text);
+  var re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return escHtml(text).replace(re,'<mark class="hl">$1</mark>');
+}
+function fmtPrice(p) {
+  if (!p && p !== 0) return '—';
+  if (p >= 1000) return '$' + p.toLocaleString('en-US',{maximumFractionDigits:0});
+  if (p >= 1)    return '$' + p.toFixed(2);
+  return '$' + p.toFixed(4);
+}
+
+function renderCards(findings) {
+  var container = document.getElementById('tm-cards');
+  var q = _query.toLowerCase();
+
+  // Update counts
+  var domains = new Set(findings.map(function(f){return f.domain;}));
+  document.getElementById('st-count').textContent  = findings.length;
+  document.getElementById('st-count2').textContent = findings.length;
+  var dLabel = domains.size + ' {% if lang=="zh" %}個領域{% else %}domains{% endif %}';
+  document.getElementById('st-domains').textContent = domains.size ? '— ' + dLabel : '';
+
   if (!findings.length) {
-    container.innerHTML = '<div class="tm-empty"><div class="tm-empty-icon">📭</div>No findings match this filter.</div>';
-    document.getElementById('st-count').textContent = 0;
-    document.getElementById('st-domains').textContent = 0;
+    container.innerHTML = '<div class="tm-empty"><div class="tm-empty-icon">📭</div>{% if lang=="zh" %}沒有符合的情報{% else %}No findings match this filter{% endif %}</div>';
     return;
   }
-  var domains = new Set(findings.map(function(f){ return f.domain; }));
-  document.getElementById('st-count').textContent = findings.length;
-  document.getElementById('st-domains').textContent = domains.size;
 
   container.innerHTML = findings.map(function(f) {
-    var colors  = (f.colors||'#888,#aaa').split(',');
-    var col1    = colors[0], col2 = colors[1]||col1;
-    var tickers = (f.tickers||[]).map(function(t){
-      return '<span class="tm-tick-tag">'+t+'</span>';
+    var colors = (f.colors||'#555,#888').split(',');
+    var col1 = colors[0].trim(), col2 = (colors[1]||col1).trim();
+    var title = q ? highlight(f.title, q) : escHtml(f.title);
+    var body  = q ? highlight(f.body,  q) : escHtml(f.body);
+    var tickers = (f.tickers||[]).slice(0,4).map(function(t){
+      return '<span class="tm-tick-tag">'+escHtml(t)+'</span>';
     }).join('');
     var pips = [1,2,3,4,5].map(function(i){
-      return '<div class="tm-pip '+(i<=f.score?'on':'off')+'"></div>';
+      return '<div class="tm-pip '+(i<=(f.score||3)?'on':'off')+'"></div>';
     }).join('');
     var srcHost = '';
     if (f.url) { try { srcHost = new URL(f.url).hostname.replace('www.',''); } catch(e){} }
-    var q = _searchQuery.toLowerCase();
-    var title = q ? highlight(f.title, q) : escHtml(f.title);
-    var body  = q ? highlight(f.body,  q) : escHtml(f.body);
-
-    return '<a class="tm-row" href="'+f.permalink+'" target="_blank" rel="noopener">' +
-      '<div class="tm-row-domain">'+
-        '<span class="tm-row-domain-pill" style="background:'+col1+'">'+escHtml(f.emoji+' '+f.domain_name)+'</span>'+
+    var imgHtml = '';
+    if (f.image && f.image !== 'null' && f.image !== '') {
+      imgHtml = '<img class="tm-card-img" src="'+escHtml(f.image)+'" loading="lazy" alt="" onerror="this.style.display=\'none\'">';
+    }
+    return '<a class="tm-card" href="'+escHtml(f.permalink)+'" target="_blank" rel="noopener">' +
+      '<div class="tm-card-stripe" style="background:linear-gradient(90deg,'+col1+','+col2+')"></div>'+
+      imgHtml +
+      '<div class="tm-card-body">'+
+        '<div class="tm-card-top">'+
+          '<span class="tm-card-domain" style="background:'+col1+'">'+escHtml(f.emoji+' '+f.domain_name)+'</span>'+
+          '<div class="tm-card-signal">'+pips+'</div>'+
+        '</div>'+
+        '<div class="tm-card-title">'+title+'</div>'+
+        (f.body?'<div class="tm-card-snip">'+body+'</div>':'')+
+        '<div class="tm-card-footer">'+
+          tickers +
+          (srcHost?'<a class="tm-card-src" href="'+escHtml(f.url)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+escHtml(srcHost)+' ↗</a>':'')+
+        '</div>'+
       '</div>'+
-      '<div class="tm-row-main">'+
-        '<div class="tm-row-title">'+title+'</div>'+
-        (f.body ? '<div class="tm-row-body">'+body+'</div>' : '')+
-      '</div>'+
-      '<div class="tm-row-tickers">'+tickers+'</div>'+
-      '<div class="tm-row-score">'+pips+'</div>'+
-      '<div class="tm-row-source">'+(srcHost ? '<a href="'+escHtml(f.url)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+escHtml(srcHost)+'↗</a>' : '—')+'</div>'+
     '</a>';
   }).join('');
 }
 
 function applyFilters() {
   var results = ALL_FINDINGS.filter(function(f) {
-    if (_domainFilter !== 'all' && f.domain !== _domainFilter) return false;
-    if (_tickerFilter && !f.tickers.includes(_tickerFilter)) return false;
-    if (_searchQuery) {
-      var q = _searchQuery.toLowerCase();
+    if (_domain !== 'all' && f.domain !== _domain) return false;
+    if (_ticker && !(f.tickers||[]).includes(_ticker)) return false;
+    if (_query) {
+      var q = _query.toLowerCase();
       if (!(f.title||'').toLowerCase().includes(q) && !(f.body||'').toLowerCase().includes(q)) return false;
     }
     return true;
   });
-  _filtered = results;
-  render(results);
+  if (_sort === 'domain') {
+    results.sort(function(a,b){ return a.domain.localeCompare(b.domain) || (b.score||0)-(a.score||0); });
+  } else {
+    results.sort(function(a,b){ return (b.score||0)-(a.score||0); });
+  }
+  renderCards(results);
 }
 
 function domainFilter(domain) {
-  _domainFilter = domain;
+  _domain = domain;
   document.querySelectorAll('.tm-filter-item').forEach(function(el){
-    var on = el.dataset.domain === domain;
-    el.classList.toggle('on', on);
-    el.querySelector('.tm-filter-check').textContent = on ? '✓' : '';
+    el.classList.toggle('on', el.dataset.domain === domain);
   });
   applyFilters();
 }
 
 function tickerFilter(t) {
-  _tickerFilter = (_tickerFilter === t) ? '' : t;
+  _ticker = (_ticker === t) ? '' : t;
   document.querySelectorAll('.tm-tick').forEach(function(b){
-    b.classList.toggle('on', b.dataset.ticker === _tickerFilter);
+    b.classList.toggle('on', b.dataset.ticker === _ticker);
   });
   applyFilters();
 }
@@ -398,12 +499,17 @@ function tickerFilter(t) {
 var _searchTimer;
 function onSearch(v) {
   clearTimeout(_searchTimer);
-  _searchTimer = setTimeout(function(){ _searchQuery = v.trim(); applyFilters(); }, 180);
+  _searchTimer = setTimeout(function(){ _query = v.trim(); applyFilters(); }, 150);
 }
 
-function toggleApi() {
-  document.getElementById('api-panel').classList.toggle('open');
+function setSort(s) {
+  _sort = s;
+  document.getElementById('sort-score').classList.toggle('on', s==='score');
+  document.getElementById('sort-domain').classList.toggle('on', s==='domain');
+  applyFilters();
 }
+
+function toggleApi() { document.getElementById('api-panel').classList.toggle('open'); }
 
 function copyCode(el) {
   var text = 'https://intel-swarm.vercel.app' + el.textContent;
@@ -412,58 +518,52 @@ function copyCode(el) {
   setTimeout(function(){ el.style.color = ''; }, 1200);
 }
 
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function highlight(text, q) {
-  if (!text||!q) return escHtml(text);
-  var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
-  return escHtml(text).replace(re, '<mark style="background:rgba(200,169,110,.35);color:var(--text);border-radius:2px">$1</mark>');
-}
-
 // Init
-render(ALL_FINDINGS);
-</script>
-<script>
+applyFilters();
+
+// Live market strip
 (function(){
   fetch('/api/live/markets').then(function(r){return r.json();}).then(function(d){
     var strip = document.getElementById('liveStrip');
     if(!strip) return;
     var html = '';
-    // Fear & Greed
     var fg = d.fear_greed || {};
     if(fg.value !== undefined){
       var v = fg.value;
       var cls = v<25?'extreme-fear':v<45?'fear':v<55?'neutral':v<75?'greed':'extreme-greed';
-      html += '<div class="tm-live-tile" style="min-width:100px"><div class="tm-tile-label">Fear &amp; Greed</div><div class="tm-tile-fg '+cls+'">'+v+'</div><div class="tm-tile-sub" style="color:var(--muted)">'+(fg.label||'')+'</div></div>';
+      html += '<div class="tm-live-tile" style="min-width:108px">'+
+        '<div class="tm-tile-label">{% if lang=="zh" %}恐懼貪婪{% else %}Fear &amp; Greed{% endif %}</div>'+
+        '<div class="tm-tile-fg '+cls+'">'+v+'</div>'+
+        '<div class="tm-tile-sub" style="color:var(--muted)">'+(fg.label||'')+'</div></div>';
     }
-    html += '<div class="tm-strip-sep"></div>';
-    // Crypto
+    html += '<div class="tm-strip-div"></div>';
     (d.crypto||[]).forEach(function(c){
-      var chg = c.change_24h||0;
-      var cls2 = chg>0?'up':chg<0?'dn':'neu';
-      var sign = chg>0?'+':'';
+      var chg = c.change_24h||0, cls2 = chg>0?'up':chg<0?'dn':'neu', sign = chg>0?'+':'';
       var price = c.price>1000?c.price.toLocaleString('en-US',{maximumFractionDigits:0}):c.price.toFixed(2);
-      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+c.symbol+'</div><div class="tm-tile-value">$'+price+'</div><div class="tm-tile-sub tm-tile-chg '+cls2+'">'+sign+chg+'%</div></div>';
+      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+c.symbol+'</div>'+
+        '<div class="tm-tile-value">$'+price+'</div>'+
+        '<div class="tm-tile-sub tm-tile-chg '+cls2+'">'+sign+chg+'%</div></div>';
     });
-    html += '<div class="tm-strip-sep"></div>';
-    // Commodities
+    html += '<div class="tm-strip-div"></div>';
     (d.commodities||[]).forEach(function(c){
-      var chg = c.change_pct||0;
-      var cls3 = chg>0?'up':chg<0?'dn':'neu';
-      var sign = chg>0?'+':'';
+      var chg = c.change_pct||0, cls3 = chg>0?'up':chg<0?'dn':'neu', sign = chg>0?'+':'';
       var price = c.price>100?c.price.toFixed(2):c.price.toFixed(3);
-      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+c.name+'</div><div class="tm-tile-value">$'+price+'</div><div class="tm-tile-sub tm-tile-chg '+cls3+'">'+sign+chg+'%</div></div>';
+      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+c.name+'</div>'+
+        '<div class="tm-tile-value">$'+price+'</div>'+
+        '<div class="tm-tile-sub tm-tile-chg '+cls3+'">'+sign+chg+'%</div></div>';
     });
-    html += '<div class="tm-strip-sep"></div>';
-    // Central banks
-    (d.central_banks||[]).forEach(function(b){
-      html += '<div class="tm-live-tile"><div class="tm-tile-label">'+b.bank+'</div><div class="tm-tile-value" style="color:rgba(200,169,110,0.9)">'+b.rate+'%</div><div class="tm-tile-sub" style="color:var(--dim)">'+b.currency+'</div></div>';
-    });
-    strip.innerHTML = html || '<div class="tm-strip-loading">NO MARKET DATA</div>';
+    if((d.central_banks||[]).length){
+      html += '<div class="tm-strip-div"></div>';
+      d.central_banks.forEach(function(b){
+        html += '<div class="tm-live-tile"><div class="tm-tile-label">'+b.bank+'</div>'+
+          '<div class="tm-tile-value" style="color:rgba(200,169,110,0.95)">'+b.rate+'%</div>'+
+          '<div class="tm-tile-sub" style="color:var(--dim)">'+b.currency+'</div></div>';
+      });
+    }
+    strip.innerHTML = html || '<div class="tm-strip-loading">{% if lang=="zh" %}無市場數據{% else %}NO MARKET DATA{% endif %}</div>';
   }).catch(function(){
     var strip = document.getElementById('liveStrip');
-    if(strip) strip.innerHTML = '<div class="tm-strip-loading">MARKET DATA UNAVAILABLE</div>';
+    if(strip) strip.innerHTML = '<div class="tm-strip-loading">{% if lang=="zh" %}市場數據暫不可用{% else %}MARKET DATA UNAVAILABLE{% endif %}</div>';
   });
 })();
 </script>
