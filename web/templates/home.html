@@ -64,8 +64,7 @@
 .editorial {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: min-content;
-  align-items: start;
+  grid-auto-rows: clamp(120px, 13vw, 220px);
   gap: 0;
   margin-bottom: 48px;
   border: 1px solid rgba(255,255,255,.06);
@@ -92,10 +91,9 @@
 .span-5  { grid-column: span 5; }
 .span-4  { grid-column: span 4; }
 .span-3  { grid-column: span 3; }
-.span-7, .span-5 { height: clamp(200px, 26vw, 420px); }
-.span-6          { height: clamp(200px, 26vw, 420px); }
-.span-4          { height: clamp(140px, 16vw, 260px); }
-.span-3          { height: clamp(120px, 13vw, 210px); }
+/* Heights driven by grid-auto-rows × row span */
+.span-7, .span-5, .span-6 { grid-row: span 2; }  /* 2 × base row = tall hero cards */
+.span-4, .span-3           { grid-row: span 1; }  /* 1 × base row = short cards */
 .ecard-bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
@@ -198,15 +196,16 @@
 .no-results { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; display: none; }
 
 @media (max-width: 900px) {
-  .editorial { gap: 2px; border: none; }
+  .editorial { gap: 2px; border: none; grid-auto-rows: 180px; }
   .ecard { border-radius: 4px; border: none; }
-  .span-7, .span-5 { grid-column: span 12; height: 260px; }
-  .span-4 { grid-column: span 6; height: 180px; }
-  .span-3 { grid-column: span 6; height: 150px; }
+  .span-7, .span-5 { grid-column: span 12; grid-row: span 1; }
+  .span-4 { grid-column: span 6; grid-row: span 1; }
+  .span-3 { grid-column: span 6; grid-row: span 1; }
 }
 @media (max-width: 600px) {
-  .span-7, .span-5 { grid-column: span 12; height: 200px; }
-  .span-4, .span-3 { grid-column: span 12; height: 150px; }
+  .editorial { grid-auto-rows: 160px; }
+  .span-7, .span-5 { grid-column: span 12; }
+  .span-4, .span-3 { grid-column: span 12; }
   .span-4 .ecard-preview, .span-3 .ecard-preview { display: none; }
 }
 </style>
