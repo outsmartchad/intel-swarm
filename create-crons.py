@@ -325,31 +325,41 @@ def create_synthesis_cron():
         print(f"  stderr: {result.stderr[:200]}")
     return None
 
-AUTOPUSH_PROMPT = """INTERNAL_TASK - DAILY INTEL PIPELINE: TRANSLATE + SCRAPE IMAGES + PUSH + DEPLOY
+AUTOPUSH_PROMPT = """INTERNAL_TASK - DAILY INTEL PIPELINE: COPY → TRANSLATE → SCRAPE → PUSH → DEPLOY
 
 Run these steps in order using the exec tool:
 
-Step 1 - Run full translation pipeline for today:
+Step 1 - Copy all intel findings from workspace to researchers folders:
+```
+date_str=$(date +%Y-%m-%d)
+for domain in crypto ai-agents conspiracy epstein war macro singularity blackbudget emerging westeast quant culture sports commodities religion health russia china north-korea; do
+  src=~/.openclaw/workspace/intel/${date_str}-${domain}.md
+  dst=~/.openclaw/workspace/projects/intel-swarm/researchers/${domain}/findings/${date_str}.md
+  [ -f "$src" ] && cp "$src" "$dst" && echo "copied $domain"
+done
+```
+
+Step 2 - Run full translation pipeline for today:
 ```
 cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && bash web/translate-all.sh $(date +%Y-%m-%d)
 ```
 
-Step 2 - Scrape OG images for all researchers for today:
+Step 3 - Scrape OG images for all researchers for today:
 ```
 cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && python3 web/scrape-all-images.sh $(date +%Y-%m-%d)
 ```
 
-Step 3 - Commit and push everything to GitHub:
+Step 4 - Commit and push everything to GitHub:
 ```
 cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main
 ```
 
-Step 4 - Deploy to Vercel production:
+Step 5 - Deploy to Vercel production:
 ```
 cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && vercel deploy --prod --yes 2>&1 | tail -5
 ```
 
-If all steps succeed, reply: "✅ Intel $(date +%Y-%m-%d) pipeline complete — translated, images scraped, pushed to GitHub, deployed to https://intel-swarm.vercel.app/"
+If all steps succeed, reply: "✅ Intel $(date +%Y-%m-%d) pipeline complete — copied, translated, images scraped, pushed to GitHub, deployed to https://intel-swarm.vercel.app/"
 If any step fails, report which step and the error."""
 
 
