@@ -325,16 +325,22 @@ def create_synthesis_cron():
         print(f"  stderr: {result.stderr[:200]}")
     return None
 
-AUTOPUSH_PROMPT = """INTERNAL_TASK - AUTO PUSH INTEL TO GITHUB
+AUTOPUSH_PROMPT = """INTERNAL_TASK - AUTO PUSH INTEL TO GITHUB AND DEPLOY TO VERCEL
 
-Run the following shell commands using the exec tool to commit and push todays intel findings to GitHub (which will trigger a Vercel auto-deploy):
+Run these commands in order using the exec tool:
 
+Step 1 - Commit and push to GitHub:
 ```
-cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main && echo "PUSH OK"
+cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && git add -A && git diff --cached --quiet || git commit -m "intel: $(date +%Y-%m-%d) daily findings auto-push" && git push origin main
 ```
 
-If the push succeeds, reply with: "✅ Intel pushed to GitHub. Vercel deploying now → https://intel-swarm.vercel.app/"
-If it fails, reply with the error so it can be investigated."""
+Step 2 - Force deploy to Vercel production:
+```
+cd /Users/outsmart/.openclaw/workspace/projects/intel-swarm && vercel deploy --prod --yes 2>&1 | tail -5
+```
+
+If both succeed, reply: "✅ Intel pushed to GitHub + deployed to https://intel-swarm.vercel.app/"
+If anything fails, reply with the error."""
 
 
 def create_autopush_cron():
