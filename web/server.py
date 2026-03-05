@@ -219,49 +219,33 @@ def attach_images(findings, rid, date):
         finding["image"] = image_map.get(i)  # None if no image for this finding
 
 # ── LAYOUT ENGINE ─────────────────────────────────────────────────────────────
-def _pack_cols(n):
-    """
-    Return list of column widths for n domains filling 12-column rows.
-    All secondary cards use span-6 (2 per row) for maximum readability.
-    Odd count: last card gets span-12 (full width).
-    """
-    if n == 0:
-        return []
-    cols = [6] * n
-    leftover = (sum(cols)) % 12
-    if leftover:
-        cols[-1] += 12 - leftover  # last card fills remainder (span-6→12 if odd)
-    return cols
-
 def assign_layout(domains, date):
     """
-    Assign editorial card sizes. All rows sum to exactly 12 cols — no gaps.
-
-    Row 1 : hero (7) + featured (5) = 12
-    Rows 2+: remaining domains packed by _pack_cols()
-             higher-scoring domains get span-4 (wider), lower get span-3
-
-    Most significant domain (highest score) always gets hero slot.
-    Domains are reordered: hero → featured → rest (score-descending).
+    Clean 2-column grid layout. No row-spans, no gaps.
+    - #1 scorer → span-12 (full-width featured strip at top of grid)
+    - All others → span-6 (2 per row, easy to read)
+    Odd remainder: last card gets span-12.
     """
     N = len(domains)
     if N == 0:
         return domains
 
     by_score = sorted(range(N), key=lambda i: domains[i]["score"], reverse=True)
+    feat_i = by_score[0]
+    rest   = by_score[1:]
 
-    # Hero = #1 scorer, featured = #2 scorer — deterministic, score-driven
-    hero_i = by_score[0]
-    feat_i = by_score[1] if N > 1 else by_score[0]
-    rest   = by_score[2:]  # already score-sorted, wide → narrow
+    # Featured card: full-width strip
+    domains[feat_i]["cols"]       = 12
+    domains[feat_i]["sort_order"] = 0
 
-    col_map = {hero_i: 7, feat_i: 5}
-    for domain_i, cols in zip(rest, _pack_cols(len(rest))):
-        col_map[domain_i] = cols
-
-    for rank, domain_i in enumerate([hero_i, feat_i] + rest):
-        domains[domain_i]["cols"]       = col_map[domain_i]
-        domains[domain_i]["sort_order"] = rank
+    # Everyone else: span-6 (2 columns)
+    for rank, domain_i in enumerate(rest):
+        # If odd number of rest cards, last one gets span-12 to avoid half-row
+        if rank == len(rest) - 1 and len(rest) % 2 == 1:
+            domains[domain_i]["cols"] = 12
+        else:
+            domains[domain_i]["cols"] = 6
+        domains[domain_i]["sort_order"] = rank + 1
 
     domains.sort(key=lambda d: d.get("sort_order", 99))
     return domains
