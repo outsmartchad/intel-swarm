@@ -8,7 +8,7 @@
 
 ## What is this?
 
-Intel Swarm is an autonomous AI-powered intelligence network. A swarm of specialized researcher agents scrape, analyze, and synthesize the web daily — delivering high-signal briefings that 99% of people miss.
+Intel Swarm is an autonomous intelligence research team. A swarm of specialized researcher agents scrape, analyze, and synthesize the web daily — delivering high-signal briefings that 99% of people miss.
 
 Each morning:
 1. **15+ researcher agents** run in parallel across domains
