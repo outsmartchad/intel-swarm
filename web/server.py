@@ -310,12 +310,14 @@ def home(date):
     domains = []
     for r in RESEARCHERS:
         data = get_researcher_data(r["id"], date, lang)
+        # Always score from English findings so layout is identical across languages
+        en_findings = extract_findings(read_file(f"{BASE}/researchers/{r['id']}/findings/{date}.md", "en")) if lang != "en" else data["findings"]
         domains.append({
             "id":     r["id"],
             "emoji":  r["emoji"],
             "name":   r["zh"] if lang == "zh" else r["name"],
             "colors": r["colors"],
-            "score":  top_score(data["findings"]),
+            "score":  top_score(en_findings),
             **data,
         })
 
