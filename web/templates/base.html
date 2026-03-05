@@ -568,6 +568,9 @@
   <a href="/conflict" {% if request.path == '/conflict' %}data-active="true"{% endif %}>
     🌍 {% if (lang|default('en')) == 'zh' %}衝突地圖{% else %}Conflict Map{% endif %}
   </a>
+  <a href="/terminal" {% if request.path == '/terminal' %}data-active="true"{% endif %} style="color:var(--accent);font-weight:700">
+    ⚡ {% if (lang|default('en')) == 'zh' %}終端機{% else %}Terminal{% endif %}
+  </a>
 </nav>
 
 {% block body %}{% endblock %}

@@ -1021,6 +1021,260 @@ def conflict_events():
     _CONFLICT_CACHE[cache_key] = {"ts": time.time(), "data": result}
     return flask_jsonify(result)
 
+# ── PUBLIC API v1 ─────────────────────────────────────────────────────────────
+
+# Ticker → keyword map for cross-domain asset tagging
+_TICKER_MAP = {
+    "$BTC":  ["bitcoin","btc","crypto","cryptocurrency"],
+    "$ETH":  ["ethereum","eth"],
+    "$SOL":  ["solana","sol"],
+    "$XRP":  ["ripple","xrp"],
+    "$DOGE": ["doge","dogecoin","musk","elon"],
+    "$PEPE": ["pepe","meme","memecoin"],
+    "$WIF":  ["wif","dogwifhat"],
+    "$BONK": ["bonk"],
+    "OIL":   ["oil","crude","opec","barrel","petroleum","brent","wti","hormuz"],
+    "GOLD":  ["gold","xau","bullion","precious metal"],
+    "DXY":   ["dollar","dxy","usd","federal reserve","fed ","powell","interest rate"],
+    "BONDS": ["treasury","bond","yield","10-year","t-bill","debt"],
+    "SPX":   ["stock","s&p","equities","nasdaq","wall street","market crash","recession"],
+    "EUR":   ["euro","ecb","europe","eurozone"],
+    "JPY":   ["yen","japan","boj","boj"],
+    "CNY":   ["yuan","renminbi","pboc","china trade"],
+    "OIL+":  ["iran","strait of hormuz","opec","middle east war","saudi","houthi"],
+    "BTC+":  ["trump","etf","coinbase","blackrock","sec crypto","crypto regulation"],
+    "NVDA":  ["nvidia","cuda","gpu","ai chip","semiconductor","tsmc"],
+    "TSLA":  ["tesla","elon","spacex"],
+    "DEFENSE":["defense","raytheon","lockheed","northrop","military contract","pentagon budget"],
+}
+
+def _tag_tickers(text):
+    """Return list of ticker tags relevant to a text string."""
+    t = text.lower()
+    tags = []
+    for ticker, keywords in _TICKER_MAP.items():
+        if any(kw in t for kw in keywords):
+            base = ticker.rstrip("+")
+            if base not in tags:
+                tags.append(base)
+    return tags[:5]
+
+def _is_breaking(date_str, finding_idx):
+    """Mark as BREAKING if finding was updated in the last 2 hours (based on file mtime)."""
+    import glob as _glob
+    # Check if the findings file was modified in the last 2h
+    paths = _glob.glob(f"{BASE}/researchers/*/findings/{date_str}.md") + \
+            _glob.glob(f"{BASE}/researchers/*/findings/{date_str}.zh.md")
+    for p in paths:
+        try:
+            age = time.time() - os.path.getmtime(p)
+            if age < 7200:  # 2 hours
+                return True
+        except Exception:
+            pass
+    return False
+
+def _build_api_finding(f, i, rid, r, date, lang="en"):
+    title   = f.get("title") or ""
+    body    = f.get("body")  or ""
+    tickers = _tag_tickers(title + " " + body)
+    return {
+        "id":          f"{rid}-{date}-{i}",
+        "domain":      rid,
+        "domain_name": r.get("name",""),
+        "domain_emoji":r.get("emoji",""),
+        "domain_colors":r.get("colors",""),
+        "title":       title,
+        "body":        body,
+        "url":         f.get("url",""),
+        "image":       f.get("image",""),
+        "score":       f.get("score",3),
+        "tickers":     tickers,
+        "date":        date,
+        "index":       i,
+        "permalink":   f"/domain/{rid}/{date}?lang={lang}#finding-{i}",
+    }
+
+@app.route("/api/v1/domains")
+def api_v1_domains():
+    return flask_jsonify([{
+        "id":     r["id"],
+        "name":   r["name"],
+        "emoji":  r.get("emoji",""),
+        "colors": r.get("colors",""),
+        "subs":   [{"id":s["id"],"name":s["name"]} for s in r.get("subs",[])] if r.get("subs") else [],
+    } for r in RESEARCHERS])
+
+@app.route("/api/v1/findings")
+def api_v1_findings():
+    date   = request.args.get("date", get_latest_date())
+    domain = request.args.get("domain","").strip()
+    lang   = get_lang()
+    limit  = min(int(request.args.get("limit", 100)), 500)
+    ticker = request.args.get("ticker","").upper().lstrip("$")
+
+    results = []
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [s["id"] for s in subs] if subs else [r["id"]]
+        for rid in ids:
+            if domain and rid != domain:
+                continue
+            data = get_researcher_data(rid, date, lang)
+            for i, f in enumerate(data.get("findings") or []):
+                item = _build_api_finding(f, i, rid, r, date, lang)
+                if ticker and not any(ticker in t for t in item["tickers"]):
+                    continue
+                results.append(item)
+    return flask_jsonify({"date": date, "count": len(results[:limit]), "findings": results[:limit]})
+
+@app.route("/api/v1/brief")
+def api_v1_brief():
+    date = request.args.get("date", get_latest_date())
+    lang = get_lang()
+    syn  = read_file(f"{BASE}/synthesis/findings/{date}.md", lang) or ""
+    chief= read_file(f"{BASE}/chief/findings/{date}.md", lang) or ""
+    return flask_jsonify({"date": date, "synthesis": syn, "chief_brief": chief})
+
+@app.route("/api/v1/feed")
+def api_v1_feed():
+    """All findings flat-sorted by score desc, newest first. For programmatic consumption."""
+    date   = request.args.get("date", get_latest_date())
+    lang   = get_lang()
+    results = []
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [s["id"] for s in subs] if subs else [r["id"]]
+        for rid in ids:
+            data = get_researcher_data(rid, date, lang)
+            for i, f in enumerate(data.get("findings") or []):
+                item = _build_api_finding(f, i, rid, r, date, lang)
+                results.append(item)
+    results.sort(key=lambda x: x["score"], reverse=True)
+    return flask_jsonify({"date": date, "count": len(results), "findings": results})
+
+@app.route("/api/v1/search")
+def api_v1_search():
+    q    = request.args.get("q","").strip().lower()
+    date = request.args.get("date", get_latest_date())
+    lang = get_lang()
+    if not q:
+        return flask_jsonify({"results": []})
+    results = []
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [s["id"] for s in subs] if subs else [r["id"]]
+        for rid in ids:
+            data = get_researcher_data(rid, date, lang)
+            for i, f in enumerate(data.get("findings") or []):
+                title = f.get("title","")
+                body  = f.get("body","")
+                if q in title.lower() or q in body.lower():
+                    results.append(_build_api_finding(f, i, rid, r, date, lang))
+    return flask_jsonify({"query": q, "count": len(results), "results": results})
+
+# RSS feed per domain (and global)
+@app.route("/rss")
+@app.route("/rss/<rid>")
+def rss_feed(rid=None):
+    from markupsafe import escape as xml_escape
+    date  = get_latest_date()
+    items = []
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [s["id"] for s in subs] if subs else [r["id"]]
+        for rdid in ids:
+            if rid and rdid != rid:
+                continue
+            data = get_researcher_data(rdid, date, "en")
+            for i, f in enumerate(data.get("findings") or []):
+                items.append({
+                    "title":  f.get("title",""),
+                    "link":   f"https://intel-swarm.vercel.app/domain/{r['id']}/{date}?lang=en#finding-{i}",
+                    "desc":   f.get("body","")[:300],
+                    "domain": r.get("name",""),
+                    "emoji":  r.get("emoji",""),
+                })
+    feed_title = f"Intel Swarm{' · ' + rid if rid else ''}"
+    rss = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n'
+    rss += f'<title>{feed_title}</title>\n'
+    rss += f'<link>https://intel-swarm.vercel.app</link>\n'
+    rss += f'<description>AI intelligence feed — {date}</description>\n'
+    for item in items[:50]:
+        rss += '<item>\n'
+        rss += f'<title>{item["emoji"]} [{item["domain"]}] {item["title"]}</title>\n'
+        rss += f'<link>{item["link"]}</link>\n'
+        rss += f'<description>{item["desc"]}</description>\n'
+        rss += f'<guid>{item["link"]}</guid>\n'
+        rss += '</item>\n'
+    rss += '</channel>\n</rss>'
+    from flask import Response
+    return Response(rss, mimetype='application/rss+xml')
+
+# Telegram push (called by breaking intel cron)
+_TG_BOT_TOKEN  = os.environ.get("TG_PUSH_BOT_TOKEN","")
+_TG_CHANNEL_ID = os.environ.get("TG_PUSH_CHANNEL_ID","")
+
+@app.route("/api/v1/push/test", methods=["POST"])
+def api_push_test():
+    """Test Telegram push. POST with JSON {token: <admin_token>}"""
+    if not _TG_BOT_TOKEN or not _TG_CHANNEL_ID:
+        return flask_jsonify({"ok": False, "error": "TG_PUSH_BOT_TOKEN or TG_PUSH_CHANNEL_ID not set"})
+    try:
+        msg = "🧪 *Intel Swarm push test* — Telegram integration active."
+        r = http_requests.post(
+            f"https://api.telegram.org/bot{_TG_BOT_TOKEN}/sendMessage",
+            json={"chat_id": _TG_CHANNEL_ID, "text": msg, "parse_mode": "Markdown"},
+            timeout=8,
+        )
+        return flask_jsonify({"ok": r.ok, "status": r.status_code})
+    except Exception as e:
+        return flask_jsonify({"ok": False, "error": str(e)})
+
+# ── TERMINAL PAGE ──────────────────────────────────────────────────────────────
+
+@app.route("/terminal")
+def terminal_page():
+    lang  = get_lang()
+    date  = get_latest_date()
+    all_findings = []
+    for r in RESEARCHERS:
+        subs = r.get("subs")
+        ids  = [s["id"] for s in subs] if subs else [r["id"]]
+        for rid in ids:
+            data = get_researcher_data(rid, date, lang)
+            en_data = get_researcher_data(rid, date, "en") if lang != "en" else data
+            en_findings = en_data.get("findings") or []
+            for i, f in enumerate(data.get("findings") or []):
+                en_f   = en_findings[i] if i < len(en_findings) else f
+                en_txt = (en_f.get("title","") + " " + (en_f.get("body","") or ""))
+                tickers = _tag_tickers(en_txt)
+                all_findings.append({
+                    "id":      f"{rid}-{i}",
+                    "domain":  rid,
+                    "domain_name": (r.get("zh") if lang=="zh" else r.get("name")) or rid,
+                    "emoji":   r.get("emoji",""),
+                    "colors":  r.get("colors","#888,#aaa"),
+                    "title":   f.get("title",""),
+                    "body":    (f.get("body","") or "")[:200],
+                    "url":     f.get("url",""),
+                    "image":   f.get("image",""),
+                    "score":   f.get("score",3),
+                    "tickers": tickers,
+                    "date":    date,
+                    "permalink": f"/domain/{r['id']}/{date}?lang={lang}#finding-{i}",
+                })
+    # Sort by score desc
+    all_findings.sort(key=lambda x: x["score"], reverse=True)
+    # Top tickers across all findings
+    from collections import Counter
+    ticker_counts = Counter(t for f in all_findings for t in f["tickers"])
+    top_tickers = [t for t, _ in ticker_counts.most_common(12)]
+    return render_template("terminal.html",
+        lang=lang, researchers=RESEARCHERS, date=date,
+        all_findings=all_findings,
+        top_tickers=top_tickers)
+
 # ── ENTRYPOINT ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     local_ip = os.popen(

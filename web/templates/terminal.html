@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+{% block title %} · Terminal{% endblock %}
+{% block body %}
+<style>
+  /* ── TERMINAL LAYOUT ── */
+  .tm-wrap {
+    display: flex; flex-direction: column;
+    height: calc(100vh - 80px); min-height: 600px;
+    font-family: var(--mono);
+  }
+
+  /* Top bar */
+  .tm-bar {
+    flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+    padding: 8px 16px; border-bottom: 1px solid var(--border);
+    background: var(--masthead-bg); backdrop-filter: blur(10px);
+    flex-wrap: wrap; gap: 8px;
+  }
+  .tm-logo { font-size: 11px; font-weight: 900; letter-spacing: .1em; color: var(--accent); white-space: nowrap; }
+  .tm-search-wrap {
+    flex: 1; min-width: 200px; max-width: 380px;
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden;
+  }
+  .tm-search-wrap:focus-within { border-color: var(--accent); }
+  .tm-search-prefix { padding: 0 10px; color: var(--accent); font-size: 13px; font-weight: 700; }
+  #tm-search {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text); font-family: var(--mono); font-size: 13px;
+    padding: 7px 10px 7px 0;
+  }
+  #tm-search::placeholder { color: var(--dim); }
+  .tm-ticker-strip {
+    display: flex; gap: 6px; align-items: center; overflow-x: auto;
+    scrollbar-width: none; flex-shrink: 0;
+  }
+  .tm-ticker-strip::-webkit-scrollbar { display: none; }
+  .tm-tick {
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 4px; border: 1px solid var(--border);
+    cursor: pointer; transition: all .12s; white-space: nowrap;
+    color: var(--muted); background: transparent;
+  }
+  .tm-tick:hover, .tm-tick.on { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+  .tm-bar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .tm-live { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #4ade80; font-weight: 700; }
+  .tm-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 1.5s infinite; }
+  .tm-date { font-size: 10px; color: var(--muted); }
+  .tm-api-link { font-size: 10px; color: var(--accent2); text-decoration: none; border: 1px solid rgba(91,156,246,.3); border-radius: 4px; padding: 3px 8px; }
+  .tm-api-link:hover { background: rgba(91,156,246,.1); }
+
+  /* Body: filters left + feed right */
+  .tm-body { flex: 1; display: flex; overflow: hidden; }
+
+  /* Left filter panel */
+  .tm-filters {
+    width: 160px; flex-shrink: 0; overflow-y: auto;
+    border-right: 1px solid var(--border);
+    padding: 10px 0;
+  }
+  .tm-filters::-webkit-scrollbar { width: 2px; }
+  .tm-filter-hdr { font-size: 9px; letter-spacing: .1em; color: var(--dim); padding: 8px 14px 4px; font-weight: 700; }
+  .tm-filter-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px; cursor: pointer; transition: background .1s;
+    font-size: 11px; color: var(--muted); user-select: none;
+  }
+  .tm-filter-item:hover { background: var(--surface-hover); color: var(--text); }
+  .tm-filter-item.on { color: var(--text); }
+  .tm-filter-check {
+    width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
+    border: 1px solid var(--border); display: flex; align-items: center;
+    justify-content: center; font-size: 9px;
+    transition: all .12s;
+  }
+  .tm-filter-item.on .tm-filter-check { background: var(--accent); border-color: var(--accent); color: #000; }
+  .tm-filter-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Feed */
+  .tm-feed { flex: 1; overflow-y: auto; }
+  .tm-feed::-webkit-scrollbar { width: 3px; }
+  .tm-feed::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 99px; }
+
+  /* Feed header row */
+  .tm-feed-hdr {
+    display: grid;
+    grid-template-columns: 90px 1fr 140px 80px 90px;
+    gap: 0; font-size: 9px; letter-spacing: .08em; font-weight: 700;
+    color: var(--dim); border-bottom: 1px solid var(--border);
+    padding: 6px 16px; position: sticky; top: 0;
+    background: var(--bg); z-index: 2;
+  }
+
+  /* Finding row */
+  .tm-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 140px 80px 90px;
+    gap: 0; align-items: start;
+    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.04);
+    cursor: pointer; transition: background .1s; text-decoration: none; color: inherit;
+  }
+  .tm-row:hover { background: var(--surface); }
+  .tm-row.breaking { border-left: 2px solid var(--red); padding-left: 14px; }
+  .tm-row.breaking .tm-row-source { color: var(--red); }
+
+  .tm-row-domain { display: flex; flex-direction: column; gap: 3px; }
+  .tm-row-domain-pill {
+    font-size: 9px; font-weight: 700; letter-spacing: .05em;
+    padding: 2px 7px; border-radius: 3px; display: inline-block;
+    color: #000; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; max-width: 80px;
+  }
+  .tm-row-breaking-badge {
+    font-size: 8px; font-weight: 900; color: var(--red);
+    letter-spacing: .08em; animation: blink 1s step-start infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .tm-row-main { padding-right: 16px; }
+  .tm-row-title {
+    font-size: 13px; font-weight: 600; line-height: 1.4;
+    margin-bottom: 4px; font-family: var(--sans);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tm-row-body {
+    font-size: 11px; color: var(--muted); line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; font-family: var(--sans);
+  }
+
+  .tm-row-tickers { display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start; }
+  .tm-tick-tag {
+    font-size: 9px; font-weight: 800; padding: 2px 6px;
+    border-radius: 3px; background: var(--accent-glow);
+    border: 1px solid rgba(200,169,110,.3); color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .tm-row-score { display: flex; gap: 2px; align-items: center; flex-wrap: wrap; }
+  .tm-pip { width: 6px; height: 6px; border-radius: 1px; }
+  .tm-pip.on { background: var(--accent); }
+  .tm-pip.off { background: var(--dim); }
+
+  .tm-row-source { font-size: 10px; color: var(--muted); }
+  .tm-row-source a { color: var(--accent2); text-decoration: none; font-size: 10px; }
+  .tm-row-source a:hover { text-decoration: underline; }
+
+  /* Empty state */
+  .tm-empty { padding: 60px 24px; text-align: center; color: var(--muted); font-size: 13px; }
+  .tm-empty-icon { font-size: 32px; margin-bottom: 12px; }
+
+  /* Stats bar */
+  .tm-stats {
+    flex-shrink: 0; display: flex; gap: 24px; align-items: center;
+    padding: 6px 16px; border-top: 1px solid var(--border);
+    background: var(--masthead-bg); font-size: 10px; color: var(--muted);
+  }
+  .tm-stat-item { display: flex; gap: 6px; align-items: center; }
+  .tm-stat-val { color: var(--accent); font-weight: 700; }
+
+  /* API docs panel */
+  .tm-api-panel {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+  }
+  .tm-api-panel.open { display: flex; }
+  .tm-api-box {
+    background: var(--surface-solid); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 32px; max-width: 640px; width: 90vw;
+    max-height: 80vh; overflow-y: auto;
+  }
+  .tm-api-box h2 { font-size: 16px; font-weight: 800; margin-bottom: 16px; }
+  .tm-api-endpoint { margin-bottom: 16px; }
+  .tm-api-endpoint code {
+    display: block; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 12px; font-size: 12px;
+    color: var(--accent2); margin: 6px 0; cursor: pointer;
+  }
+  .tm-api-endpoint code:hover { border-color: var(--accent); }
+  .tm-api-desc { font-size: 12px; color: var(--muted); font-family: var(--sans); }
+  .tm-api-close { float: right; cursor: pointer; color: var(--muted); font-size: 18px; margin-top: -4px; }
+
+  @media(max-width: 900px) {
+    .tm-filters { display: none; }
+    .tm-feed-hdr { grid-template-columns: 80px 1fr 80px; }
+    .tm-row       { grid-template-columns: 80px 1fr 80px; }
+    .tm-row-score, .tm-row-source { display: none; }
+  }
+  @media(max-width: 600px) {
+    .tm-feed-hdr { grid-template-columns: 70px 1fr; }
+    .tm-row       { grid-template-columns: 70px 1fr; }
+    .tm-row-tickers { display: none; }
+  }
+</style>
+
+<!-- API docs panel -->
+<div class="tm-api-panel" id="api-panel" onclick="if(event.target===this)toggleApi()">
+  <div class="tm-api-box">
+    <span class="tm-api-close" onclick="toggleApi()">✕</span>
+    <h2>📡 Intel Swarm Public API</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px;font-family:var(--sans)">
+      Free to use. No auth required. All responses are JSON.
+      Base URL: <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:11px">https://intel-swarm.vercel.app</code>
+    </p>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">All findings for a date</div>
+      <code onclick="copyCode(this)">/api/v1/findings?date=2026-03-05&amp;domain=war</code>
+      <div class="tm-api-desc">Params: <b>date</b> (YYYY-MM-DD), <b>domain</b> (e.g. war, crypto), <b>lang</b> (en/zh), <b>limit</b> (max 500)</div>
+    </div>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Ticker-filtered findings</div>
+      <code onclick="copyCode(this)">/api/v1/findings?ticker=BTC</code>
+      <div class="tm-api-desc">Returns all findings where BTC is a relevant asset tag. Works with: BTC, ETH, SOL, OIL, GOLD, DXY, SPX, NVDA…</div>
+    </div>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Full feed (score-sorted)</div>
+      <code onclick="copyCode(this)">/api/v1/feed</code>
+      <div class="tm-api-desc">All findings across all domains, sorted by intelligence score. Ideal for trading dashboards.</div>
+    </div>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Daily brief</div>
+      <code onclick="copyCode(this)">/api/v1/brief</code>
+      <div class="tm-api-desc">AI synthesis + chief-of-staff brief as plain text. Good for summarization pipelines.</div>
+    </div>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Search</div>
+      <code onclick="copyCode(this)">/api/v1/search?q=iran+oil</code>
+      <div class="tm-api-desc">Full-text search across all findings. Returns matching items with domain, tickers, score.</div>
+    </div>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Domain list</div>
+      <code onclick="copyCode(this)">/api/v1/domains</code>
+      <div class="tm-api-desc">All 19 research domains with metadata.</div>
+    </div>
+    <div class="tm-api-endpoint">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">RSS feed</div>
+      <code onclick="copyCode(this)">/rss</code>
+      <div class="tm-api-desc">Global RSS feed. Domain-specific: <b>/rss/war</b>, <b>/rss/crypto</b>, etc.</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:16px;font-family:var(--sans)">
+      🔔 Want push alerts? Set up <b>TG_PUSH_BOT_TOKEN</b> + <b>TG_PUSH_CHANNEL_ID</b> env vars for Telegram channel push.
+    </div>
+  </div>
+</div>
+
+<div class="tm-wrap">
+  <!-- Top bar -->
+  <div class="tm-bar">
+    <div class="tm-logo">⚡ INTEL TERMINAL</div>
+
+    <div class="tm-search-wrap">
+      <div class="tm-search-prefix">⌕</div>
+      <input id="tm-search" type="text" placeholder="Search findings, tickers, keywords…" oninput="onSearch(this.value)" autocomplete="off"/>
+    </div>
+
+    <div class="tm-ticker-strip" id="ticker-strip">
+      {% for t in top_tickers %}
+      <button class="tm-tick" data-ticker="{{ t }}" onclick="tickerFilter('{{ t }}')">{{ t }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="tm-bar-right">
+      <div class="tm-live"><div class="tm-live-dot"></div>{{ date }}</div>
+      <button class="tm-api-link" onclick="toggleApi()" style="cursor:pointer;font-family:var(--mono)">API docs</button>
+    </div>
+  </div>
+
+  <div class="tm-body">
+    <!-- Domain filters -->
+    <div class="tm-filters" id="tm-filters">
+      <div class="tm-filter-hdr">DOMAINS</div>
+      <div class="tm-filter-item on" data-domain="all" onclick="domainFilter('all')">
+        <div class="tm-filter-check">✓</div>
+        <span>All</span>
+      </div>
+      {% for r in researchers %}
+      <div class="tm-filter-item" data-domain="{{ r.id }}" onclick="domainFilter('{{ r.id }}')">
+        <div class="tm-filter-check"></div>
+        <div class="tm-filter-dot" style="background:{{ r.colors.split(',')[0] if ',' in r.colors else '#888' }}"></div>
+        <span>{{ r.emoji }} {{ r.zh if lang == 'zh' else r.name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Feed -->
+    <div class="tm-feed" id="tm-feed">
+      <div class="tm-feed-hdr">
+        <div>DOMAIN</div>
+        <div>FINDING</div>
+        <div>TICKERS</div>
+        <div>SIGNAL</div>
+        <div>SOURCE</div>
+      </div>
+      <div id="tm-rows"></div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="tm-stats">
+    <div class="tm-stat-item"><span class="tm-stat-val" id="st-count">0</span> findings</div>
+    <div class="tm-stat-item"><span class="tm-stat-val" id="st-domains">0</span> domains</div>
+    <div class="tm-stat-item" style="margin-left:auto">
+      <a href="/rss" style="color:var(--accent2);text-decoration:none;font-size:10px">📡 RSS</a>
+    </div>
+    <div class="tm-stat-item">
+      <a href="/api/v1/feed" style="color:var(--accent2);text-decoration:none;font-size:10px">{ } JSON API</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var ALL_FINDINGS = {{ all_findings | tojson }};
+var _filtered = ALL_FINDINGS.slice();
+var _domainFilter = 'all';
+var _tickerFilter = '';
+var _searchQuery  = '';
+
+function render(findings) {
+  var container = document.getElementById('tm-rows');
+  if (!findings.length) {
+    container.innerHTML = '<div class="tm-empty"><div class="tm-empty-icon">📭</div>No findings match this filter.</div>';
+    document.getElementById('st-count').textContent = 0;
+    document.getElementById('st-domains').textContent = 0;
+    return;
+  }
+  var domains = new Set(findings.map(function(f){ return f.domain; }));
+  document.getElementById('st-count').textContent = findings.length;
+  document.getElementById('st-domains').textContent = domains.size;
+
+  container.innerHTML = findings.map(function(f) {
+    var colors  = (f.colors||'#888,#aaa').split(',');
+    var col1    = colors[0], col2 = colors[1]||col1;
+    var tickers = (f.tickers||[]).map(function(t){
+      return '<span class="tm-tick-tag">'+t+'</span>';
+    }).join('');
+    var pips = [1,2,3,4,5].map(function(i){
+      return '<div class="tm-pip '+(i<=f.score?'on':'off')+'"></div>';
+    }).join('');
+    var srcHost = '';
+    if (f.url) { try { srcHost = new URL(f.url).hostname.replace('www.',''); } catch(e){} }
+    var q = _searchQuery.toLowerCase();
+    var title = q ? highlight(f.title, q) : escHtml(f.title);
+    var body  = q ? highlight(f.body,  q) : escHtml(f.body);
+
+    return '<a class="tm-row" href="'+f.permalink+'" target="_blank" rel="noopener">' +
+      '<div class="tm-row-domain">'+
+        '<span class="tm-row-domain-pill" style="background:'+col1+'">'+escHtml(f.emoji+' '+f.domain_name)+'</span>'+
+      '</div>'+
+      '<div class="tm-row-main">'+
+        '<div class="tm-row-title">'+title+'</div>'+
+        (f.body ? '<div class="tm-row-body">'+body+'</div>' : '')+
+      '</div>'+
+      '<div class="tm-row-tickers">'+tickers+'</div>'+
+      '<div class="tm-row-score">'+pips+'</div>'+
+      '<div class="tm-row-source">'+(srcHost ? '<a href="'+escHtml(f.url)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+escHtml(srcHost)+'↗</a>' : '—')+'</div>'+
+    '</a>';
+  }).join('');
+}
+
+function applyFilters() {
+  var results = ALL_FINDINGS.filter(function(f) {
+    if (_domainFilter !== 'all' && f.domain !== _domainFilter) return false;
+    if (_tickerFilter && !f.tickers.includes(_tickerFilter)) return false;
+    if (_searchQuery) {
+      var q = _searchQuery.toLowerCase();
+      if (!(f.title||'').toLowerCase().includes(q) && !(f.body||'').toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+  _filtered = results;
+  render(results);
+}
+
+function domainFilter(domain) {
+  _domainFilter = domain;
+  document.querySelectorAll('.tm-filter-item').forEach(function(el){
+    var on = el.dataset.domain === domain;
+    el.classList.toggle('on', on);
+    el.querySelector('.tm-filter-check').textContent = on ? '✓' : '';
+  });
+  applyFilters();
+}
+
+function tickerFilter(t) {
+  _tickerFilter = (_tickerFilter === t) ? '' : t;
+  document.querySelectorAll('.tm-tick').forEach(function(b){
+    b.classList.toggle('on', b.dataset.ticker === _tickerFilter);
+  });
+  applyFilters();
+}
+
+var _searchTimer;
+function onSearch(v) {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(function(){ _searchQuery = v.trim(); applyFilters(); }, 180);
+}
+
+function toggleApi() {
+  document.getElementById('api-panel').classList.toggle('open');
+}
+
+function copyCode(el) {
+  var text = 'https://intel-swarm.vercel.app' + el.textContent;
+  navigator.clipboard && navigator.clipboard.writeText(text);
+  el.style.color = '#4ade80';
+  setTimeout(function(){ el.style.color = ''; }, 1200);
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function highlight(text, q) {
+  if (!text||!q) return escHtml(text);
+  var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return escHtml(text).replace(re, '<mark style="background:rgba(200,169,110,.35);color:var(--text);border-radius:2px">$1</mark>');
+}
+
+// Init
+render(ALL_FINDINGS);
+</script>
+{% endblock %}
