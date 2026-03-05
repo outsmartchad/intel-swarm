@@ -1033,16 +1033,15 @@ _TICKER_MAP = {
     "$PEPE": ["pepe","meme","memecoin"],
     "$WIF":  ["wif","dogwifhat"],
     "$BONK": ["bonk"],
-    "OIL":   ["oil","crude","opec","barrel","petroleum","brent","wti","hormuz"],
+    "OIL":   ["oil","crude","opec","barrel","petroleum","brent","wti","hormuz","iran","strait of hormuz","middle east war","saudi","houthi"],
     "GOLD":  ["gold","xau","bullion","precious metal"],
     "DXY":   ["dollar","dxy","usd","federal reserve","fed ","powell","interest rate"],
     "BONDS": ["treasury","bond","yield","10-year","t-bill","debt"],
     "SPX":   ["stock","s&p","equities","nasdaq","wall street","market crash","recession"],
     "EUR":   ["euro","ecb","europe","eurozone"],
-    "JPY":   ["yen","japan","boj","boj"],
+    "JPY":   ["yen","japan","boj"],
     "CNY":   ["yuan","renminbi","pboc","china trade"],
-    "OIL+":  ["iran","strait of hormuz","opec","middle east war","saudi","houthi"],
-    "BTC+":  ["trump","etf","coinbase","blackrock","sec crypto","crypto regulation"],
+    "$BTC":  ["bitcoin","btc","crypto","cryptocurrency","trump crypto","etf","coinbase","blackrock","sec crypto","crypto regulation"],
     "NVDA":  ["nvidia","cuda","gpu","ai chip","semiconductor","tsmc"],
     "TSLA":  ["tesla","elon","spacex"],
     "DEFENSE":["defense","raytheon","lockheed","northrop","military contract","pentagon budget"],
@@ -1057,9 +1056,8 @@ def _tag_tickers(text):
     tags = []
     for ticker, keywords in _TICKER_MAP.items():
         if any(kw in t for kw in keywords):
-            base = ticker.rstrip("+")
-            if base not in tags:
-                tags.append(base)
+            if ticker not in tags:
+                tags.append(ticker)
     return tags[:5]
 
 def _is_breaking(date_str, finding_idx):
