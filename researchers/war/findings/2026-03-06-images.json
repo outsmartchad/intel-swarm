@@ -1,0 +1,32 @@
+[
+  {
+    "finding_idx": 0,
+    "source_url": "https://www.axios.com/2026/03/05/iran-leader-trump-khamenei",
+    "image_path": "/static/images/2026-03-06/war/6b097b5ba9bb.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "https://www.reuters.com/world/middle-east/turkey-says-nato-defences-destroyed-missile-fired-iran-over-mediterranean-2026-03-04/",
+    "image_path": "/static/images/2026-03-06/war/c6087fa5dad5.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://www.euronews.com/2026/03/05/iranian-drones-strike-azerbaijans-razi-airport-in-nakhchivan",
+    "image_path": "/static/images/2026-03-06/war/bdb4cf44defa.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://www.reuters.com/world/china/chinas-defence-spending-rise-7-2026-vs-72-set-2025-2026-03-05/",
+    "image_path": "/static/images/2026-03-06/war/381dfd39dee2.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://www.taipeitimes.com/News/front/archives/2026/03/06/2003853345",
+    "image_path": "/static/images/2026-03-06/war/edc0d48860c3.jpg",
+    "via": "retry"
+  }
+]

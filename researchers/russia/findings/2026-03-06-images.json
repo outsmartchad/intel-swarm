@@ -1,0 +1,32 @@
+[
+  {
+    "finding_idx": 0,
+    "source_url": "https://www.chainalysis.com/blog/crypto-sanctions-2026/",
+    "image_path": "/static/images/2026-03-06/russia/3db4d87d8e1f.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "https://understandingwar.org/research/russia-ukraine/russian-offensive-campaign-assessment-march-4-2026/",
+    "image_path": "/static/images/2026-03-06/russia/b564a320ebda.webp",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://forbiddenstories.org/propaganda-machine-secret-documents-reveal-russias-foreign-influence-strategy-across-three-continents/",
+    "image_path": "/static/images/2026-03-06/russia/e6f1165b4a18.png",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://fortune.com/2026/02/08/russian-economy-financial-crisis-warning-summer-putin-ukraine-war-too-big-to-fail/",
+    "image_path": "/static/images/2026-03-06/russia/0db4bc4b5852.jpg",
+    "via": "retry"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://understandingwar.org/research/russia-ukraine/russian-offensive-campaign-assessment-march-4-2026/",
+    "image_path": "/static/images/2026-03-06/russia/b564a320ebda.webp",
+    "via": "retry"
+  }
+]
