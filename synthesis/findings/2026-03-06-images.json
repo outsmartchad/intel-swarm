@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "finding_idx": 0,
+    "source_url": "",
+    "image_path": "/static/images/2026-03-06/synthesis/f5903ff0847e.jpg"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "",
+    "image_path": "/static/images/2026-03-06/synthesis/18f37d02ca2f.jpg"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "",
+    "image_path": "/static/images/2026-03-06/synthesis/33532bf67a50.png"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "",
+    "image_path": "/static/images/2026-03-06/synthesis/6418fcaea3e3.jpg"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "",
+    "image_path": "/static/images/2026-03-06/synthesis/416b265bc316.jpg"
+  }
+]
