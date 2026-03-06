@@ -2,12 +2,24 @@
 _Tracks how the big picture is evolving over time_
 
 ## Current Core Thesis
-_Last updated: 2026-03-06_
+_Last updated: 2026-03-07_
 
-**The Pretense Layer Has Collapsed — Raw Power Dynamics Are Now Explicit.**
-Three-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 = infrastructure unreliability (pipes themselves compromised). Day 3 = pretense collapse (every actor stopped pretending about the pipes). The institutional frameworks built on shared fictions — safety alignment, export controls, diplomatic ambiguity, financial narratives, DOJ accountability — have all been abandoned simultaneously. Trump states regime change openly. Anthropic negotiates weapons contracts while claiming safety principles. Markets reward 40% AI layoffs with +17% stock moves. TSMC manufactures sanctioned chips at scale. China publishes its domination roadmap and hands it to the adversary. This isn't chaos — it's clarity. The information environment has improved because every actor's true objective is now visible. The competitive advantage is no longer information asymmetry but speed of execution. BTC + DXY rising simultaneously signals markets pricing the death of pretense — BTC as parallel safe-haven infrastructure, not risk-on speculation.
+**The Gate Is the Weapon — Power Is Exercised Through Access Control, Not Direct Confrontation.**
+Four-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 = infrastructure unreliability (pipes compromised). Day 3 = pretense collapse (every actor stopped pretending). Day 4 = gatekeeping as the dominant power strategy. Once pretense collapsed, raw power manifests not through direct confrontation but through controlling access chokepoints. Iran gates the Strait of Hormuz (China-only passage, 400+ tankers stranded, Brent $89). Pentagon gates AI procurement (Anthropic "supply chain risk" label cascading through entire contractor ecosystem). BlackRock gates capital exits ($26B private credit fund limiting redemptions for first time). NATO gates collective defense (explicitly raising Article 5 threshold after Iranian missile over Turkey). China bypasses every gate simultaneously (secured Hormuz energy, GLM-5 on zero NVIDIA chips, Atlas 950 selling internationally, 9 ASEAN nations pre-committing to BRICS currency). The structural defense against gatekeeping is gateless infrastructure: permissionless settlement, non-custodial compute, sovereign key management. The Pentagon is simultaneously becoming a shadow VC (equity stakes, $150M+ in undisclosed fund commitments) AND weaponizing procurement labels — building a franchise system for defense-adjacent tech with zero financial accountability. Cloud providers (Azure/AWS/GCP), not model developers, are the real AI access gatekeepers (Wired confirmed Pentagon ran OpenAI via Azure during explicit military ban).
 
 ## Thesis Evolution Log
+
+### 2026-03-07 (Day 4)
+- **Theme:** "The Gate Is the Weapon" — every major actor shifted from direct confrontation to controlling access chokepoints
+- **Shift from Day 3:** Evolution. Day 3 = pretense collapsed, raw objectives visible. Day 4 = the operational form raw power takes is gatekeeping — control the access point, let the denied party exhaust itself
+- **Key convergence:** Iran gates Hormuz (China-only) + Pentagon gates AI (supply chain risk label) + BlackRock gates capital (redemption cap) + NATO gates collective defense (Article 5 threshold raised) = gatekeeping as universal strategy across war, tech, finance, and security simultaneously
+- **Pentagon-as-VC:** Office of Strategic Capital operating as shadow VC ($150M+ maritime VC, L3Harris equity, 5+ undisclosed funds) with zero statutory framework — while simultaneously weaponizing procurement labels. Building a franchise system for defense-adjacent tech.
+- **Cloud layer revelation:** Wired confirmed Pentagon ran OpenAI via Azure during explicit military ban — AI lab safety policies structurally unenforceable, cloud providers are real gatekeepers
+- **China multi-front positioning for March 31 summit:** Secured Hormuz energy, GLM-5 AI independence proven, Atlas 950 going international, 9 ASEAN pre-BRICS currency, CK Hutchison ports as negotiation chip, Taiwan false peace via reduced flights, Paris pre-summit talks confirmed
+- **BlackRock private credit stress:** First-ever redemption gate activation on $26B fund. Bear steepening + SPX 2.4% from 200-day MA + gated LP forced selling = convergent stress event risk March 10-18
+- **Nepal proof-of-concept:** Discord/TikTok-native party (RSP) won parliamentary supermajority — first protest→ballot→supermajority in under a year via social media
+- **Missing researchers:** power, psyops, conspiracy, regulatory (same 4/15 as Day 3)
+- **Source-level corroboration:** CNBC + RBC Capital Markets independently flagged Navy escort infeasibility; Bloomberg + Reuters independently confirmed Iran Assembly of Experts succession narrowing
 
 ### 2026-03-06 (Day 3)
 - **Theme:** "The Pretense Layer Has Collapsed" — every actor dropped pretense simultaneously, institutional frameworks built on shared fictions now irrelevant
@@ -79,13 +91,28 @@ Three-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 
 
 ### [2026-03-06] NATO Article 5 invocation risk within 2 weeks
 - **Prediction:** Iran's missile trajectory through 3 sovereign airspaces into Turkish NATO space will either trigger Article 5 or force NATO to publicly decline, creating either escalation or credibility crisis.
-- **Status:** pending
-- **Check by:** 2026-03-20
+- **Status:** ✅ RESOLVED (credibility path) — Rutte explicitly ruled out Article 5. Iran now knows the ceiling is dramatically higher than a ballistic missile over Turkey. Credibility crisis is the outcome — deterrence threshold redefined upward.
+- **Resolved on:** 2026-03-07
 
 ### [2026-03-06] Autonomous coding + market incentive = first Fortune 500 "AI-only engineering team" announcement by Q2
 - **Prediction:** Symphony open-source + Claude multi-agent compiler proof + Block's 17% reward for AI layoffs = at least one major company will announce an AI-only engineering division (no human coders) within 90 days.
 - **Status:** pending
 - **Check by:** 2026-06-06
+
+### [2026-03-07] BlackRock private credit gate triggers broader liquid-asset selling pressure by March 18
+- **Prediction:** Gated LPs needing cash will sell liquid assets (equities, IG bonds), adding non-obvious selling pressure to an SPX already 2.4% from 200-day MA. March 18 FOMC hawkish dot revision amplifies.
+- **Status:** pending
+- **Check by:** 2026-03-18
+
+### [2026-03-07] Iran Assembly of Experts selects Mojtaba Khamenei despite Trump veto — escalation ratchet
+- **Prediction:** IRGC pressure on Assembly produces Trump's "unacceptable" candidate, forcing US to either accept (credibility loss) or escalate further (while Navy stretched thin on Hormuz).
+- **Status:** pending
+- **Check by:** 2026-03-21
+
+### [2026-03-07] Pentagon supply chain risk label against Anthropic becomes template for AI ecosystem control
+- **Prediction:** Within 6 months, at least one additional AI company receives similar designation, establishing procurement labels as the standard government lever for AI ecosystem gatekeeping.
+- **Status:** pending
+- **Check by:** 2026-09-07
 
 ## Recurring Themes Across Days
 - **Day 1-3:** Infrastructure control → infrastructure unreliability → pretense about infrastructure collapses (evolutionary arc)
@@ -96,3 +123,9 @@ Three-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 
 - **Day 3 NEW:** Markets explicitly rewarding AI workforce replacement (Block +17%)
 - **Day 3 NEW:** BTC-DXY correlation break — potential macro regime change
 - **Day 3 NEW:** War escalation beyond Gulf — NATO engagement, Caucasus front, naval combat in Indian Ocean
+- **Day 4 NEW:** Gatekeeping as universal power strategy (Hormuz, procurement labels, redemption gates, Article 5 threshold)
+- **Day 4 NEW:** Pentagon operating as shadow VC + procurement gatekeeper simultaneously (franchise system)
+- **Day 4 NEW:** Cloud providers as real AI access gatekeepers (not model developers) — structural unenforceability of safety policies
+- **Day 4 NEW:** Private credit liquidity illusion cracking (BlackRock first-ever redemption gate)
+- **Day 4 NEW:** ASEAN (9 nations incl. Singapore) pre-committing to BRICS currency — de-dollarization moving from rhetoric to pre-agreement
+- **Day 4 NEW:** Nepal proof-of-concept for social-media-native parliamentary supermajority (protest→ballot→power in <1 year)
