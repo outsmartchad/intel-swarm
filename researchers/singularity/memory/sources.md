@@ -22,3 +22,7 @@ _Track which sources are consistently high-signal_
 - https://www.tomshardware.com/tech-industry/nvidia-invests-usd4-billion-into-photonics-firms | used: 2026-03-06 | quality: high | notes: Tom's Hardware solid on hardware/infra — good detail on Lumentum/Coherent deal terms
 - https://www.wired.com/story/synchron-brain-computer-interface-five-years-als/ | used: 2026-03-06 | quality: high | notes: Wired long-form with CEO quotes — primary source for FDA endpoint blocker insight
 - https://techstory.in/deepseek-set-to-launch-v4-flagship-model-ahead-of-chinas-two-sessions/ | used: 2026-03-06 | quality: medium | notes: Secondary aggregator but confirms delay vs FT's "next week" claim
+- https://www.wired.com/story/openai-defense-department-ban-military-use-microsoft/ | used: 2026-03-07 | quality: high | notes: Wired breaking on Pentagon/OpenAI/Microsoft cloud loophole — solid sourcing
+- https://arstechnica.com/ai/2026/03/openai-introduces-gpt-5-4-with-more-knowledge-work-capability/ | used: 2026-03-07 | quality: high | notes: Ars Technica on GPT-5.4 specs — reliable capability reporting
+- https://startupwired.com/2026/03/06/science-corp-raises-230m-to-accelerate-brain-computer-tech/ | used: 2026-03-07 | quality: medium | notes: Science Corp $230M Series C — small outlet but verifiable funding round
+- https://quasa.io/media/china-challenges-neuralink-the-rise-of-brain-computer-interfaces-in-the-east | used: 2026-03-07 | quality: medium | notes: NeuroXess super factory — check against primary sources if thread escalates
