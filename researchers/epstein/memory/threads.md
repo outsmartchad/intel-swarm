@@ -1,37 +1,36 @@
 # Threads — epstein Researcher
-_Last updated: 2026-03-06_
+_Last updated: 2026-03-07_
 
 ## Active Threads
 
 ### DOJ Epstein Database Shrinkage & Bondi Subpoena
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** DOJ has actively removed 65,000+ pages from the Epstein database since initial release, admits to pulling ~48,000 files. Bipartisan House Oversight voted to subpoena AG Bondi to testify. DOJ also caught tracking which congressional members searched the files portal — triggering a separate investigation. Missing Trump-related files confirmed by lawmakers who viewed unredacted archive manifest.
-- **Watch for:** Bondi testimony date set; whether Second Circuit FOIA ruling forces re-release; whether DOJ surveillance of Congress triggers broader separation-of-powers confrontation
+- **Summary:** DOJ released 1,000+ new pages on March 5-6 under pressure from NPR investigation — including 16 pages of withheld FBI interviews with Trump accuser. 37 pages still missing. Bondi subpoenaed but Dem rep Khanna publicly skeptical subpoena will produce answers. DOJ pattern: release only what journalists force into daylight. No contempt filing yet.
+- **Watch for:** Contempt filing against Bondi; remaining 37 pages of Trump-accuser files; Second Circuit FOIA ruling forcing re-release of the 65,000 pages pulled from the database
+
+### DMT Consciousness Research — Post-Epstein Infrastructure
+- **First seen:** 2026-03-07
+- **Status:** developing
+- **Summary:** "SETI for the mind" DMT research facility launches March 18 on Caribbean island of Bequia — EEG brain mapping during IV DMT sessions aimed at two-way communication with nonhuman entities. Exact research agenda Epstein was funding, now institutional without his label. Possible network overlap with Epstein's consciousness science funders.
+- **Watch for:** Who is funding/backing the Bequia facility; whether Epstein-linked scientists (Church network, MIT Media Lab adjacent) appear among advisors; facility launch coverage on March 18
 
 ### Epstein Science Funding — Transhumanist Penetration & DNA Tampering
 - **First seen:** 2026-03-04
-- **Status:** escalating
-- **Summary:** George Church received Epstein funding after knowing about crimes AND co-founded a biotech company with Epstein to study "life extension" and "pleasure genome." Bombshell new: someone retroactively altered Epstein's Harvard PGP profile to show consent dated January 31, 2026 — one day after DOJ final release, 6 years after Epstein's death. Active scientific fraud ongoing.
-- **Watch for:** Harvard investigation into PGP profile tampering; whether Church or PGP administrators face consequences; further Epstein biotech company details emerging
+- **Status:** stale
+- **Summary:** George Church/Harvard PGP retroactive consent tampering (Jan 31, 2026 backdated consent for dead man) was reported March 4. No Harvard investigation announced. No consequences for Church or PGP administrators in 3 days.
+- **Watch for:** Harvard internal investigation announcement; whether PGP administrators face professional consequences; any new Church-Epstein document revelations
 
 ### Epstein Bitcoin Developer Infiltration Network
 - **First seen:** 2026-03-04
-- **Status:** developing
-- **Summary:** Joichi Ito (who laundered Epstein millions into MIT's Bitcoin/Digital Currency Initiative) was embedded in Japan's ¥64B national tech program — now forced out. Epstein-crypto contamination network reached state-level tech policy in Asia.
-- **Watch for:** Other Ito-adjacent figures in national tech programs globally; further crypto/AI infrastructure connections
-
-### Epstein European Arrests — US-Europe Enforcement Asymmetry
-- **First seen:** 2026-03-05
-- **Status:** developing
-- **Summary:** UK arrested Prince Andrew and Peter Mandelson; Norway charged former PM Jagland. US has made ZERO arrests. No major new developments today but gap continues to widen as bipartisan US pressure builds.
-- **Watch for:** UK/EU charges progressing to trial; any US arrest emerging under bipartisan congressional pressure; whether Bondi subpoena shifts domestic enforcement posture
-
-### Epstein Medical Cabal — Elite Doctors Network
-- **First seen:** 2026-03-05
 - **Status:** stale
-- **Summary:** DOJ files reveal Eva Dubin orchestrated elite doctors including Dr. Jess Ting performing undisclosed procedures on women injured on Epstein's island. No new developments in 24h.
-- **Watch for:** Medical board investigations of named doctors; whether Dubin or Ting face professional consequences
+- **Summary:** Joichi Ito (who laundered Epstein millions into MIT's Digital Currency Initiative) forced out of Japan's ¥64B national tech program. No new developments in 3+ days.
+- **Watch for:** Other Ito-adjacent figures in national tech programs; crypto/AI infrastructure connections emerging from new file releases
 
 ## Resolved Threads
-_(none yet)_
+
+### Epstein European Arrests — US-Europe Enforcement Asymmetry — resolved 2026-03-07
+- Thread opened 2026-03-05 on UK arrests of Prince Andrew and Peter Mandelson, Norway charging PM Jagland. No further developments emerged. US-Europe enforcement gap story has no new signals. Moving to Resolved — will reopen if charges progress to trial or US arrest emerges.
+
+### Epstein Medical Cabal — Elite Doctors Network — resolved 2026-03-07
+- Thread opened 2026-03-05 on Eva Dubin / Dr. Jess Ting undisclosed procedures on injured women. Went stale immediately — no medical board investigations initiated, no professional consequences reported. Moving to Resolved.
