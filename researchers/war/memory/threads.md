@@ -1,37 +1,37 @@
 # Threads — war Researcher
-_Last updated: 2026-03-06_
+_Last updated: 2026-03-07_
 
 ## Active Threads
 
-### US-Israel-Iran War — Regime Change Phase (Day 6)
+### US-Israel-Iran War — Regime Change Phase (Day 7)
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** Day 6. Trump explicitly declared US must "be involved in choosing Iran's next supreme leader" — first official statement of regime change as war objective, not just nuclear deterrence. Mojtaba Khamenei (assassinated Khamenei's son) frontrunner; Trump calls him "unacceptable." Iran hitting 14+ countries asymmetrically. US sank second Iranian warship off Sri Lanka. Hezbollah ground combat in southern Lebanon escalating. Senate war powers vote failed 8 times.
-- **Watch for:** Iran's Assembly of Experts convening to pick new supreme leader under military pressure; whether any US back-channel with Iranian moderates emerges; Phase 2 massed strike attempt from Iran; Trump elaborating on who the "acceptable" successor candidate is
+- **Summary:** Day 7. Assembly of Experts has narrowed successor shortlist and will announce "as soon as possible" — Mojtaba Khamenei still frontrunner despite Trump declaring him "unacceptable." IRGC reportedly pressuring the Assembly to elect Mojtaba regardless. If they do, US faces a direct test: accept the "unacceptable" candidate or escalate. NATO explicitly ruled out Article 5 after Iranian missile near Turkey — Iran learned its ceiling. Iran missile struck a tanker in the Gulf today; British Navy reported a large explosion at a tanker in Iraqi territorial waters.
+- **Watch for:** Assembly of Experts announcement (imminent); US response if Mojtaba elected; further IRGC strikes on tankers; whether Trump escalates military posture after Navy escort plan proves operationally limited
 
-### Iran Geographic Escalation — NATO + Caucasus
+### Strait of Hormuz / China-Only Lane
+- **First seen:** 2026-03-04
+- **Status:** escalating
+- **Summary:** Day 7. Iran now operating a de facto China-exclusive transit lane — Chinese-flagged/claiming vessels pass freely, all others blocked. 400+ tankers stranded. Trump announced Navy escort plan but analysts say operationally near-impossible at volume needed. Brent at $89, WTI +28% this week. Wall Street projects Brent above $100 = recession conditions if extended. New tactic: ships flagging "Chinese-owned" to secure passage.
+- **Watch for:** US Navy actually beginning escort operations and Iran's response; Brent hitting $100; China formalizing the bilateral transit agreement; India/South Korea/Japan seeking bilateral deals with Iran; IRGC shooting at a US Navy-escorted tanker (escalation trigger)
+
+### Taiwan Arms / Trump-Xi Endgame
+- **First seen:** 2026-03-04
+- **Status:** escalating
+- **Summary:** China reduced military flights around Taiwan pre-Trump-Xi meeting (end of March) — Taiwan security officials say it's a "false impression of peace" tactic to extract arms sales concession. US weapons stockpiles depleted by Iran war (raised in closed-door congressional briefing). Xi may demand Trump publicly commit to limiting Taiwan arms sales or opposing independence at Beijing summit. LY arms budget gridlock ongoing. March 15 deadline for 3 US arms packages.
+- **Watch for:** March 15 US arms package decision; Trump-Xi meeting date confirmation; any public US commitment on Taiwan arms; PLA resuming/escalating flights after meeting; US munitions inventory disclosures
+
+### NATO Red Line / Iran Escalation Ceiling
 - **First seen:** 2026-03-06
-- **Status:** escalating
-- **Summary:** NEW. Iran drone-struck Azerbaijan's Nakhchivan airport (denied); NATO shot down Iranian ballistic missile headed toward Turkey (Iran denied). Two neutral/NATO-adjacent states now hit. Turkey has not invoked Article 5 but is under pressure. Azerbaijan demanded apology. Iran is opening flanks beyond the Gulf — either to force NATO Article 5 trigger or to demonstrate reach.
-- **Watch for:** Turkey invoking Article 5; Azerbaijan retaliatory or diplomatic escalation; Russia's response to strikes near CIS members; whether Iran escalates from drones to ballistic missiles at Nakhchivan; NATO emergency council convening
-
-### Strait of Hormuz / Energy Shock
-- **First seen:** 2026-03-04
-- **Status:** escalating
-- **Summary:** Day 6. Hundreds of tankers stranded outside Hormuz. No commercial traffic for 4+ days. Iran officially closed Hormuz to oil/gas exports via drone strikes + fear. Maersk + Hapag-Lloyd suspended all transits. LNG rates at all-time highs. Reuters animated map shows full standstill. China still demanding vessels be protected (needs oil).
-- **Watch for:** China dispatching naval escorts; Saudi/UAE alternative pipeline capacity announcements; Brent price milestones; India/China bilateral Hormuz agreements; IRGC enforcing closure with lethal force on any transit attempt
-
-### Taiwan Arms Deadline — March 15 (9 days)
-- **First seen:** 2026-03-04
-- **Status:** escalating
-- **Summary:** LY review ongoing. TPP refuses to pass NT$1.25T budget without US arms confirmation. KMT version NT$350bn with oversight mechanisms. Both conditioned on Washington — which is simultaneously negotiating Taiwan arms WITH Beijing. China announced 7% defense boost ($276.8B) on March 5 while US is Gulf-engaged. Window closing: domestic gridlock + Trump Beijing channel = Taiwan may lose arms regardless of LY vote.
-- **Watch for:** March 15 US arms package deadline; Trump-Xi April meeting confirmation; any US extension/waiver; LY vote outcome on which version passes; China using Gulf crisis to accelerate Taiwan pressure
-
-### Ukraine Drone Leverage Play
-- **First seen:** 2026-03-05
 - **Status:** developing
-- **Summary:** Zelensky offering Ukrainian drone warfare expertise (world's most battle-tested) in exchange for ceasefire pressure on Moscow. Asymmetric drone knowledge now a globally valued commodity. Ceasefire: 90% agreed per Zelensky, "thorny issues" remain on land. Gulf crisis making Ukrainian drone expertise even more valuable — all Gulf states watching Iranian drone performance.
-- **Watch for:** Who takes Zelensky up on drone-for-ceasefire deal; whether Gulf states (UAE, Saudi) approach Ukraine; Russia's response to any ceasefire movement; Ukraine expertise flowing to Middle East theater
+- **Summary:** NEW development Day 7. Rutte confirmed Article 5 will NOT be triggered despite Iranian ballistic missile intercepted over Turkish airspace. Iran now has empirical data: it can strike near NATO territory without triggering collective defense. Azerbaijan (Nakhchivan drone strike) also no retaliation. Iran has tested two flanks and learned the ceiling is higher than expected.
+- **Watch for:** Iran probing further into Turkish or Azerbaijani territory knowing the red line; Turkey applying domestic pressure to Erdogan to respond; Azerbaijan seeking bilateral security guarantees; whether Iran uses this knowledge to open further flanks
+
+### Ukraine — Frozen in Iran's Shadow
+- **First seen:** 2026-03-05
+- **Status:** stale
+- **Summary:** Zelensky confirmed Ukraine-Russia-US talks "on hold" because of Iran war. Russia's Lavrov denied ever seeing security guarantees for Ukraine. Ukraine Day 1,470. No active peace process. US bandwidth fully consumed by Gulf theater. Drone expertise trade offer now effectively tabled — no buyer engaged while US is focused elsewhere. Nothing moved today.
+- **Watch for:** Any US return to Ukraine diplomacy; Zelensky drone deal materializing with Gulf states; Russia using the Iran distraction to escalate militarily on the front line; Trump pressuring Zelensky to "get a deal done" unilaterally
 
 ## Resolved Threads
 _(none yet)_
