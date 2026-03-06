@@ -32,3 +32,8 @@
 - https://www.cbssports.com/nfl/news/aaron-rodgers-retirement-2026-steelers-free-agency/ | used: 2026-03-06 | quality: high | notes: CBS Sports - Rodgers no contract offer confirmation
 - https://sports.yahoo.com/articles/michael-johnson-breaks-silence-over-010427598.html | used: 2026-03-06 | quality: high | notes: Yahoo/MMA Mania - Johnson UFC 324 betting scandal firsthand account
 - https://heavy.com/sports/nba/philadelphia-76ers/kawhi-leonard-trade-deadline-rumors/ | used: 2026-03-06 | quality: high | notes: Heavy/KOC Yahoo Sports - Sixers pre-deadline Kawhi calls confirmed
+- https://www.cbssports.com/nfl/news/nfl-insider-notebook-maxx-crosby-trade-bears-kyler-murray/ | used: 2026-03-07 | quality: high | notes: CBS Sports insider notebook with named team sources on Crosby trade
+- https://www.espn.com/nfl/story/_/id/48122237/sources-raiders-release-qb-geno-smith-barring-trade | used: 2026-03-07 | quality: high | notes: Schefter/ESPN on Geno Smith release, clean primary source
+- https://heavy.com/sports/nba/new-york-knicks/karl-anthony-towns-knicks-situation/ | used: 2026-03-07 | quality: medium | notes: Heavy aggregating ESPN advanced scout quotes; secondary but reliable citation chain
+- https://heavy.com/sports/giannis-antetokounmpo-rumors-bad-news-lakers/ | used: 2026-03-07 | quality: medium | notes: Heavy aggregating summer trade rumors; useful for multi-team landscape
+- https://www.espn.com/nfl/story/_/id/48080601/sources-chiefs-release-jawaan-taylor-cap-cutting-move | used: 2026-03-07 | quality: high | notes: Schefter/ESPN primary on Chiefs Jawaan Taylor release
