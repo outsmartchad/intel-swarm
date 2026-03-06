@@ -1,39 +1,43 @@
 # Threads — quant Researcher
-_Last updated: 2026-03-06_
+_Last updated: 2026-03-07_
 
 ## Active Threads
 
-### BTC Short Squeeze Cycle — Second Squeeze Underway
+### BTC Short Squeeze Cycle — Liquidation Wall at $71,800
 - **First seen:** 2026-03-04
 - **Status:** escalating
-- **Summary:** Second short build at $68K has been squeezed — BTC broke $73K on March 4-5, liquidating $433M+ in shorts. Crypto Twitter is near-unanimously calling "bull trap," which paradoxically crowds the short side further and creates fuel for continuation. Funding rates that went deeply negative at $68K now being reset. BTC + DXY rising simultaneously is a new correlation break signal.
-- **Watch for:** Whether BTC holds above $73K or reverses (bull trap confirmed); funding rate re-normalization vs. going negative again; whether DXY-BTC correlation break persists or reverts on SPX breakdown
+- **Summary:** Short squeeze took BTC from $68K through $73K+. Now BTC has pulled back to ~$72.5K range. Coinglass liquidation map shows a massive 50x-100x leveraged short wall at $71,800 — still live overhead. If swept, chain-reaction squeeze continues. If BTC drops below $70K, gap risk to $60K reopens. Funding rates partially reset from deeply negative.
+- **Watch for:** Whether BTC holds $70K floor over the weekend; if the $71,800 liquidation wall gets swept again; whether negative funding reaccumulates (reload for next squeeze) or flips positive (over-extended)
 
-### Stagflation Trap — SPX 100-Day Cracked, 200-Day in Sight
+### Stagflation Trap — SPX 200-Day at 6,574 Now 2.4% Away
 - **First seen:** 2026-03-05
 - **Status:** escalating
-- **Summary:** SPX cracked its 100-day MA at 6,835 on March 5 (held 4+ months), with the 200-day at 6,574–6,579 as next statistical target (~4% more downside). 10-year yields rose WITH equities falling — stagflation regime intact. Historical pattern in rising-oil/100-day-break environments: 200-day test is statistically likely. If triggered, ETF forced selling cascade re-activates.
-- **Watch for:** Whether SPX tests 200-day MA at 6,574; HY credit spreads widening (would confirm systemic stress not just equity vol); 10-year yield breaking 4.20%; any Fed communication
+- **Summary:** SPX closed 6,740 Friday March 6. 200-day MA at 6,574 is 2.4% away. Bear steepening yield curve (long rates rising) hammering financials. BlackRock private credit gate adds a new forced-selling cascade vector through LP margin calls. Weekend gap risk elevated. The 3-way convergence (SPX near 200-day + bear steepening + private credit stress) makes this the most dangerous macro setup of 2026 so far.
+- **Watch for:** Monday open gap — does SPX open below 6,740 testing 200-day directly? HY credit spreads (CDS, CDX) widening confirms systemic stress. Any Fed emergency communication. Iran war de-escalation (only thing that reverses this cleanly).
 
-### ETF AP Mechanics — Systematic Inflow Misread
+### ETF AP Mechanics — T+1 Lag Signal Still Live
 - **First seen:** 2026-03-06
 - **Status:** developing
-- **Summary:** Bitfinex revealed APs can short ETF shares immediately while delaying BTC spot purchases 24+ hours. $1.4B in 5-day ETF inflows did NOT translate to immediate spot demand — explaining the price-inflow divergence at $68K. This is a repeating structural dynamic that will continue to confuse market readers who treat ETF flow data as real-time spot buying.
-- **Watch for:** Whether the T+1 spot bid from ETF inflows eventually lifts price (2-3 day lag signal); any Coinglass or on-chain data showing actual exchange inflows lagging ETF inflow dates
+- **Summary:** ETF APs can short shares immediately, delay BTC spot purchase 24-48h. This creates systematic price-inflow divergence. The $1.4B in 5-day ETF inflows that preceded the $68K-$73K move may have its "real" spot bid still partially playing out.
+- **Watch for:** On-chain exchange inflows lagging ETF inflow dates by 24-48h; whether Coinglass spot flow data catches up to reported ETF flow numbers
 
-### VIX Short-Vol Regime — Partial Normalization
-- **First seen:** 2026-03-04
-- **Status:** resolving
-- **Summary:** VIX peaked at 25.40 intraday March 3, closed 23.57. By March 5, VIX had partially normalized toward 21 while SPX broke its 100-day MA — an unusual divergence (normally VIX spikes on technical breaks). Suggests some systematic vol-selling resumed. The regime break hypothesis is partially confirmed but not catastrophic. If war news de-escalates, VIX could revert toward 18-19.
-- **Watch for:** Whether VIX re-spikes above 25 on next SPX sell leg (confirms sustained regime change) or mean-reverts to sub-20 (short-vol regime fully restored)
+### Private Credit Redemption Gate — BlackRock First Mover
+- **First seen:** 2026-03-07
+- **Status:** escalating
+- **Summary:** BlackRock's HPS Corporate Lending Fund (Hlend, $26B) gated withdrawals for the first time in its 4-year history — redemption requests hit 9.3% of NAV vs 5% contractual cap. BLK -7% on the day. This is the first systemic crack in the $1.8T private credit industry. The mechanism: trapped LPs needing cash sell liquid assets (stocks, IG bonds), amplifying equity stress non-linearly.
+- **Watch for:** Whether other private credit funds (Apollo, Ares, Blue Owl) face similar redemption pressure; HY credit spread widening; any investor letters or fund filings; whether BLK recovers or continues to slide (market vote on systemic contagion risk)
 
 ### a16z Crypto Fund V — Dry Powder Contrarian Signal
 - **First seen:** 2026-03-05
 - **Status:** developing
-- **Summary:** a16z targeting $2B Fund V (vs $4.5B in 2022), closing H1 2026 during "blockchain downturn." Historically fund closes precede deployment waves that lift valuations. Reduced size = calibrated conviction. ~6-month lag between close and deployment means potential Q4 2026 bid.
+- **Summary:** a16z targeting $2B Fund V (vs $4.5B in 2022), closing H1 2026 during "blockchain downturn." Historically fund closes precede deployment waves. ~6-month lag between close and deployment means potential Q4 2026 bid.
 - **Watch for:** Fund close announcement, whether other VCs follow (Paradigm, Haun), LP composition (sovereign funds = institutional demand signal)
 
 ## Resolved Threads
+
+### VIX Short-Vol Regime — Short-Vol Era Ended
+- **Resolved:** 2026-03-07
+- VIX has remained elevated (22+) through multiple SPX sell legs. Bear steepening + private credit stress confirms the low-vol regime is over. Short-vol compression thesis fully invalidated. New regime: persistent 20-25 VIX baseline.
 
 ### BTC as 24/7 Geopolitical Risk Valve
 - **Resolved:** 2026-03-05
