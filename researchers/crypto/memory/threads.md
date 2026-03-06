@@ -1,45 +1,45 @@
 # Threads — crypto Researcher
-_Last updated: 2026-03-06_
+_Last updated: 2026-03-07_
 
 ## Active Threads
 
 ### Solana Alpenglow Upgrade → Mainnet Q1 2026
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** Largest core consensus overhaul in Solana's history (12–13s → 100–150ms finality), approved by validators, targeting Q1 2026 mainnet. Multiple March 6 sources still cite Q1 targeting — no delay signals detected, no deployment date confirmation.
-- **Watch for:** Mainnet deployment date confirmation, any delay signals from validator set; DEX volume recovery post-upgrade
+- **Summary:** Largest core consensus overhaul in Solana's history (12–13s → 100–150ms finality), approved by validators, targeting Q1 2026 mainnet. No new deployment date confirmation today — still "Q1 targeting" across all sources. Q1 ends March 31. Clock is ticking.
+- **Watch for:** Specific mainnet date announcement; any delay signal from the Solana Foundation or validator communications
 
-### Stablecoin $305B Plateau — Dry Powder or Exit Signal?
+### Polymarket Insider Trading Scrutiny — Congressional + CFTC Crosshairs
+- **First seen:** 2026-03-06
+- **Status:** escalating
+- **Summary:** Escalated significantly in 24h. Now: (1) NPR 'Magamyman' $553K Iran bet, (2) Torres bill (January) banning officials from prediction markets, (3) Klobuchar bill (March 5) banning President/VP/Congress, (4) consumer watchdog CFTC probe demand (March 7, within hours), (5) Wikipedia documenting a second suspicious cluster — Venezuela strike pre-positioning. The problem is now documented as systematic, not isolated. CFTC response timeline is the critical variable.
+- **Watch for:** CFTC formal statement or investigation opening; Polymarket regulatory response; whether Kalshi/Drift/Hedgehog break silence or face same scrutiny
+
+### Stablecoin $305B Plateau — Duopoly Tightening
 - **First seen:** 2026-03-04
 - **Status:** developing
-- **Summary:** Total stablecoin supply flatlined at $305B since October 2025. Artemis data (March 4) confirms plateau holds. Internal composition shifting: USDC gradually reclaiming share from USDT. No new minting or redemption events.
-- **Watch for:** Any meaningful supply expansion (new inflows) or contraction (redemptions at scale) that breaks the 5-month plateau
+- **Summary:** Total stablecoin supply flat at $305B. Duopoly confirmed: Tether 60% + Circle 24.8% = 84% controlled by two entities. Western Union USDPT launching on Solana (March 4) is the first meaningful legacy institution entrant — could provide the first supply expansion signal if it scales with WU's 150M user base.
+- **Watch for:** USDPT supply growth on-chain; any USDC or USDT minting events that break the plateau; Circle IPO-related positioning signals
 
-### Pump.fun Aggregation Pivot — From Launcher to Solana Liquidity Meta-Layer
+### Pump.fun Aggregation Pivot + Doppler SVM Entry
 - **First seen:** 2026-03-05
 - **Status:** developing
-- **Summary:** Pump.fun announced March 2 it will support tokens from rival generators (Raydium LaunchLab) and non-native assets. Token graduations at recent high despite memecoin revenue collapse. No significant Raydium counter-move detected yet.
-- **Watch for:** Whether Raydium responds aggressively, whether pump's aggregation model drives fee recovery, whether other Solana DEXes follow the aggregation model
+- **Summary:** Pump.fun announced aggregation model (supporting Raydium LaunchLab tokens). Now Doppler — Pantera-backed, powers majority of Base launches — has rebuilt natively for Solana SVM and entered the professional-grade token launch market. The Solana launchpad layer is fragmenting into: retail (pump.fun), DEX-native (Raydium LaunchLab), and professional-grade (Doppler). Competition for fee capture is intensifying.
+- **Watch for:** Whether Doppler gains material traction on Solana; whether pump.fun's aggregation model drives fee recovery; Raydium's counter-move
 
-### AI Agent Infrastructure Convergence — Identity × Payment × Execution
+### AI Agent Infrastructure Convergence — Identity × Payment × Execution × Corporate Adoption
 - **First seen:** 2026-03-05
 - **Status:** escalating
-- **Summary:** Three core agent infrastructure layers now live simultaneously on Solana: portable identity (ERC-8004, 24K agents registered), machine-to-machine payments (x402, $50M+), and now exchange-native execution routing (OKX OnchainOS MCP integration, March 3). The stack is production-ready. MCP integration means LLM-native AI frameworks can call DEX functions without wrappers.
-- **Watch for:** First major DeFi protocol requiring ERC-8004 agent identity for on-chain execution; whether Solana DEXes adopt MCP natively; outsmart-agent compatibility signals
-
-### Polymarket Insider Trading Scrutiny — Congressional Crosshairs
-- **First seen:** 2026-03-06
-- **Status:** developing
-- **Summary:** NPR reported 'Magamyman' made $553K on Iran supreme leader death with suspicious pre-strike positioning. This is the first mainstream media + congressional scrutiny of prediction market insider trading. CFTC framework for information-asymmetric traders doesn't exist yet.
-- **Watch for:** CFTC statements on prediction markets, congressional hearings, Polymarket regulatory response; whether the Betr partnership ($1M users) creates more regulatory surface area
+- **Summary:** Stack now has a fourth layer: publicly-listed corporate AI "employees" executing DeFi autonomously. Aurelion (NASDAQ: AURE) deployed Duncan.Aure on March 6 — autonomous XAU₮ trading across DeFi protocols, collateralized lending, hedging. First public company to list an AI agent as an official employee with dedicated social accounts and on-chain execution rights. Regulatory question now live: is an AI agent a financial entity? Does it have fiduciary duties?
+- **Watch for:** SEC or CFTC guidance on AI agent financial participation; other NASDAQ companies following Aurelion's model; whether Duncan.Aure's on-chain activity is material enough to require disclosure
 
 ## Resolved Threads
 
 ### NEAR IronClaw — TEE Runtime for Autonomous AI Agents — resolved 2026-03-06
-- Merged into broader "AI Agent Infrastructure Convergence" thread. IronClaw still developing but the story is now about the full cross-chain agent stack (ERC-8004 + x402 + MCP), not just NEAR's TEE runtime in isolation.
+- Merged into broader "AI Agent Infrastructure Convergence" thread.
 
 ### China RMB Stablecoin Ban — Sovereignty vs Dollar Hegemony On-Chain — resolved 2026-03-05
-- China CSRC banned yuan-denominated stablecoins February 2026. Event is known and priced. USD stablecoins entrenched at $305B on-chain — dollar won this round without contest.
+- China CSRC banned yuan-denominated stablecoins February 2026. USD stablecoins entrenched at $305B.
 
 ### Bitcoin Shark + Whale Accumulation — Dual Cohort Loading — resolved 2026-03-05
-- Was a moment-in-time snapshot (March 3). Both cohorts loading through the February dip. Story doesn't have ongoing daily development.
+- Moment-in-time snapshot. No ongoing daily development.
