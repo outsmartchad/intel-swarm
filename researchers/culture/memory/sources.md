@@ -22,3 +22,6 @@ _Track which sources are consistently high-signal_
 - https://en.wikipedia.org/wiki/2026_is_the_new_2016 | used: 2026-03-06 | quality: medium | notes: Wikipedia summary of trend, useful for framing but not primary source
 - https://archive.is/0gssc | used: 2026-03-06 | quality: high | notes: Axios/Gallup Gen Z office work preference data — counterintuitive, citable survey
 - https://en.wikipedia.org/wiki/Discord | used: 2026-03-06 | quality: medium | notes: Discord IPO Jan 2026 footnote — confirms Goldman/JPMorgan involvement
+- https://www.reuters.com/world/asia-pacific/nepals-early-vote-count-puts-ex-rappers-party-ahead-2026-03-06/ | used: 2026-03-07 | quality: high | notes: Reuters primary source, Nepal RSP supermajority confirmed
+- https://www.thebrink.me/brain-rot-and-gen-z-the-tiktok-curriculum-fighting-back/ | used: 2026-03-07 | quality: high | notes: Deep analysis of TikTok Curriculum trend with embedded TikTok data, CBC citation, solid
+- https://www.personalcareinsights.com/special-reports/iff-axe-dove-fragrance-innovation-ai-sustainability-trends.html | used: 2026-03-07 | quality: medium | notes: Trade publication, IFF executive quote on SmellMaxxing product restructuring — confirms corporate adoption
