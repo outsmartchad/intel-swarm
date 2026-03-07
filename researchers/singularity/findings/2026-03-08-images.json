@@ -1,0 +1,28 @@
+[
+  {
+    "finding_idx": 0,
+    "source_url": "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+    "image_path": "/static/images/2026-03-08/singularity/b6f8aec5fbe5.jpg"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "https://www.datacenterknowledge.com/data-center-construction/new-data-center-developments-march-2026",
+    "image_path": "/static/images/2026-03-08/singularity/0799a5ce2286.jpg"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://www.datacenterknowledge.com/data-center-construction/new-data-center-developments-march-2026",
+    "image_path": "/static/images/2026-03-08/singularity/0799a5ce2286.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://www.datacenterfrontier.com/machine-learning/news/55362264/ai-infrastructure-brief-power-capital-and-silicon-collide-in-the-next-phase-of-the-data-center-buildout",
+    "image_path": "/static/images/2026-03-08/singularity/be021ea21112.png"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://internationalaisafetyreport.org/sites/default/files/2026-02/international-ai-safety-report-2026.pdf",
+    "image_path": "/static/images/2026-03-08/singularity/495680017c58.png",
+    "via": "retry"
+  }
+]
