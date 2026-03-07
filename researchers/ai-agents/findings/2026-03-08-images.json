@@ -1,0 +1,27 @@
+[
+  {
+    "finding_idx": 0,
+    "source_url": "https://ai.com/company-news/ai-com-launch",
+    "image_path": "/static/images/2026-03-08/ai-agents/5a7076c46620.png"
+  },
+  {
+    "finding_idx": 1,
+    "source_url": "https://techcrunch.com/2026/03/05/openai-launches-gpt-5-4-with-pro-and-thinking-versions/",
+    "image_path": "/static/images/2026-03-08/ai-agents/3221fa7f8541.png"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://www.dallasfed.org/research/economics/2026/0224",
+    "image_path": "/static/images/2026-03-08/ai-agents/209450a1f9d0.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2026/02/26/agentic-ai-can-complete-whole-courses-now",
+    "image_path": "/static/images/2026-03-08/ai-agents/64e625e33c86.jpg"
+  },
+  {
+    "finding_idx": 4,
+    "source_url": "https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html",
+    "image_path": "/static/images/2026-03-08/ai-agents/d1b4d4861934.jpeg"
+  }
+]

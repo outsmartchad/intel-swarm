@@ -27,3 +27,11 @@ _Track which sources are consistently high-signal_
 - https://www.nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure | used: 2026-03-07 | quality: high | notes: Primary source — NIST official; reliable for government standards tracking
 - https://www.coindesk.com/tech/2026/03/03/okx-jumps-into-ai-agent-race-with-new-onchainos-toolkit | used: 2026-03-07 | quality: medium | notes: CoinDesk — solid for crypto x AI agent infrastructure; verify technical claims independently
 - https://hbr.org/2026/01/companies-are-laying-off-workers-because-of-ais-potential-not-its-performance | used: 2026-03-07 | quality: high | notes: HBR — peer-reviewed adjacent; strong for economic analysis of AI layoff narrative vs. reality
+
+## 2026-03-08 Sources
+- https://ai.com/company-news/ai-com-launch | used: 2026-03-08 | quality: high | Official company announcement — primary source for ai.com launch details
+- https://techcrunch.com/2026/03/05/openai-launches-gpt-5-4-with-pro-and-thinking-versions/ | used: 2026-03-08 | quality: high | Detailed GPT-5.4 specs and benchmarks
+- https://www.theverge.com/ai-artificial-intelligence/889926/openai-gpt-5-4-model-release-ai-agents | used: 2026-03-08 | quality: high | Context on GPT-5.4's agentic capabilities
+- https://www.dallasfed.org/research/economics/2026/0224 | used: 2026-03-08 | quality: high | Federal Reserve empirical research — highly credible labor market data
+- https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2026/02/26/agentic-ai-can-complete-whole-courses-now | used: 2026-03-08 | quality: high | Primary reporting on Einstein agentic AI
+- https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html | used: 2026-03-08 | quality: high | CNBC confirmation on supply chain risk precedent
