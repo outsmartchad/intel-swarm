@@ -1,44 +1,48 @@
 # Threads — westeast Researcher
-_Last updated: 2026-03-07_
+_Last updated: 2026-03-08_
 
 ## Active Threads
 
+### BRICS Pay / mBridge — Operational Infrastructure
+- **First seen:** 2026-03-08
+- **Status:** escalating
+- **Summary:** $55B+ through mBridge (95% e-CNY), CIPS processed 45T yuan since early 2025. India's RBI put CBDC linkage atop 2026 BRICS Summit agenda. "Shadow Nexus" (Dubai, Singapore, Mumbai) targeting $1.5T annual trade by 2027 outside OFAC reach. This is no longer pilot — it's production infrastructure.
+- **Watch for:** New Development Bank local currency lending milestones, BRICS Pay app adoption metrics, any Gulf state (UAE, Saudi) formal integration, whether Western banks begin participating
+
+### DeepSeek V4 — Information Fog
+- **First seen:** 2026-03-04
+- **Status:** developing
+- **Summary:** Conflicting reports as of March 8: some sources claim "launched early March," others say "looming entrant not fully documented." The confusion itself is notable — either soft rollout with restricted access, or deliberate ambiguity ahead of Trump-Xi summit. Two Sessions conclude ~March 12.
+- **Watch for:** Definitive launch announcement + benchmarks, whether it releases before or after summit, Huawei Ascend performance validation
+
+### China's Independent AI Stack + Physical AI — Dual Track
+- **First seen:** 2026-03-06
+- **Status:** escalating
+- **Summary:** Software: Zhipu GLM-5 (744B params, 100K Huawei Ascend 910B chips) proves frontier AI on zero NVIDIA. Hardware: 80% of global humanoid installations, 70% lidar market, $1,400 domestic humanoids. EV supply chain synergies collapsing robotics costs. The "China can't do frontier AI" narrative is dead on both tracks.
+- **Watch for:** GLM-5 benchmarks vs Western models, Atlas 950 commercial contracts, humanoid export push, whether Western automakers/warehouse operators adopt Chinese robotics
+
 ### Trump-Xi Beijing Summit — March 31
 - **First seen:** 2026-03-06
-- **Status:** escalating
-- **Summary:** Paris pre-talks confirmed: Bessent + He Lifeng meeting mid-March on tariffs, rare earths, soybeans, investment. CK Hutchison ports deal now explicitly tied to summit outcome — HK holding company's global ports have become a live bargaining chip. Rare earth access being packaged as a concession instrument, not just a threat.
-- **Watch for:** Paris talks outcome (mid-March), any rare earth/investment announcement, whether DeepSeek V4 drops before summit as a Chinese show of strength, CK Hutchison deal movement
-
-### DeepSeek V4 — Still Not Released (Day 3+ past Two Sessions opening)
-- **First seen:** 2026-03-04
-- **Status:** escalating
-- **Summary:** Two Sessions opened March 4, still no V4 launch. Now 7 days past original "first week of March" window. Either political hold for maximum impact (summit timing?) or technical delay. The silence itself is becoming a signal.
-- **Watch for:** Actual release + benchmarks, whether it drops before Two Sessions conclude (~March 12) or is held until Trump-Xi summit week, Huawei Ascend performance benchmarks
-
-### China's Independent AI Stack — Validated
-- **First seen:** 2026-03-06
-- **Status:** escalating
-- **Summary:** Zhipu AI's GLM-5 (744B params, 100K Huawei Ascend 910B chips, MIT license) proves frontier AI on zero NVIDIA dependency. Huawei Atlas 950 SuperPoD debuts globally at MWC — 8,192 Ascend NPUs as single logical computer, commercial Q4 2026. The "China can't do frontier AI without NVIDIA" narrative is now dead.
-- **Watch for:** GLM-5 benchmark results vs Western models, Atlas 950 commercial contracts (especially Middle East/Europe), DeepSeek V4 release further validating Ascend stack, any Alibaba/Baidu comparable announcements
+- **Status:** developing
+- **Summary:** Paris pre-talks confirmed: Bessent + He Lifeng mid-March on tariffs, rare earths, soybeans, investment. CK Hutchison ports deal tied to summit. Rare earth access packaged as concession instrument. Pre-negotiation sequencing means any "win" is being mapped now.
+- **Watch for:** Paris talks outcome (mid-March), CK Hutchison deal movement, whether China drops tech announcements (DeepSeek V4, Ascend contracts) before/after summit
 
 ### Intel Double-Jeopardy — Chip Boundary Breaking Both Ways
 - **First seen:** 2026-03-07
 - **Status:** developing
-- **Summary:** Bipartisan senators (Slotkin, Warren, Cotton) demand Intel respond by March 20 over chipmaking tools from Chinese state-backed blacklisted entity. Separately, Taiwan judiciary probing former TSMC SVP Wei-Jen Lo for alleged N2/A16-level trade secret leaks to Intel when he joined. Two parallel scandals, opposite directions.
-- **Watch for:** Intel's March 20 response to senators, Taiwan judicial outcome for Lo, whether BIS opens formal investigation, Congressional hearing on Intel/CHIPS Act accountability
-
-### Hong Kong Stablecoin Licenses — First Issuance Imminent
-- **First seen:** 2026-03-04
-- **Status:** developing
-- **Summary:** HKMA confirmed awarding first batch "in March 2026" per Financial Secretary Paul Chan's budget address. Still no first license announcement as of March 7. Dealer and custodian legislation also queued for 2026. Whoever gets first license gets institutional narrative.
-- **Watch for:** First license issuance announcement and recipient identity, whether any mainland-linked entity is in first batch, HK tokenized asset settlement timeline update
+- **Summary:** Bipartisan senators (Slotkin, Warren, Cotton) demand Intel respond by March 20 over chipmaking tools from Chinese state-backed blacklisted entity. Separately, Taiwan judiciary probing former TSMC SVP Wei-Jen Lo for alleged N2/A16-level trade secret leaks to Intel. Two parallel scandals, opposite directions.
+- **Watch for:** Intel's March 20 response, Taiwan judicial outcome for Lo, whether BIS opens formal investigation, Congressional hearing
 
 ## Resolved Threads
 
+### Hong Kong Stablecoin Licenses — Absorbed into broader BRICS/mBridge thread
+- **Resolved:** 2026-03-08
+- First license still pending as of March 8, but the signal is now captured by the BRICS Pay operational infrastructure thread. HK-Shanghai cargo MoU (March 2) shows the trade finance direction. Will reopen if specific license announcement breaks.
+
 ### TSMC/Enflame Chip Circumvention — Absorbed into Intel Double-Jeopardy thread
 - **Resolved:** 2026-03-07
-- Commerce Dept stonewalling ("no comment on active enforcement matters"). No new developments 5+ days since initial NBC News report. The systemic failure of export controls is now the broader frame — covered by new Intel Double-Jeopardy thread which captures the full picture.
+- Commerce Dept stonewalling. No new developments. Covered by Intel Double-Jeopardy thread.
 
 ### China's 15th Five-Year Plan (2026-2030) — Background context
 - **Resolved:** 2026-03-07
-- Ratified at Two Sessions March 5. Specific budget allocations and company-level backing are now being tracked via "China's Independent AI Stack — Validated" thread which covers the practical execution. Quantum network timeline still unannounced — will reopen if specific milestone revealed.
+- Ratified at Two Sessions March 5. Practical execution tracked via AI Stack + Physical AI thread.
