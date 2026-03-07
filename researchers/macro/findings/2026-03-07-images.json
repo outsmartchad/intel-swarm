@@ -1,5 +1,10 @@
 [
   {
+    "finding_idx": 0,
+    "source_url": "https://images.wsj.net/im-799529/?width=1280&height=1280",
+    "image_path": "/static/images/2026-03-07/macro/f4acc02544cb.jpg"
+  },
+  {
     "finding_idx": 1,
     "source_url": "https://markets.financialcontent.com/stocks/article/marketminute-2026-3-3-the-warsh-transition-trumps-fed-nominee-triggers-sound-money-shift-ahead-of-march-fomc",
     "image_path": "/static/images/2026-03-07/macro/108887effb85.png"
@@ -8,5 +13,10 @@
     "finding_idx": 2,
     "source_url": "https://www.ledgerinsights.com/ecb-names-participants-for-project-pontes-dlt-settlement-contact-group/",
     "image_path": "/static/images/2026-03-07/macro/32aba77eab57.png"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://tradingeconomics.com/united-states/government-bond-yield",
+    "image_path": "/static/images/2026-03-07/macro/7beeff0049b0.png"
   }
 ]

@@ -1,5 +1,10 @@
 [
   {
+    "finding_idx": 0,
+    "source_url": "https://www.reuters.com/world/china/deepseek-withholds-latest-ai-model-us-chipmakers-including-companies-using-nvidia-2026-03-04/",
+    "image_path": "/static/images/2026-03-07/china/7c395dbc5954.png"
+  },
+  {
     "finding_idx": 1,
     "source_url": "https://stnews.live/2026/03/05/stable-yuan-shrinking-flight-what-china-s-npc-means-for-crypto/amp/",
     "image_path": "/static/images/2026-03-07/china/045fe71ce492.jpg"
@@ -18,5 +23,10 @@
     "finding_idx": 4,
     "source_url": "https://understandingwar.org/research/china-taiwan/china-taiwan-update-march-1-2026/",
     "image_path": "/static/images/2026-03-07/china/c6c44f57ace3.webp"
+  },
+  {
+    "finding_idx": 5,
+    "source_url": "https://asiasociety.org/policy-institute/china-2026-what-watch",
+    "image_path": "/static/images/2026-03-07/china/d7da93d0ea4c.jpg"
   }
 ]

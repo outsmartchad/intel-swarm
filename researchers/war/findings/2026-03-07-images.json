@@ -1,8 +1,23 @@
 [
   {
+    "finding_idx": 0,
+    "source_url": "https://www.bloomberg.com/news/articles/2026-03-05/bulk-carrier-claiming-to-be-chinese-passes-through-hormuz-after-iran-creates-china-only-lane",
+    "image_path": "/static/images/2026-03-07/war/b9ecb26a6e98.jpg"
+  },
+  {
     "finding_idx": 1,
     "source_url": "https://www.cnbc.com/2026/03/06/trump-navy-strait-hormuz-iran-oil-tanker.html",
     "image_path": "/static/images/2026-03-07/war/9b0f5c79488d.jpeg"
+  },
+  {
+    "finding_idx": 2,
+    "source_url": "https://www.reuters.com/world/middle-east/article-five-not-table-despite-iran-missile-incident-near-us-carrier-2026-03-06/",
+    "image_path": "/static/images/2026-03-07/war/a315bbccaa9e.jpg"
+  },
+  {
+    "finding_idx": 3,
+    "source_url": "https://www.bloomberg.com/news/articles/2026-03-05/iran-s-next-leader-assembly-of-experts-shortlist",
+    "image_path": "/static/images/2026-03-07/war/6dd0a40e123c.jpg"
   },
   {
     "finding_idx": 4,
