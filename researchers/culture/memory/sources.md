@@ -25,3 +25,7 @@ _Track which sources are consistently high-signal_
 - https://www.reuters.com/world/asia-pacific/nepals-early-vote-count-puts-ex-rappers-party-ahead-2026-03-06/ | used: 2026-03-07 | quality: high | notes: Reuters primary source, Nepal RSP supermajority confirmed
 - https://www.thebrink.me/brain-rot-and-gen-z-the-tiktok-curriculum-fighting-back/ | used: 2026-03-07 | quality: high | notes: Deep analysis of TikTok Curriculum trend with embedded TikTok data, CBC citation, solid
 - https://www.personalcareinsights.com/special-reports/iff-axe-dove-fragrance-innovation-ai-sustainability-trends.html | used: 2026-03-07 | quality: medium | notes: Trade publication, IFF executive quote on SmellMaxxing product restructuring — confirms corporate adoption
+- https://www.macrumors.com/2026/03/07/apple-posting-strange-tiktok-videos/ | used: 2026-03-08 | quality: high | Apple-focused tech news, reliable for Apple marketing strategy coverage
+- https://wibc.com/880509/why-gen-z-is-embracing-chinese-wellness-tips-on-tiktok/ | used: 2026-03-08 | quality: medium | Radio station syndicated content, good for trend signals but verify with primary sources
+- https://therobinreport.com/the-state-of-gen-z-in-2026-the-checked-out-generation/ | used: 2026-03-08 | quality: high | Retail industry analysis with Oxford Economics data citations, strong quantitative signals
+- https://www.essence.com/news/money-career/gen-z-opting-out-management-roles/ | used: 2026-03-08 | quality: medium | Lifestyle publication citing Robert Walters survey data, useful for workplace trend signals
