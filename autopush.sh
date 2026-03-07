@@ -16,11 +16,15 @@ FETCH="$REPO/web/fetch-images.py"
 TRANSLATE="$REPO/web/translate.py"
 DATE=$(date +%Y-%m-%d)
 LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
-BOT_TOKEN="TELEGRAM_BOT_TOKEN_REDACTED"
-CHAT_ID="934847281"
 
-export BRAVE_API_KEY="BRAVE_API_KEY_REDACTED"
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
+# Load secrets from .env (never hardcode tokens in this file)
+if [ -f "$REPO/.env" ]; then
+  set -a; source "$REPO/.env"; set +a
+fi
+BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"
+CHAT_ID="934847281"
 
 # ── Telegram notify helper ─────────────────────────────────────────────────────
 tg_notify() {

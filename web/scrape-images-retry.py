@@ -25,7 +25,7 @@ BASE  = Path(__file__).resolve().parents[1]
 TIMEOUT = 10
 
 # Brave Search API key (loaded from openclaw config or env)
-BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "BRAVE_API_KEY_REDACTED")
+BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "")
 
 # ── User-Agent rotation ────────────────────────────────────────────────────────
 USER_AGENTS = [
