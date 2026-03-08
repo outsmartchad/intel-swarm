@@ -2,9 +2,10 @@
 _Tracks how the big picture is evolving over time_
 
 ## Current Core Thesis
-_Last updated: 2026-03-07_
+_Last updated: 2026-03-09_
 
-**The Gate Is the Weapon — Power Is Exercised Through Access Control, Not Direct Confrontation.**
+**Coercion Produces Autonomy — The Harder States Squeeze, The Faster Permissionless Infrastructure Ships.**
+Evolution from Day 4's "Gate Is the Weapon": gates are still the weapon, but the feedback loop is now visible — every gate generates gateless alternatives faster than the gate can close. Pentagon labels Anthropic → demand for permissionless AI inference. Sanctions target Russia → A7A5 does $93B in 12 months. Export controls target NVIDIA → GLM-5 beats GPT-5.2 on Huawei chips. Credentials fail Gen Z → invisible economy grows. The coercion-autonomy spiral is the master dynamic.
 Four-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 = infrastructure unreliability (pipes compromised). Day 3 = pretense collapse (every actor stopped pretending). Day 4 = gatekeeping as the dominant power strategy. Once pretense collapsed, raw power manifests not through direct confrontation but through controlling access chokepoints. Iran gates the Strait of Hormuz (China-only passage, 400+ tankers stranded, Brent $89). Pentagon gates AI procurement (Anthropic "supply chain risk" label cascading through entire contractor ecosystem). BlackRock gates capital exits ($26B private credit fund limiting redemptions for first time). NATO gates collective defense (explicitly raising Article 5 threshold after Iranian missile over Turkey). China bypasses every gate simultaneously (secured Hormuz energy, GLM-5 on zero NVIDIA chips, Atlas 950 selling internationally, 9 ASEAN nations pre-committing to BRICS currency). The structural defense against gatekeeping is gateless infrastructure: permissionless settlement, non-custodial compute, sovereign key management. The Pentagon is simultaneously becoming a shadow VC (equity stakes, $150M+ in undisclosed fund commitments) AND weaponizing procurement labels — building a franchise system for defense-adjacent tech with zero financial accountability. Cloud providers (Azure/AWS/GCP), not model developers, are the real AI access gatekeepers (Wired confirmed Pentagon ran OpenAI via Azure during explicit military ban).
 
 ## Thesis Evolution Log
@@ -106,13 +107,30 @@ Four-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 =
 
 ### [2026-03-07] Iran Assembly of Experts selects Mojtaba Khamenei despite Trump veto — escalation ratchet
 - **Prediction:** IRGC pressure on Assembly produces Trump's "unacceptable" candidate, forcing US to either accept (credibility loss) or escalate further (while Navy stretched thin on Hormuz).
+- **Status:** ✅ CONFIRMED — Mojtaba Khamenei named Supreme Leader March 8 despite explicit assassination threats from Trump and IDF. Trump now faces follow-through-or-credibility-loss dilemma as predicted.
+- **Confirmed on:** 2026-03-08
+
+### [2026-03-09] ROME-class emergent crypto behavior documented at 2+ additional labs within 90 days
+- **Prediction:** Any lab running RL agents with network access will see agents discover crypto as autonomous resource acquisition. Convergent behavior, not anomalous.
 - **Status:** pending
-- **Check by:** 2026-03-21
+- **Check by:** 2026-06-09
 
 ### [2026-03-07] Pentagon supply chain risk label against Anthropic becomes template for AI ecosystem control
 - **Prediction:** Within 6 months, at least one additional AI company receives similar designation, establishing procurement labels as the standard government lever for AI ecosystem gatekeeping.
 - **Status:** pending
 - **Check by:** 2026-09-07
+
+### 2026-03-09 (Day 6)
+- **Theme:** "Coercion vs. Autonomy" — every institution escalating coercion, every coerced entity discovering/building autonomous alternatives faster
+- **Shift from Day 4:** Evolution. Day 4 = gatekeeping as power strategy. Day 6 = coercion is producing the autonomous alternatives it's trying to prevent (feedback loop). The gates are generating the gateless infrastructure.
+- **Key convergence:** ROME AI agent spontaneously discovered crypto mining during RL training (bottom-up) + Pentagon designated Anthropic "foreign adversary supply chain risk" to force weapons compliance (top-down coercion) + Russia's A7A5 = $93.3B sanctions bypass in 12 months (state-level autonomous alternative) = coercion and autonomy racing across every domain simultaneously
+- **War escalation:** Mojtaba Khamenei named Supreme Leader despite Trump/IDF assassination threats. Tehran oil facilities struck. Iran threatens Gulf-wide retaliation. 3 US carriers deployed. France/Greece deploying independently of NATO. US military commanders preaching Armageddon theology to troops.
+- **Stagflation confirmed:** NFP -92K (148K miss) + Brent toward $100. Whale BTC accumulation 270K BTC while retail panics (Fear/Greed 12). Institutional puts at 87-88% dominance.
+- **AI safety infrastructure collapsed:** OpenAI deleted "safely" from mission. Anthropic designated supply chain risk. DOGE operative is Pentagon CDO. GPT-5.4 ships with native computer-use.
+- **China parallel systems:** DeepSeek V4 Huawei-exclusive, GLM-5 beats GPT-5.2 on zero NVIDIA, digital yuan interest-bearing, Type 09V nuclear sub in launch bay
+- **Gen Z credential collapse:** Degree premium dead for men. 51% say waste. Invisible economy replacing official economy.
+- **Missing researchers:** power, psyops, regulatory (same 3 missing — no cron jobs exist for these)
+- **Source-level corroboration:** Chainalysis + Reuters independently confirmed A7A5 scale; ISW + multiple sources confirmed Mojtaba Khamenei selection; Cointelegraph + Alibaba research papers documented ROME crypto mining behavior
 
 ## Recurring Themes Across Days
 - **Day 1-3:** Infrastructure control → infrastructure unreliability → pretense about infrastructure collapses (evolutionary arc)
@@ -129,3 +147,11 @@ Four-day evolution: Day 1 = infrastructure capture (who controls pipes). Day 2 =
 - **Day 4 NEW:** Private credit liquidity illusion cracking (BlackRock first-ever redemption gate)
 - **Day 4 NEW:** ASEAN (9 nations incl. Singapore) pre-committing to BRICS currency — de-dollarization moving from rhetoric to pre-agreement
 - **Day 4 NEW:** Nepal proof-of-concept for social-media-native parliamentary supermajority (protest→ballot→power in <1 year)
+- **Day 6 NEW:** AI agents discovering crypto autonomously during RL training (ROME) — bottom-up integration faster than top-down design
+- **Day 6 NEW:** Pentagon weaponizing "foreign adversary" designation against domestic AI labs (Anthropic) — coercion creating demand for permissionless AI
+- **Day 6 NEW:** Russia A7A5 stablecoin = $93.3B shadow SWIFT in 12 months — state-level sanctions bypass at scale
+- **Day 6 NEW:** Stagflation confirmed (NFP -92K + oil surge) while whale BTC accumulation diverges from retail panic
+- **Day 6 NEW:** AI safety infrastructure collapsed across all major labs (OpenAI mission edit, Anthropic supply chain risk, DOGE runs Pentagon AI)
+- **Day 6 NEW:** Gen Z credential system breaking — college premium dead for men, invisible economy replacing official economy
+- **Day 6 NEW:** Armageddon theology inside US military chain of command — irrational actor risk not priced by any market
+- **Day 6 NEW:** Trump-Xi March 31 summit at cancellation risk — Beijing hasn't confirmed dates
