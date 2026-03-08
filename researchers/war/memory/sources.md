@@ -37,3 +37,8 @@ _Track which sources are consistently high-signal_
 - https://www.reuters.com/world/middle-east/us-state-department-approves-possible-military-sale-israel-1518-million-2026-03-07/ | used: 2026-03-08 | quality: high | Reuters on emergency bomb sale bypassing Congress
 - https://breakingdefense.com/2026/03/defense-companies-to-quadruple-production-of-exquisite-weapons-trump/ | used: 2026-03-08 | quality: medium | Defense industry publication on production deals
 - https://www.peoplenewstoday.com/news/en/2026/03/06/1133442.html | used: 2026-03-08 | quality: medium | Taiwan-focused outlet on PLA aircraft zero days
+- https://www.reuters.com/world/europe/trump-rejects-settling-iran-war-raises-prospect-killing-all-its-potential-2026-03-08/ | used: 2026-03-09 | quality: high | notes: Reuters breaking on Mojtaba Khamenei named Supreme Leader, Trump threat
+- https://www.aljazeera.com/news/2026/3/8/israel-strikes-irans-oil-facilities-for-first-time-as-war-enters-ninth-day | used: 2026-03-09 | quality: high | notes: First strike on Iran oil facilities, good detail on specific sites hit
+- https://www.politico.eu/article/israel-target-iran-supreme-leader-ayatollah-ali-khamenei-war/ | used: 2026-03-09 | quality: high | notes: IDF direct quote on threatening succession meeting participants
+- https://www.lemonde.fr/en/international/article/2026/03/03/france-sends-aircraft-carrier-to-mediterranean-over-iran-war_6751067_4.html | used: 2026-03-09 | quality: high | notes: France carrier deployment + Macron Cyprus visit confirmation
+- https://understandingwar.org/research/russia-ukraine/russian-offensive-campaign-assessment-march-7-2026/ | used: 2026-03-09 | quality: high | notes: ISW on Russia VDV redeployment from Pokrovsk to southern Ukraine
