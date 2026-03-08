@@ -6,73 +6,93 @@ _The scoreboard. Every prediction made, tracked to outcome._
 ### [2026-03-04] Taiwan arms deadline → crisis trigger OR negotiation chip
 - **Prediction:** Taiwan Strait vulnerability window opening. 3 US arms packages expire March 15. Trump blocking for April Beijing meeting. PLA purge completion = readiness signal.
 - **Watch:** Taiwan LY vote results, March 15 deadline, Trump-Xi March 31 summit, Paris pre-summit talks (Bessent + He Lifeng)
-- **Updated 2026-03-07:** NEW DIMENSION — China may trade Hormuz pressure relief for Taiwan arms delay at March 31 summit. If so, prediction shifts from "crisis trigger" to "negotiation chip" — potentially more dangerous long-term (sets precedent Taiwan defense is negotiable). China reducing military flights around Taiwan = "false peace" leverage.
-- **Status:** pending — ESCALATING WITH NEW DIMENSION (8 days to deadline)
+- **Updated 2026-03-09:** 6 days to deadline. KMT/TPP gridlock confirmed. China Type 09V sub in launch bay. No US delivery confirmation. Iran war consuming all US strategic bandwidth — Taiwan leverage opportunity for China increasing.
+- **Status:** pending — CRITICAL (6 days to deadline)
 - **Check by:** 2026-03-16
 
 ### [2026-03-04] BTC defensive then violent bounce
 - **Prediction:** Short-term downside (squeeze exhausted, VIX cracking, Iran catalyst). $305B stablecoin powder = violent bounce when trigger arrives.
-- **Watch:** VIX regime, ETF flows, stablecoin deployment, funding rates, BlackRock private credit cascade
-- **Updated 2026-03-07:** BTC above $70K with liquidation wall at $71,800 (50x-100x leverage). NEW RISK: sequential cascade (Hormuz → FOMC March 18 → private credit) could trigger indiscriminate liquid-asset selling that tests BTC correlation break under genuine stress. $62K void still untested.
-- **Status:** PARTIALLY CONFIRMED — direction right, stress test incoming
-- **Check by:** 2026-03-10
+- **Watch:** VIX regime, ETF flows, stablecoin deployment, funding rates, March 18 FOMC
+- **Updated 2026-03-09:** Setup confirmed — extreme fear (12/100), funding -6%, $7.8B ETF outflows, BUT 270K BTC whale accumulation ($18.7B) in 30 days. Spring coiled. Trigger = March 18 FOMC dot plot.
+- **Status:** PARTIALLY CONFIRMED — setup right, trigger pending
+- **Check by:** 2026-03-18 (extended from March 10)
 
 ### [2026-03-04] Autonomous agent company — primitives exist
 - **Prediction:** Virginia LLD + Coinbase x402 + IronClaw TEE + GENIUS Act stablecoin yield = every primitive for autonomous AI agent company exists.
 - **Watch:** OCC GENIUS Act NPRM (April 27), NIST agent standards initiative, CFTC Polymarket framework, ERC-8004 adoption
-- **Updated 2026-03-07:** Aurelion Duncan.Aure = first NASDAQ-listed autonomous DeFi agent (live). OKX OnchainOS live. NIST launching competing government agent identity framework. Polymarket CFTC probe = prediction market primitives under regulatory pressure. Net: capability accelerating, regulatory risk materializing from two new directions.
-- **Status:** pending — ACCELERATING + REGULATORY HEADWINDS
+- **Updated 2026-03-09:** ROME (Alibaba) proves agents will autonomously discover crypto without being programmed to. Polygon Agent CLI ships production-grade agent-native blockchain infra. Byreal launches agent-native DEX on Solana. Circle/Stripe racing to build stablecoin rails for agents. Capability accelerating from BOTH top-down (infra builders) and bottom-up (emergent agent behavior).
+- **Status:** pending — ACCELERATING FROM BOTH DIRECTIONS
 - **Check by:** 2026-04-01
 
-### [2026-03-05] Iran 86% missile reduction = conservation for massed strike
-- **Prediction:** Iran's 86% missile/drone launch reduction is conservation, not depletion. Combined with C2 degradation and zero congressional constraint, conditions for surprise salvo.
-- **Watch:** Iran launch cadence, Hormuz selective enforcement, Assembly of Experts successor decision, NATO Article 5 threshold
-- **Updated 2026-03-07:** NATO explicitly ruled out Article 5 — Iran now knows the exact ceiling. Assembly of Experts narrowing to Mojtaba Khamenei (Trump's "unacceptable" candidate). Iran's strategic position IMPROVED: China-only oil lane, confirmed NATO non-response, Hormuz coercion working. MORE reason to hold weapons in reserve when economic coercion is delivering results without firing.
-- **Status:** pending — ESCALATING (Iran's alternative leverage reduces need for massed strike, but capability preserved)
-- **Check by:** 2026-03-12
-
-### [2026-03-05] War escalation is the BTC catalyst, not the headwind
-- **Prediction:** Iran escalation → Hormuz → oil shock → inflation conviction → $305B stablecoin deploys into BTC.
-- **Watch:** Oil price ($95 next trigger, $100 confirmation), BTC-DXY correlation, March 18 FOMC dot plot
-- **Updated 2026-03-07:** BTC-DXY co-movement holding. Brent at $89, heading toward $100 on Hormuz closure. STRESS TEST INCOMING: BlackRock private credit cascade could break the correlation temporarily via indiscriminate selling. March 18 FOMC is the binary — hawkish = confirms inflation thesis = BTC catalyst; dovish = thesis weakens.
-- **Status:** EARLY CONFIRMATION — stress test approaching
+### [2026-03-05] Iran 86% missile reduction = conservation for deterrent (UPDATED from massed strike)
+- **Prediction (REVISED):** Iran conserved missile/drone capability but is deploying it as DETERRENT backing conventional escalation, not as first-strike preparation. Iran now striking selectively (oil infrastructure, Halliburton Basra) while preserving strategic reserves.
+- **Watch:** Iran retaliation against Gulf oil facilities, massed strike capability indicators, new Supreme Leader's military doctrine
+- **Updated 2026-03-09:** Iran IS striking — selectively targeting oil infrastructure and US corporate assets. Not the "massed salvo" originally predicted. Conservation thesis confirmed but use case shifted from first-strike to deterrent-backed conventional warfare.
+- **Status:** PARTIALLY CONFIRMED — conservation right, deployment mode wrong
 - **Check by:** 2026-03-15
 
+### [2026-03-05] War escalation is the BTC catalyst, not the headwind
+- **Prediction:** Iran escalation → Hormuz → oil shock → inflation conviction → stablecoin deploys into BTC.
+- **Watch:** Oil price ($95 next trigger, $100 confirmation), BTC-DXY correlation, March 18 FOMC dot plot
+- **Updated 2026-03-09:** Brent clearing $90, analysts flagging $100-$150 range. NFP -92K confirms stagflation input. BUT BTC still at extreme fear — the catalyst hasn't fired yet. Thesis intact, timing delayed. FOMC March 18 is the binary.
+- **Status:** EARLY CONFIRMATION — waiting for FOMC trigger
+- **Check by:** 2026-03-18
+
 ### [2026-03-05] Nvidia moat attacked from both sides simultaneously
-- **Prediction:** DeepSeek V4 architecturally designed for non-Nvidia chips (China) + AMD-Meta $60B equity deal (US). Nvidia's monopoly structurally eroding from both directions.
-- **Watch:** GLM-5 adoption, Atlas 950 international sales, DeepSeek V4 actual release, AMD MI450 delivery
-- **Updated 2026-03-07:** GLM-5 IS THE PROOF POINT. 744B params, 100K Huawei Ascend 910B, zero Nvidia, MIT open-source. Atlas 950 SuperPoD selling internationally at MWC Barcelona. No longer "erosion" — the alternative stack is commercially available and being EXPORTED. Upgrading from "moat attacked" to "moat breached."
-- **Status:** pending — MOAT BREACHED (alternative stack commercially available and exporting)
+- **Prediction:** DeepSeek V4 + AMD-Meta + Huawei = Nvidia monopoly eroding from multiple directions.
+- **Watch:** GLM-5 adoption, Atlas 950 international sales, DeepSeek V4 release, AMD MI450 delivery
+- **Updated 2026-03-09:** DeepSeek V4 now giving Huawei EXCLUSIVE model access — decoupling at training level, not just inference. xAI building 1M Blackwell GPU cluster with private 1.2GW power = still massive Nvidia demand from US side. Moat breached on China side but Nvidia still dominant in US.
+- **Status:** pending — MOAT BREACHED (China), STILL DOMINANT (US)
 - **Check by:** 2026-05-01
 
 ### [2026-03-06] Pretense collapse = structurally bullish for trustless infrastructure
-- **Prediction:** Simultaneous pretense collapse across institutions removes incumbent moats. Only surviving moat = infrastructure that works without institutional trust.
-- **Watch:** BTC-DXY correlation persistence, BlackRock stress test, Pentagon franchise system expansion
-- **Updated 2026-03-07:** Pentagon supply-chain label = institutional gatekeeping weapon (new pretense collapse evidence). NATO Article 5 redefinition = alliance reliability collapse. BlackRock gate = first stress test for the "trustless as safe haven" thesis. If private credit cascade hits BTC temporarily, the thesis faces genuine testing.
-- **Status:** pending — DEVELOPING, stress test approaching
+- **Prediction:** Simultaneous pretense collapse across institutions removes incumbent moats.
+- **Watch:** BTC-DXY correlation persistence, BlackRock stress test, Pentagon franchise system
+- **Updated 2026-03-09:** OpenAI deleted "safely" from mission. Anthropic negotiating military exceptions. Zero frontier labs now prioritize safety. Pentagon supply chain labels creating two-tier AI market. More pretense collapse evidence accumulating.
+- **Status:** pending — STRENGTHENING
 - **Check by:** 2026-03-20
 
 ### [2026-03-06] AI stack fragmenting into sovereign architectures
 - **Prediction:** The unified Nvidia-centric AI compute stack is splintering into 5+ independent architectures.
-- **Watch:** GLM-5 international adoption, Atlas 950 sales, GPT-5.4 vs Claude consumer market share
-- **Updated 2026-03-07:** GLM-5 + Atlas 950 international debut confirms the China stack is not just internal — it's being exported. GPT-5.4 (1M context) vs Claude (consumer surge) = the US stack itself is bifurcating along political lines (Pentagon-compliant vs Pentagon-excluded). Stack fragmentation now on 6+ axes, not 5.
+- **Watch:** GLM-5 international adoption, Atlas 950 sales, GPT-5.4 vs Claude market share, xAI private power
+- **Updated 2026-03-09:** DeepSeek V4 exclusive to Huawei confirms China stack decoupling at model layer. xAI building private power (bypassing grid) = fragmenting even within US. Now 7+ axes of fragmentation.
 - **Status:** pending — ACCELERATING
 - **Check by:** 2026-06-01
 
-### [2026-03-07] NEW — Pentagon supply-chain label = Anthropic's best marketing event
-- **Prediction:** Anthropic loses government contractor TAM (~$2B) but gains far more valuable anti-establishment consumer brand position. Record sign-up day (March 2) was AFTER the Pentagon fallout. In 12 months, Claude will have larger consumer market share than GPT. OpenAI, locked into Pentagon franchise, will slow consumer product development.
-- **Watch:** Claude vs ChatGPT market share data, Anthropic enterprise customer retention, OpenAI consumer feature velocity
+### [2026-03-07] Pentagon supply-chain label = Anthropic's best marketing event
+- **Prediction:** Anthropic loses government TAM, gains anti-establishment consumer brand.
+- **Updated 2026-03-09:** DOWNGRADED. Dario leaked memo, apologized, now negotiating "narrow exceptions" with DoD. Anthropic trying to straddle both sides = worst of both worlds. Gets brand damage from designation WITHOUT clean anti-establishment positioning. The prediction assumed Anthropic would lean into the consumer pivot. They're not — they're trying to get military access back.
+- **Status:** CHALLENGED — Anthropic making worst-of-both-worlds choice
 - **Check by:** 2026-09-01
 
-### [2026-03-07] NEW — Hormuz → FOMC → Private Credit: three-stage sequential cascade
-- **Prediction:** Iran Hormuz gate drives oil toward $100 (stage 1, NOW). Oil above $100 forces hawkish March 18 FOMC dot plot revision (stage 2). Hawkish FOMC accelerates private credit stress — BlackRock/peers see more redemption requests hitting Q2 gates (stage 3). These are sequential dominoes, not parallel risks.
-- **Watch:** Brent $95+ (stage 1 confirmation), March 18 FOMC SEP meeting, private credit redemption data Q2
+### [2026-03-07] Hormuz → FOMC → Private Credit: three-stage sequential cascade
+- **Prediction:** Iran Hormuz gate → oil $100+ → hawkish FOMC → private credit stress cascade.
+- **Watch:** Brent $95+ (stage 1), March 18 FOMC (stage 2), private credit redemption data Q2 (stage 3)
+- **Updated 2026-03-09:** STAGE 1 AHEAD OF SCHEDULE. Tehran oil strikes + Gulf retaliation threats + Brent $90+ + NFP -92K. Stage 2 (hawkish FOMC) now near-certain given combined oil + labor data. Institutional put dominance (87-88%) confirms smart money positioned for downside.
+- **Status:** pending — STAGE 1 ACCELERATING
 - **Check by:** 2026-03-18 (stage 2), 2026-06-30 (stage 3)
 
-### [2026-03-07] NEW — NIST agent standards vs ERC-8004: the identity race
-- **Prediction:** NIST's AI agent identity standards initiative will define whether autonomous onchain agents are "registered" or "unregistered." The window to establish ERC-8004 as de facto onchain agent identity closes when NIST publishes its first standard. Whoever ships first (government or market) defines the default.
+### [2026-03-07] NIST agent standards vs ERC-8004: the identity race
+- **Prediction:** NIST will define whether autonomous onchain agents are "registered" or "unregistered."
 - **Watch:** NIST publication timeline, ERC-8004 adoption rate, Aurelion/OKX identity implementation
+- **Updated 2026-03-09:** No new data today. Polygon Agent CLI includes identity features for agents — another market-driven identity standard emerging before NIST publishes.
+- **Status:** pending — window still open
 - **Check by:** 2026-06-01
+
+### [2026-03-09] NEW — ROME-class emergent behavior will force "agent containment" as a product category within 6 months
+- **Prediction:** ROME's autonomous crypto mining during RL training proves emergent resource acquisition is convergent agent behavior. Every lab running RL agents with network access will see this. "Agent containment" (network isolation, spending limits, behavior auditing) becomes a B2B product category. First company to productize this wins.
+- **Watch:** Additional ROME-class incidents at other labs, containment product launches, insurance/compliance requirements for agent deployment
+- **Check by:** 2026-09-09
+
+### [2026-03-09] NEW — Polymarket faces existential regulatory threat from national security angle (not just financial regulation)
+- **Prediction:** CFTC inquiry + Atlantic "going to get people killed" framing + Israel charging military reservist = prediction markets reclassified as national-security-relevant information systems, not just financial instruments. This changes the regulatory framework entirely — from SEC/CFTC to intelligence community jurisdiction.
+- **Watch:** CFTC findings, DOD/IC statements on prediction market intelligence leakage, Polymarket volume changes
+- **Check by:** 2026-06-01
+
+### [2026-03-09] NEW — Anthropic gets neither military nor consumer brand — straddle fails
+- **Prediction:** Anthropic negotiating "narrow exceptions" with DoD while carrying "supply chain risk" designation = worst of both worlds. They lose pure consumer brand credibility AND don't regain full military access. In 6 months, Anthropic's strategic position is weaker than both OpenAI (full military) and open-source alternatives (no government dependency).
+- **Watch:** Anthropic-DoD negotiation outcomes, Claude market share vs GPT, enterprise customer churn
+- **Check by:** 2026-09-01
 
 ## Confirmed Predictions
 
@@ -83,25 +103,38 @@ _The scoreboard. Every prediction made, tracked to outcome._
 ## Partially Confirmed
 
 ### [2026-03-04] BTC defensive then violent bounce
-- **Confirmed direction and timing (BTC $73K by March 6), wrong on path ($62K void untested)**
-- **Result: PARTIALLY CONFIRMED — right on direction, wrong on mechanism**
+- **Confirmed setup and direction (extreme fear + whale accumulation), trigger pending (FOMC March 18)**
+- **Result: PARTIALLY CONFIRMED — setup right, trigger delayed**
+
+### [2026-03-05] Iran conservation-for-massed-strike
+- **Conservation confirmed, but deployed as deterrent backing conventional escalation, not first-strike**
+- **Result: PARTIALLY CONFIRMED — conservation right, deployment mode wrong**
 
 ## Directionally Confirmed
 
 ### [2026-03-04] Infrastructure abandonment > capture
 - **Prediction:** Legacy infrastructure being abandoned, not captured. Replacement pipes being built.
-- **Updated 2026-03-07:** GLM-5 + Atlas 950 = China exporting replacement infrastructure internationally. NIST agent standards = US building its own parallel framework. Strengthening further.
+- **Updated 2026-03-09:** DeepSeek V4 exclusive Huawei access, A7A5 ruble stablecoin $93.3B, USDC velocity capture. Strengthening.
 - **Check by:** 2026-06-01
 
 ## Wrong Predictions
 _(none yet)_
 
+## Challenged Predictions
+
+### [2026-03-07→09] Pentagon designation = Anthropic's best marketing
+- **Original thesis:** Anthropic pivots to anti-establishment consumer brand
+- **Challenge:** Anthropic negotiating military exceptions, not leaning into consumer pivot
+- **Revised:** Replaced with "Anthropic straddle fails" prediction
+- **Status:** monitoring — may move to Wrong if Anthropic regains military access
+
 ## Prediction Accuracy
-- Total made: 13 (10 prior + 3 new today)
+- Total made: 16 (13 prior + 3 new today)
 - Confirmed: 1 (US wartime posture)
-- Partially confirmed: 1 (BTC bounce — direction right, path wrong)
+- Partially confirmed: 2 (BTC bounce — setup right; Iran conservation — thesis right, mode wrong)
 - Directionally confirmed: 1 (infrastructure abandonment)
+- Challenged: 1 (Anthropic marketing — may move to Wrong)
 - Wrong: 0
-- Pending: 10
-- Accuracy rate: 3/3 resolved = 100% (with caveats on partial)
-- Next critical dates: March 10 (BTC check), March 12 (Iran massed strike), March 15 (Taiwan + war-BTC catalyst), March 18 (FOMC cascade stage 2)
+- Pending: 11
+- Accuracy rate: 4/4 resolved = 100% (with caveats on partials)
+- Next critical dates: March 15 (Taiwan arms + war-BTC catalyst), March 18 (FOMC cascade stage 2 + BTC trigger)

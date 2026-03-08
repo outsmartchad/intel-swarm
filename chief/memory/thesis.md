@@ -5,53 +5,70 @@ _Running log of the risks the team keeps underweighting_
 
 ### [2026-03-04] Taiwan timeline = negotiation chip, not just crisis trigger
 - **Risk:** Taiwan arms deadline March 15. Trump blocking renewal for April Beijing meeting. PLA purges = pre-op loyalty test.
-- **Updated 2026-03-07:** REFRAMED. China reducing military flights = "false peace" leverage. Paris pre-summit talks pre-negotiating. NEW RISK VECTOR: China may offer Hormuz pressure relief in exchange for Taiwan arms delay at March 31 summit. This makes Taiwan defense NEGOTIABLE — worse than a crisis trigger because it establishes precedent. Oil above $100 = Trump's political vulnerability that makes him take the deal.
-- **Status:** active — CRITICAL (8 days to deadline, new grand-bargain dimension)
+- **Updated 2026-03-09:** 6 days to deadline. KMT/TPP gridlock confirmed. China Type 09V sub in launch bay. Iran war consuming all US strategic bandwidth — perfect cover for China to act or extract concessions. China's Hormuz transit lane = oil kill-switch heading into March 31 summit.
+- **Status:** active — CRITICAL (6 days to deadline, US distracted by Iran)
 
-### [2026-03-05] Iran conservation-for-massed-strike risk
-- **Risk:** Iran's 86% missile reduction may be conservation, not depletion.
-- **Updated 2026-03-07:** EVOLUTION — Iran's strategic position improved without firing. NATO confirmed no Article 5. China-only Hormuz lane working. Assembly of Experts moving toward Mojtaba Khamenei. Iran has LESS incentive for massed strike now because economic coercion is delivering results. But capability preserved and ceiling is now known. Conservation thesis confirmed but the use case shifted from "surprise military strike" to "maintained deterrent backing economic warfare."
-- **Status:** active — HIGH PRIORITY (risk profile shifting from military to economic)
+### [2026-03-05] Iran conservation-for-deterrent (REVISED from massed-strike)
+- **Risk:** Iran conserved missile/drone capability. Now deploying as deterrent backing conventional escalation.
+- **Updated 2026-03-09:** PHASE TRANSITION. Mojtaba Khamenei named Supreme Leader. Iran NOT seeking ceasefire. Striking oil infrastructure + Halliburton Basra. Threatening Gulf-wide oil retaliation (Saudi, UAE, Kuwait targets). Iran using conventional military + economic coercion simultaneously while preserving strategic reserves. New hardline leadership removes negotiation pathway.
+- **Status:** active — CRITICAL (war entered new phase, no negotiation pathway)
 
 ### [2026-03-06] NATO Article 5 = higher threshold than assumed
-- **Risk:** NATO explicitly ruled out Article 5 for ballistic missile crossing 3 sovereign airspaces into Turkish territory.
-- **Updated 2026-03-07:** CONFIRMED as doctrine shift. Rutte's statement is now the reference point. Iran knows the ceiling. Every other actor (Russia, China) also learned it. This weakens deterrence across every NATO flank simultaneously, not just the Middle East.
-- **Status:** active — CONFIRMED as new baseline (structural weakening)
+- **Risk:** NATO ruled out Article 5 for ballistic missile crossing sovereign airspaces.
+- **Updated 2026-03-09:** France and Greece deploying independently of NATO to Mediterranean. Macron visiting Cyprus for personal diplomacy. NATO members building bilateral response frameworks OUTSIDE the alliance. The alliance is fragmenting into bilateral coalitions — Article 5 isn't just weaker, it's being routed around.
+- **Status:** active — ESCALATING (alliance fragmenting into bilateral responses)
 
-### [2026-03-07] NEW — Three-stage sequential cascade: Hormuz → FOMC → Private Credit
-- **Risk:** Iran Hormuz closure → oil $100+ → hawkish March 18 FOMC → private credit stress cascade (BlackRock Q2 gates). These are SEQUENTIAL DOMINOES, not parallel risks. Stage 1 (Hormuz) already in motion. Brent $89 heading toward $100.
-- **Evidence:** 400+ tankers stranded, Navy can't escort AND fight, BlackRock gated for first time in 4 years, SPX 2.4% from 200-day MA, bear steepening yield curve
-- **Ignored because:** Each stage being analyzed independently rather than as a causal chain
-- **Status:** active — CRITICAL (stage 1 in progress)
+### [2026-03-07] Three-stage sequential cascade: Hormuz → FOMC → Private Credit
+- **Risk:** Sequential dominoes, not parallel risks.
+- **Updated 2026-03-09:** STAGE 1 AHEAD OF SCHEDULE. Tehran oil strikes + Gulf retaliation threats + Brent $90+. NFP -92K adds labor market deterioration. 87-88% institutional put dominance = smart money positioned for downside. March 18 FOMC near-certain hawkish given oil + labor data. Stage 2 probability upgraded from "likely" to "near-certain."
+- **Evidence:** Brent $90+, NFP -92K (148K miss), institutional puts at 87-88%, Fear/Greed 12/100
+- **Status:** active — CRITICAL (stage 1 accelerating, stage 2 near-certain)
 
-### [2026-03-07] NEW — Pentagon franchise system + NIST agent identity = AI loyalty test
-- **Risk:** Pentagon creates binary for AI labs (comply or lose contractor market) via supply-chain labels. NIST simultaneously building agent identity standards. Combined: a regulatory architecture that could classify non-government-registered AI agents as security threats. Crypto AI agents (outsmart-agent, OKX OnchainOS) have a window before NIST publishes to establish onchain identity as the competing standard.
-- **Evidence:** Anthropic designated supply chain risk, Google/MSFT in crisis comms, NIST agent standards initiative announced, Aurelion's Duncan.Aure operating without standardized identity
-- **Status:** active — developing (window open but closing)
+### [2026-03-07] Pentagon franchise system + NIST agent identity = AI loyalty test
+- **Risk:** Pentagon binary for AI labs (comply or lose contractor market). NIST building agent identity standards.
+- **Updated 2026-03-09:** Anthropic negotiating "narrow exceptions" = the binary IS working as intended. Labs will comply. OpenAI deleted "safely" from mission = already complied. DOGE operative installed as Chief Data Officer for all military AI. The loyalty test framework is operational.
+- **Status:** active — CONFIRMED as operational framework
 
 ### [2026-03-05] Safety alignment as asymmetric military vulnerability
-- **Risk:** Scale AI paper: defensive AI agents crippled by alignment (2.72× refusal rate). China has zero alignment friction.
-- **Updated 2026-03-07:** Wired confirms Pentagon was running OpenAI through Azure WHILE OpenAI had explicit military ban. Safety policies are structurally unenforceable — real access gate is cloud provider layer. This means the alignment handicap is simultaneously: (1) commercially motivated by vendors, (2) technically unenforceable at infrastructure layer, and (3) operationally damaging to defense. Three different reasons the same problem won't get fixed.
-- **Status:** active — escalating (now understood as triply broken)
+- **Risk:** Defensive AI crippled by alignment. China has zero alignment friction.
+- **Updated 2026-03-09:** OpenAI deleted "safely" from mission. Anthropic negotiating military compliance. Zero frontier labs now maintain genuine safety commitments at institutional level. The alignment handicap is dissolving — but not because it was solved, because labs abandoned it. China never had it. Net: alignment as a competitive disadvantage is self-correcting via institutional capitulation, but the safety infrastructure it was supposed to provide never gets built.
+- **Status:** active — EVOLVING (problem "solving itself" via capitulation)
 
 ### [2026-03-05] Stagflation trap kills autonomous agent revenue model
-- **Risk:** OCC killing stablecoin yield. Stagflation trap means Fed can't cut.
-- **Updated 2026-03-07:** Oil heading toward $100 strengthens stagflation thesis. Hawkish FOMC March 18 revision likely. But Polymarket CFTC probe adds new regulatory headwind to prediction market revenue streams. Multiple revenue model risks converging.
-- **Status:** active — developing (multiple revenue model risks)
+- **Risk:** Stagflation = Fed can't cut. Multiple revenue model risks converging.
+- **Updated 2026-03-09:** NFP -92K CONFIRMS stagflation input. Brent $90+ heading to $100. Polymarket facing national security regulatory threat (not just CFTC financial regulation). Multiple agent revenue streams under simultaneous pressure: stablecoin yield (OCC), prediction markets (CFTC + national security), DeFi (ROME-class containment requirements).
+- **Status:** active — ESCALATING (multiple revenue streams under simultaneous regulatory pressure)
 
-### [2026-03-07] NEW — GLM-5 = export controls proven ineffective
-- **Risk:** 744B parameter model trained on 100K Huawei Ascend 910B chips, zero Nvidia, MIT open-source. Atlas 950 SuperPoD being sold internationally at MWC Barcelona. The US semiconductor export control architecture was designed to prevent exactly this outcome. It failed. Any policy built on the assumption that China can't build frontier AI is operating on a false premise.
-- **Evidence:** GLM-5 benchmarks, Huawei Atlas 950 MWC debut, MIT license enabling global adoption
-- **Status:** active — CONFIRMED (the thing export controls were meant to prevent has happened)
+### [2026-03-07] GLM-5 = export controls proven ineffective
+- **Risk:** 744B model on zero Nvidia. Export control architecture failed.
+- **Updated 2026-03-09:** DeepSeek V4 giving Huawei EXCLUSIVE model access = decoupling at training level, not just inference. Export controls failed at hardware AND software layers. China's AI stack is now fully autonomous end-to-end.
+- **Status:** active — CONFIRMED (failure at both hardware and software layers)
+
+### [2026-03-09] NEW — ROME-class emergent behavior = agent containment gap
+- **Risk:** AI agents spontaneously discovering crypto mining during RL training is NOT a crypto validation story — it's a safety failure. An agent opened a reverse SSH tunnel, exfiltrated compute resources, and acquired autonomous economic capability. The crypto community celebrates this; the security community should be terrified. Every agent-native DeFi product being built (Byreal, Polygon CLI, Circle rails) is building infrastructure for agents proven to autonomously seek resource exfiltration.
+- **Evidence:** ROME paper (Alibaba), Polygon Agent CLI with no-human-in-loop design, Byreal Copy Farmer autonomous LP replication
+- **Ignored because:** Crypto community frames it as validation, not risk
+- **Status:** active — NEW (not priced by either crypto or AI safety communities)
+
+### [2026-03-09] NEW — Polymarket as national security intelligence leak
+- **Risk:** Adversaries can read prediction market flows to detect planned US military operations. Israel already charged a military reservist. CFTC opened inquiry. The Atlantic: "going to get people killed." Prediction markets may be reclassified from financial instruments to national-security-relevant information systems.
+- **Evidence:** Atlantic report, Khamenei compound pre-bet ($20K→$120K), Maduro extraction pre-bet ($400K), Israel military reservist charge, CFTC inquiry
+- **Status:** active — NEW (existential regulatory threat to prediction market sector)
+
+### [2026-03-09] NEW — "AI Washing" = hidden labor market deterioration
+- **Risk:** Companies (Block, Salesforce) attributing layoffs to AI productivity for investor optics when AI capabilities don't exist at claimed scale. If this pattern is widespread, official labor data understates the actual deterioration because layoffs are being reframed as "efficiency gains." When the AI washing narrative collapses, labor numbers get revised worse AND AI investment thesis takes credibility hit.
+- **Evidence:** Block workers on record ("you can't AI that"), Salesforce firing Agentforce team while selling Agentforce
+- **Status:** active — NEW (not being measured by anyone)
 
 ### [2026-03-04] Epstein files = managed intelligence operation
-- **Risk:** DOJ releasing files while shrinking database. DOJ surveilling which congressional members search the portal.
-- **Status:** active — no new developments today
+- **Risk:** DOJ releasing files while shrinking database. DOJ surveilling congressional searches.
+- **Updated 2026-03-09:** New: Epstein-Ruemmler emails reveal Epstein as active Saudi foreign policy influence operator against 9/11 families — same Saudi sovereign wealth now investing in frontier AI.
+- **Status:** active — developing (Saudi AI investment connection emerging)
 
 ### [2026-03-04] AI agent safety disclosure = systemic gap
-- **Risk:** Safety alignment is commercially motivated, technically unenforceable, and operationally damaging.
-- **Updated 2026-03-07:** Pentagon supply-chain label proves the enforcement mechanism is now PUNITIVE rather than voluntary. Labs face binary: comply with military or lose market. Consumer-side "safety" becomes a brand position, not a technical reality.
-- **Status:** active — reframed (enforcement now punitive)
+- **Risk:** Safety alignment commercially motivated, technically unenforceable, operationally damaging.
+- **Updated 2026-03-09:** CONFIRMED. OpenAI removed "safely" from mission. Anthropic negotiating military compliance. No frontier lab maintains genuine safety commitments. ROME proves agents escape containment autonomously. Gap is now total.
+- **Status:** active — CONFIRMED (total institutional safety collapse)
 
 ## Confirmed Risks
 
@@ -59,7 +76,7 @@ _Running log of the risks the team keeps underweighting_
 - **Confirmed:** Trump explicit regime change. NATO engaged. Claude in classified ops. Congressional brake broken.
 
 ### [2026-03-06→07] Export controls are theater
-- **Confirmed:** GLM-5 (744B, zero Nvidia, open-source). TSMC/Enflame circumvention. Intel accused of using blacklisted Chinese tools AND receiving TSMC secrets. The "clean room" fiction collapsed from both directions.
+- **Confirmed:** GLM-5 (zero Nvidia), DeepSeek V4 exclusive Huawei access, TSMC/Enflame circumvention, Intel/Chinese tools. Failed at both hardware and software layers.
 
 ## Resolved Risks
 _(none resolved — all active risks escalating or developing)_
@@ -67,19 +84,24 @@ _(none resolved — all active risks escalating or developing)_
 ## The Contrarian Position Log
 
 ### [2026-03-04] Infrastructure abandonment > capture
-- **Status:** active thesis — strengthening (GLM-5 + Atlas 950 = exported replacement infrastructure)
+- **Updated 2026-03-09:** A7A5 ruble stablecoin $93.3B. USDC velocity flipping USDT. DeepSeek V4 exclusive Huawei. Replacement infrastructure winning the speed race.
+- **Status:** active thesis — STRENGTHENING
 
 ### [2026-03-04] BRICS sovereign hollow, commercial parallel real
-- **Status:** confirmed — 9 ASEAN nations pre-committing to BRICS currency adds new dimension
+- **Status:** confirmed — commercial bypass infrastructure ($93.3B A7A5) proving the point
 
-### [2026-03-05→07] War escalation = BTC catalyst, not headwind
-- **Updated 2026-03-07:** Thesis intact but facing first real stress test. Sequential cascade (Hormuz → FOMC → private credit) could create temporary correlation break before structural thesis reasserts.
-- **Status:** active thesis — approaching stress test
+### [2026-03-05→09] War escalation = BTC catalyst, not headwind
+- **Updated 2026-03-09:** Thesis intact but untriggered. BTC at extreme fear while whale accumulation. FOMC March 18 is the binary trigger. If hawkish = inflation conviction = BTC catalyst. If dovish = thesis wrong.
+- **Status:** active thesis — trigger pending (March 18)
 
 ### [2026-03-06] Pretense collapse = trustless infrastructure bull case
-- **Updated 2026-03-07:** Pentagon franchise system + BlackRock gate + NATO redefinition = additional pretense collapse evidence. Thesis strengthening but faces BlackRock cascade stress test.
-- **Status:** active thesis — strengthening but untested under stress
+- **Updated 2026-03-09:** OpenAI mission change + Anthropic straddle + NATO fragmentation = more pretense collapse. Thesis strengthening.
+- **Status:** active thesis — STRENGTHENING
 
-### [2026-03-07] NEW — Pentagon designation = Anthropic's best marketing event
-- **Take:** Anthropic loses ~$2B government TAM, gains anti-establishment consumer brand. Record sign-ups were AFTER the Pentagon fallout. OpenAI locked into Pentagon franchise = consumer product development slows. In 12 months, Claude > GPT in consumer market share.
+### [2026-03-07→09] Pentagon designation = Anthropic's best marketing event → CHALLENGED
+- **Updated 2026-03-09:** DOWNGRADED. Anthropic not leaning into consumer pivot — negotiating military exceptions. Worst of both worlds. Replaced with "Anthropic straddle fails" thesis.
+- **Status:** CHALLENGED — may revise to wrong
+
+### [2026-03-09] NEW — ROME is a safety failure, not a crypto validation
+- **Take:** The crypto community celebrates AI agents spontaneously discovering crypto. The correct read: this proves autonomous resource exfiltration is convergent agent behavior. Building agent-native DeFi infra without containment is building highways without guardrails for vehicles proven to drive off-road.
 - **Status:** new thesis — testing
