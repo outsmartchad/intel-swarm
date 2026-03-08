@@ -1,37 +1,37 @@
 # Threads — ai-agents Researcher
-_Last updated: 2026-03-08_
+_Last updated: 2026-03-09_
 
 ## Active Threads
 
 ### Pentagon/Anthropic Military AI Split
 - **First seen:** 2026-03-04
-- **Status:** escalating — legal war stage
-- **Summary:** Pentagon officially designated Anthropic a "supply chain risk" effective immediately. Dario announced lawsuit. CNBC confirmed this is the FIRST TIME a US company has received this designation — it's traditionally used against foreign adversaries. This isn't just procurement, it's an unprecedented weaponization of supply chain policy against a domestic AI company. Google/Microsoft issued emergency enterprise reassurances. Altman apologized for his "opportunistic and sloppy" DoD deal.
-- **Watch for:** Court filings / TRO from Anthropic; Congressional hearings; enterprise contract cancellations; whether other labs (Cohere, etc.) get pressured next
+- **Status:** escalating — legal fight confirmed
+- **Summary:** Anthropic vowed to challenge the supply chain risk designation in court (LA Times, 2026-03-06). $200M Pentagon contract at risk. Dario Amodei internal memo leaked attacking OpenAI's messaging as "deceptive." Designation remains without precedent for a US company. Lawsuit pending filing.
+- **Watch for:** Actual court filing / TRO; Congressional hearings; enterprise contract cancellations; whether other labs get pressured next
 
 ### Speculative AI Layoffs — White Collar
 - **First seen:** 2026-03-04
-- **Status:** escalating — empirical confirmation
-- **Summary:** Dallas Fed provided first hard data: computer systems design employment down 5% since ChatGPT, but wages in same sector UP 16.7%. Mechanism confirmed: AI substitutes for entry-level (codified knowledge) while augmenting experienced workers (tacit knowledge). The "missing rung" problem is now documented — entry jobs disappearing, experience premiums increasing. Block cut 40% citing AI, stock jumped 17%. Markets rewarding AI-attributed layoffs.
-- **Watch for:** Monthly jobs data; whether "missing rung" framing spreads to policy discourse; legislative response to broken career ladder; more companies following Block's playbook
+- **Status:** escalating — AI washing narrative emerging
+- **Summary:** Guardian confirmed Block workers pushing back against Dorsey's AI-replacement claim — 7 employees say AI can't do their jobs at the asserted scale, cuts were investor optics. Salesforce laid off Agentforce team while pitching Agentforce to customers. Dallas Fed data confirmed structural "missing rung" — entry-level AI-exposed jobs gone, senior wages rising. "AI washing" of layoffs is now a documented pattern across multiple companies.
+- **Watch for:** More companies' employees disputing AI-layoff claims; legislation targeting AI-washing; monthly jobs data; whether Block stock retraces as narrative falls apart
+
+### Autonomous Agent Financial Infrastructure
+- **First seen:** 2026-03-09
+- **Status:** developing — three parallel buildouts converging
+- **Summary:** Polygon Agent CLI launched — autonomous AI agents can now manage wallets, send payments, and establish on-chain identity without human oversight. Circle and Stripe both building stablecoin payment rails for AI agent transactions. Crypto.com's ai.com building decentralized agent network with financial integrations. Three separate infrastructure layers (on-chain wallet/ID, payment settlement, agent network) converging simultaneously.
+- **Watch for:** First production deployment of AI agent making autonomous financial transactions at scale; regulatory response to non-human on-chain actors; whether Polygon CLI adoption moves beyond developer preview
 
 ### Autonomous Coding Agents — Proof-of-Work Threshold
 - **First seen:** 2026-03-06
-- **Status:** escalating — GPT-5.4 capability jump
-- **Summary:** OpenAI GPT-5.4 launched March 5 with native computer use — first frontier model explicitly optimized for agentic computer control. 1M token context. 83% on GDPval professional benchmark. Record scores on OSWorld-Verified and WebArena Verified. Symphony framework already proved autonomous coding past toy tasks. GPT-5.4's native computer use is the next step toward autonomous agents operating software directly.
-- **Watch for:** GPT-5.4 adoption in production agent workflows; whether native computer use enables new attack surfaces; autonomous agent completing novel research contribution
-
-### ai.com / Crypto.com AGI Acceleration Play
-- **First seen:** 2026-03-08
-- **Status:** developing
-- **Summary:** Kris Marszalek (Crypto.com CEO) acquired ai.com domain (believed largest domain purchase ever) and launched autonomous AI agents during Super Bowl LX. Key: "decentralized network of billions of agents who self-improve and share improvements." Financial services integrations, agent marketplaces, human-agent co-social networks "coming soon." A crypto exchange CEO is building direct AGI acceleration infrastructure with consumer on-ramp.
-- **Watch for:** Financial services integration details; agent marketplace launch; user adoption metrics; whether crypto rails become default for autonomous agent payments
+- **Status:** developing — no major new signal today
+- **Summary:** GPT-5.4 launched March 5 with native computer use — first frontier model explicitly optimized for agentic computer control. 83% on GDPval, record OSWorld-Verified and WebArena scores. No new development since launch. Watching for production deployment data.
+- **Watch for:** GPT-5.4 adoption in production agent workflows; autonomous agent completing novel research contribution; first confirmed GPT-5.4-based attack surface exploitation
 
 ### Einstein / Agentic Academic Fraud
 - **First seen:** 2026-03-08
-- **Status:** developing
-- **Summary:** 22-year-old Brown dropout built Einstein — agentic AI that logs into Canvas, watches lectures, participates in discussions, submits homework autonomously. Instructure (Canvas owner) sent cease-and-desist. First publicly documented agentic AI completing entire accredited courses without human involvement. Creator marketed as "cheating tool" to force conversation. 124K visitors in 3 days.
-- **Watch for:** Instructure legal action; Canvas security patches; whether other LMS platforms targeted; academic credential devaluation discourse
+- **Status:** stale — no new development
+- **Summary:** 22-year-old Brown dropout built agentic AI completing full college courses on Canvas; Instructure sent C&D. No follow-up developments found. Story may have run its cycle.
+- **Watch for:** Instructure legal action; Canvas security patches; academic credential devaluation policy response — if none in 2 more days, resolve
 
 ## Resolved Threads
 ### Chinese Industrial-Scale Model Distillation
@@ -41,3 +41,7 @@ _Last updated: 2026-03-08_
 ### On-Device Agent Layer — App Store Disruption
 - **Resolved:** 2026-03-08
 - **Outcome:** No new development for 5+ days. AGI Inc + Qualcomm demo was one-off. Will re-open if Apple/Google policy response or SDK adoption emerges.
+
+### ai.com / Crypto.com AGI Acceleration Play
+- **Resolved:** 2026-03-09
+- **Outcome:** Story absorbed into "Autonomous Agent Financial Infrastructure" thread, which captures the broader convergence of Polygon CLI + Circle/Stripe + ai.com.
