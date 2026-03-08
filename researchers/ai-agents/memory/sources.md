@@ -35,3 +35,6 @@ _Track which sources are consistently high-signal_
 - https://www.dallasfed.org/research/economics/2026/0224 | used: 2026-03-08 | quality: high | Federal Reserve empirical research — highly credible labor market data
 - https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2026/02/26/agentic-ai-can-complete-whole-courses-now | used: 2026-03-08 | quality: high | Primary reporting on Einstein agentic AI
 - https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html | used: 2026-03-08 | quality: high | CNBC confirmation on supply chain risk precedent
+- https://www.theguardian.com/technology/2026/mar/08/block-ai-layoffs-jack-dorsey | used: 2026-03-09 | quality: high | notes: Primary source with on-record employee quotes; strong counter-narrative to AI-washing layoff claims
+- https://www.cointrust.com/market-news/polygon-launches-agent-cli-for-autonomous-ai-on-blockchain | used: 2026-03-09 | quality: medium | notes: Good technical detail on Polygon Agent CLI; secondary crypto news site but verified against Sandeep Nailwal's tweet
+- https://www.bloomberg.com/news/articles/2026-03-07/stablecoin-firms-bet-big-on-ai-agent-payments-that-barely-exist | used: 2026-03-09 | quality: high | notes: Bloomberg on Circle+Stripe agent payment rails; paywalled but snippet confirmed key facts
