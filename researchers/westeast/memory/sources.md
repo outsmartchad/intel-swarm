@@ -29,3 +29,8 @@ _Track which sources are consistently high-signal_
 - https://www.digitimes.com/news/a20260303PD218/tsmc-technology-investigation-taiwan-intel-2025.html | used: 2026-03-07 | quality: high | notes: Digitimes Taiwan, strong semiconductor industry sourcing
 - https://www.bloomberg.com/news/articles/2026-03-05/ck-hutchison-looks-to-trump-xi-summit-as-ports-deal-drags-on | used: 2026-03-07 | quality: high | notes: Bloomberg on CK Hutchison impasse; solid sourcing
 - https://www.scmp.com/economy/china-economy/article/3345336/china-and-us-hold-high-level-trade-talks-paris-trumps-beijing-visit | used: 2026-03-07 | quality: high | notes: SCMP on Paris talks confirmation; reliable for China-US trade diplomacy
+- https://www.scmp.com/business/banking-finance/article/3345047/hsbc-signals-intent-join-hong-kongs-stablecoin-regime-amid-digital-innovation-push | used: 2026-03-09 | quality: high | notes: SCMP primary source, HSBC CEO direct quote on stablecoin intent
+- https://www.cnbc.com/2026/03/08/china-says-thorough-preparations-needed-ahead-of-trump-xi-meeting.html | used: 2026-03-09 | quality: high | notes: Wang Yi March 8 press conference, primary diplomatic signal on summit uncertainty
+- https://awesomeagents.ai/news/glm-5-china-frontier-model-huawei-chips/ | used: 2026-03-09 | quality: medium | notes: GLM-5 benchmark aggregator, useful numbers but secondary source
+- https://www.letsdatascience.com/blog/china-trained-frontier-ai-model-glm-5-without-nvidia | used: 2026-03-09 | quality: medium | notes: Good technical summary of GLM-5 on Huawei chips
+- https://leaveit2ai.com/ai-tools/language-model/deepseek-v4 | used: 2026-03-09 | quality: medium | notes: Best tracker for DeepSeek V4 release status, community-sourced timeline
